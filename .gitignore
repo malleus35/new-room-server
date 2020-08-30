@@ -1,0 +1,17 @@
+# dependancies
+
+node_modules/
+node_modules/*
+
+# log
+
+*.log
+
+# build
+
+# production
+
+# misc
+
+yarn.lock
+envs/
