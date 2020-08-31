@@ -1,8 +1,9 @@
 import express, { Request, Response, Router } from "express";
-
-export const router =Router();
+import {logger} from "../../config/winston"
+export const router = Router();
 
 router.get("/", (req: Request, res: Response) => {
+logger.debug("TEST DEBUG");
 	res.send("Hello World!");
 });
 

@@ -6,10 +6,13 @@
   "author": "luciferkala",
   "license": "MIT",
   "dependencies": {
+    "@types/morgan": "^1.9.1",
     "@types/winston": "^2.4.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "winston": "^3.3.3"
+    "morgan": "^1.10.0",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.0"
   },
   "scripts": {
     "tsc": "tsc",

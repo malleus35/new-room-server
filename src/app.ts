@@ -1,15 +1,18 @@
 import express, { Request, Response } from "express";
-import dotenv from "dotenv";
-import path from "path";
+import {env} from "../config/dotenv";
+import {logger} from "../config/winston";
+import morgan from "morgan";
 import { router as indexRouter } from "./routes/index";
 
-dotenv.config({
-	path: path.join(__dirname, "/envs/.env.production")
-});
+
+env.envTestConfig
 
 export const app = express();
-app.use(express.json());
 
+app.use(express.json());
+app.use(
+	morgan("combined", { stream: { write: message => logger.info(message) } })
+);
 app.use("/", indexRouter);
 
 app.listen(process.env.PORT || 3000);

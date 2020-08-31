@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/movingmt/workspace/javascript/capstone/log/.92b21996fd2240807b88bf54e244528d6c41bdd7-audit.json",
+    "files": [
+        {
+            "date": 1598884735599,
+            "name": "/Users/movingmt/workspace/javascript/capstone/log/application-2020-08-31-23-error.log",
+            "hash": "26c0f01bd6d8273f6bb57951c6a0d579"
+        }
+    ]
+}

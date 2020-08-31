@@ -1,38 +1,64 @@
 import express, { Request, Response } from "express";
 import request from "supertest";
-import { app } from "../src/app";
 import dotenv from "dotenv";
 import path from "path";
-
-describe("Test dotenv", () => {
+import winston, { createLogger, transports } from "winston";
+describe("Test app middlewares", () => {
 	it("dovenv Test", async () => {
 		dotenv.config({
-			path: path.join(__dirname, "/envs/.env.test")
+			path: path.join(__dirname, "../envs/.env.test")
 		});
 		const envApp = express();
 		envApp.use(express.json());
 		envApp.get("/", (req: Request, res: Response) => {
 			res.send("This is dotenv test server!");
 		});
-		envApp.listen(process.env.PORT);
+		envApp.listen(3000);
+		expect(process.env.PORT).toEqual("8080");
 
 		const res = await request(envApp)
 			.get("/")
 			.expect(200, "This is dotenv test server!");
 	});
-});
 
-describe("make server and test login request", () => {
-	it("GET /", async () => {
-		const res = await request(app)
-			.get("/")
-			.expect(200);
-	});
+	it("winston test", () => {
+		const logger = {
+			debug: jest.fn(),
+			log: jest.fn(),
+			info: jest.fn()
+		};
+		jest.mock("winston", () => ({
+			level: jest.fn(() => "info"),
+			format: jest.fn(() => winston.format.json()),
+			defaultMeta: jest.fn(() => ({ service: "user-service" })),
+			createLogger: jest.fn().mockReturnValue(logger),
+			transports: {
+				Console: jest.fn(
+					() =>
+						new transports.Console({
+							format: winston.format.simple()
+						})
+				),
+				File: jest.fn()
+			}
+		}));
+		let loggerMock: winston.Logger;
+		const mockCreateLogger = jest.spyOn(winston, "createLogger");
+		loggerMock = mockCreateLogger.mock.instances[0];
 
-	it("POST /signin", async () => {
-		const res = await request(app)
-			.get("/signin")
-			.send({ id: "maestroprog", pwd: "1234" })
-			.expect(200, { msg: "Login Success!" });
+		const loggerApp = express();
+		loggerApp.use(express.json());
+		loggerApp.get("/", (req: Request, res: Response) => {
+			const result = { level: "info", message: "Hello Winston!" };
+			loggerMock.log(result);
+			expect(loggerMock.log).toHaveBeenCalled();
+			loggerMock.info({
+				message: "Use a helper method if you want",
+				additional: "properties",
+				are: "passed along"
+			});
+			expect(loggerMock.info).toHaveBeenCalledTimes(1);
+			res.send("This is winston logger test server!");
+		});
 	});
 });
