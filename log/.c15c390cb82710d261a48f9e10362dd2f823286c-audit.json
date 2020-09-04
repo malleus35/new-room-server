@@ -1,0 +1,19 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/movingmt/workspace/javascript/capstone/log/.c15c390cb82710d261a48f9e10362dd2f823286c-audit.json",
+    "files": [
+        {
+            "date": 1599213394579,
+            "name": "/Users/movingmt/workspace/javascript/capstone/log/application-2020-09-04.log",
+            "hash": "a593f6836806aab565c98379e6cc60fe"
+        },
+        {
+            "date": 1599257221575,
+            "name": "/Users/movingmt/workspace/javascript/capstone/log/application-2020-09-05.log",
+            "hash": "81af88f63c363d52463b9abb9393f2e2"
+        }
+    ]
+}
