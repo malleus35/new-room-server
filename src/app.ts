@@ -4,8 +4,13 @@ import { LogService } from "../config/winston";
 import morgan from "morgan";
 import { router as apiRouter } from "./routes/index";
 
-env.envTestConfig;
-
+if (process.env.NODE_ENV === "production") {
+	env.setConfig(env.envConfig);
+} else if (process.env.NODE_ENV === "test") {
+	env.setConfig(env.envTestConfig);
+} else if (process.env.NODE_ENV === "develop") {
+	env.setConfig(env.envDevConfig);
+}
 export const app = express();
 
 app.use(express.json());
@@ -15,5 +20,4 @@ app.use(
 	})
 );
 app.use("/api", apiRouter);
-//extract listen method
-//app.listen(process.env.PORT || 3000);
+if (process.env.NODE_ENV !== "test") app.listen(process.env.PORT || 3000);

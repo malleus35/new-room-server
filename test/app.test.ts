@@ -7,9 +7,11 @@ describe("Test app middlewares", () => {
 	});
 	it("dovenv Test", async () => {
 		dotenv.config({
-			path: path.join(__dirname, "../envs/.env.test")
+			path: path.join(__dirname, "../envs/.env.production")
 });
-		expect(process.env.PORT).toEqual("5000");
+		expect(process.env.PORT).not.toEqual("5000")
+		expect(process.env.PORT).not.toEqual("8000")
+		expect(process.env.PORT).toEqual("8080");
 	});
 
 	it("winston test", () => {
