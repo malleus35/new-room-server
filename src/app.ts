@@ -6,7 +6,7 @@ import { router as apiRouter } from "./routes/index";
 
 if (process.env.NODE_ENV === "production") {
 	env.setConfig(env.envConfig);
-} else if (process.env.NODE_ENV === "test") {
+}               else if (process.env.NODE_ENV === "test") {
 	env.setConfig(env.envTestConfig);
 } else if (process.env.NODE_ENV === "develop") {
 	env.setConfig(env.envDevConfig);
