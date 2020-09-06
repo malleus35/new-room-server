@@ -1,4 +1,4 @@
-import express, { Request, Response, Router } from "express";
+import { Router } from "express";
 import authRouter from "./auth";
 
 const router = Router();

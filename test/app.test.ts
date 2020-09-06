@@ -8,7 +8,7 @@ describe("Test app middlewares", () => {
     });
     it("dovenv Test", () => {
         dotenv.config({
-            path: path.join(__dirname, "../envs/.env.production"),
+            path: path.join(__dirname, "../envs/.env.production")
         });
         expect(process.env.PORT).not.toEqual("5000");
         expect(process.env.PORT).not.toEqual("8000");
@@ -20,21 +20,21 @@ describe("Test app middlewares", () => {
             const mockLogger = {
                 debug: jest.fn(),
                 log: jest.fn(),
-                info: jest.fn(),
+                info: jest.fn()
             };
             return {
                 level: jest.fn(),
                 format: {
                     combine: jest.fn(),
                     timestamp: jest.fn(),
-                    printf: jest.fn(),
+                    printf: jest.fn()
                 },
                 defaultMeta: jest.fn(),
                 createLogger: jest.fn().mockReturnValue(mockLogger),
                 transports: {
                     infoDailyRotate: jest.fn(),
-                    errorDailyRotate: jest.fn(),
-                },
+                    errorDailyRotate: jest.fn()
+                }
             };
         });
 
