@@ -1,8 +1,11 @@
 import express, { Request, Response, Router } from "express";
-import { LogService } from "../../../config/winston";
-import { router as signinRouter} from "./signin";
-import { router as signupRouter} from "./signup";
-export const router = Router();
+import LogService from "../../../config/winston";
+import signinRouter from "./signin";
+import signupRouter from "./signup";
 
-router.use("/signin",signinRouter);
-router.use("/signup",signupRouter);
+const router = Router();
+
+router.use("/signin", signinRouter);
+router.use("/signup", signupRouter);
+
+export default router;
