@@ -1,22 +1,10 @@
-import request, { Response } from "supertest";
+import request from "supertest";
 import LogService from "../config/winston";
 import app from "../src/app";
+import { SignInBody, SignUpBody } from "../@types/auth";
 
 const logger = LogService.getInstance();
 describe("functional test", () => {
-    interface SignUpBody {
-        name: string;
-        email: string;
-        pwd: string;
-        grade: number;
-        school: string;
-        stdNum: string;
-    }
-
-    interface SignInBody {
-        email: string;
-        pwd: string;
-    }
     //정훈이는 앱을 실행시키고 로그인 화면을 본다.
     //정훈이는 이 앱을 처음 사용하기 때문에, 회원가입 화면을 본다.
     //정훈이는 회원가입 화면에서 이름, 이메일, 비밀번호, 비밀번호 확인 ,학교, 학번, 학년을 입력하고 회원가입 신청을 한다.
@@ -60,8 +48,15 @@ describe("functional test", () => {
     회원가입 화면에서 회원가입을 시도하다가 요구 사항중에서 학교를 적지 못했다.
     학교를 적지 못하자 학교란을 입력해달라고 하며 에러가 난다.
     */
+    interface dontTypeSchoolRequestBody {
+        name: string;
+        email: string;
+        pwd: string;
+        grade: number;
+        stdNum: string;
+    }
     it("Try to SignUp. but don't type school and check error", async () => {
-        const dontTypeSchoolRequestBody: SignUpBody = {
+        const dontTypeSchoolRequestBody: dontTypeSchoolRequestBody = {
             name: "minho park",
             email: "minoflower31@gmail.com",
             pwd: "1234",

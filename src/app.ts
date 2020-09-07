@@ -4,13 +4,7 @@ import env from "../config/dotenv";
 import LogService from "../config/winston";
 import apiRouter from "./routes/index";
 
-if (process.env.NODE_ENV === "production") {
-    env.setConfig(env.envConfig);
-} else if (process.env.NODE_ENV === "test") {
-    env.setConfig(env.envTestConfig);
-} else if (process.env.NODE_ENV === "dev") {
-    env.setConfig(env.envDevConfig);
-}
+env.chooseEnv();
 const app = express();
 
 app.use(express.json());

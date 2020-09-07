@@ -1,20 +1,15 @@
-import dotenv from "dotenv";
-import path from "path";
 import LogService from "../config/winston";
-
+import env from "../config/dotenv";
 describe("Test app middlewares", () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
-    it("dovenv Test", () => {
-        dotenv.config({
-            path: path.join(__dirname, "../envs/.env.production")
-        });
+    it("custom dotenv test", () => {
+        env.chooseEnv();
         expect(process.env.PORT).not.toEqual("5000");
-        expect(process.env.PORT).not.toEqual("8000");
-        expect(process.env.PORT).toEqual("8080");
+        expect(process.env.PORT).not.toEqual("8080");
+        expect(process.env.PORT).toEqual("8000");
     });
-
     it("winston test", () => {
         jest.mock("winston", () => {
             const mockLogger = {

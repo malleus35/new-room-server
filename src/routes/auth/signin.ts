@@ -1,13 +1,8 @@
 import { Request, Response, Router } from "express";
 import LogService from "../../../config/winston";
-
+import { SignInBody } from "../../../@types/auth";
 const router = Router();
 const logger = LogService.getInstance();
-
-interface SignInBody {
-    email: string;
-    pwd: string;
-}
 
 router.post("/", (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

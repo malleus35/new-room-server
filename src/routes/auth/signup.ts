@@ -1,18 +1,9 @@
 import { Request, Response, Router } from "express";
 import LogService from "../../../config/winston";
-
+import { SignUpBody } from "../../../@types/auth";
 const router = Router();
 
 const logger = LogService.getInstance();
-
-interface SignUpBody {
-    name: string;
-    email: string;
-    pwd: string;
-    grade: number;
-    school: string;
-    stdNum: string;
-}
 
 router.post("/", (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
