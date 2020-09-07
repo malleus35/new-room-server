@@ -1,5 +1,5 @@
-import LogService from "../config/winston";
-import env from "../config/dotenv";
+import LogService from "../src/middleware/winston";
+import env from "../src/middleware/dotenv";
 describe("Test app middlewares", () => {
     afterEach(() => {
         jest.resetAllMocks();

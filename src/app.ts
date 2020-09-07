@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
-import env from "../config/dotenv";
-import LogService from "../config/winston";
+import env from "./middleware/dotenv";
+import LogService from "./middleware/winston";
 import apiRouter from "./routes/index";
 
 env.chooseEnv();

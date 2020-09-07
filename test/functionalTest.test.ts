@@ -1,5 +1,5 @@
 import request from "supertest";
-import LogService from "../config/winston";
+import LogService from "../src/middleware/winston";
 import app from "../src/app";
 import { SignInBody, SignUpBody } from "../@types/auth";
 

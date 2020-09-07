@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import LogService from "../../../config/winston";
+import LogService from "../../middleware/winston";
 import { SignUpBody } from "../../../@types/auth";
 const router = Router();
 

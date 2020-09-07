@@ -1,7 +1,6 @@
 import signinRouter from "./signin";
 import signupRouter from "./signup";
 import { Router } from "express";
-import LogService from "../../../config/winston";
 
 const router = Router();
 
