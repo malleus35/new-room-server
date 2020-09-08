@@ -4,8 +4,8 @@ import env from "@src/custom/dotenv";
 
 const logger = LogService.getInstance();
 
-env.chooseEnv();
 describe("sequelize and postgresql test", () => {
+    env.chooseEnv();
     let sequelize: Sequelize;
     beforeEach(() => {
         sequelize = new Sequelize(
