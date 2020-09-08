@@ -1,8 +1,9 @@
+import "module-alias/register";
 import express from "express";
 import morgan from "morgan";
-import env from "./custom_modules/dotenv";
-import LogService from "./custom_modules/winston";
-import apiRouter from "./routes/index";
+import env from "@src/custom/dotenv";
+import LogService from "@src/custom/winston";
+import apiRouter from "@src/routes/index";
 
 env.chooseEnv();
 const app = express();

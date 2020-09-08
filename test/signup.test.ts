@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../src/app";
+import app from "@src/app";
 
 describe("make server and test login request", () => {
     it("POST /signup", async () => {

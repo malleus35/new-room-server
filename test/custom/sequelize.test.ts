@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
-import LogService from "../../src/custom_modules/winston";
-import env from "../../src/custom_modules/dotenv";
+import LogService from "@src/custom/winston";
+import env from "@src/custom/dotenv";
 
 const logger = LogService.getInstance();
 

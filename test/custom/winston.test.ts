@@ -1,4 +1,4 @@
-import LogService from "../../src/custom_modules/winston";
+import LogService from "@src/custom/winston";
 
 describe("custom logger test", () => {
     afterEach(() => {

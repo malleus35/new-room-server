@@ -1,5 +1,5 @@
-import signinRouter from "./signin";
-import signupRouter from "./signup";
+import signinRouter from "@src/routes/auth/signin";
+import signupRouter from "@src/routes/auth/signup";
 import { Router } from "express";
 
 const router = Router();

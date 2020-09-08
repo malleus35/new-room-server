@@ -11,7 +11,7 @@ class LogService {
     private static instance: LogService;
 
     private constructor() {
-        this.logDir = `${__dirname}/../../log`;
+        this.logDir = `log`; //webpack으로 build시 ${__dirname}/log 여야 함.
         this.mkLogDir();
         this.logger = this.mkLogger();
     }
