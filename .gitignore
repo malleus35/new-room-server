@@ -8,11 +8,12 @@ node_modules/*
 *.log
 
 # build
-
+/dist
 # production
 
 # misc
-
 yarn.lock
 envs/
 config/
+
+Untitled.code-workspace
