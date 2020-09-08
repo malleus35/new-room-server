@@ -4,15 +4,15 @@ node_modules/
 node_modules/*
 
 # log
-
+/log
 *.log
 
 # build
-
+/dist
 # production
 
 # misc
-
+Untitled.code-workspace
 yarn.lock
 envs/
 config/
