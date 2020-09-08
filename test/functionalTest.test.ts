@@ -1,5 +1,5 @@
 import request from "supertest";
-import LogService from "../src/middleware/winston";
+import LogService from "../src/custom_modules/winston";
 import app from "../src/app";
 import { SignInBody, SignUpBody } from "../@types/auth";
 
@@ -25,8 +25,8 @@ describe("functional test", () => {
             .expect(200, { msg: "Signup Success!" });
         logger.info("Signup success!");
     });
-    //회원가입 요청을 받을 시에는 암호화하고 보낸다.
     //서버는 회원가입 요청을 받아서 데이터베이스에 저장한다.
+    //데이터베이스에 저장할 때는 암호화하고 보낸다.
     //승인이 완료되었음과 함께 JWT을 생성해서 보낸다.
     //정훈이는 회원가입이 승인되고, 로그인 화면에 온다.
     it("Finish signup and try to input login info", async () => {
