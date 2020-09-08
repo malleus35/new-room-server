@@ -1,5 +1,5 @@
 const path = require('path');
-
+const Dotenv = require('dotenv-webpack')
 module.exports = {
     mode: "production",
     target: "node",
@@ -40,5 +40,13 @@ module.exports = {
               ]
             }}
           }]
-        }
+        },
+            plugins: [
+        new Dotenv({
+            path: "./envs/.env.production", // Path to .env file (this is the default)
+            safe: true,
+            silent: true // load .env.example (defaults to "false" which does not use dotenv-safe)
+        })
+    ]
+};
 }
