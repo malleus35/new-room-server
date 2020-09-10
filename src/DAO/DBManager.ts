@@ -1,11 +1,8 @@
 import { Sequelize, ModelAttributes } from "sequelize";
 import LogService from "@src/custom/LogService";
-import IModel from "@src/DAO/IModel";
+import IDao from "@src/DAO/IDao";
 class DBManager {
     private readonly connection: Sequelize;
-
-    // 테이블에 관련된 프로퍼티를 가진다.
-    // 가진 테이블객체에게
 
     private objAttr: ModelAttributes;
     constructor(objAttr: ModelAttributes) {
@@ -37,8 +34,8 @@ class DBManager {
         }
     }
 
-    initModel(model: typeof IModel): any {
-        model.initModel(this.objAttr, {
+    initModel(dao: typeof IDao): any {
+        dao.initModel(this.objAttr, {
             sequelize: this.connection,
             freezeTableName: true
         });
