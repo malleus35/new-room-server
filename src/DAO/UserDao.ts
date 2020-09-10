@@ -1,5 +1,5 @@
 import { ModelAttributes, InitOptions } from "sequelize";
-import IModel from "@src/DAO/IDao";
+import IDao from "@src/DAO/IDao";
 import ObjDao from "@src/DAO/ObjDao";
 class UserDao extends ObjDao implements IDao {
     static initModel(attr: ModelAttributes, opt: InitOptions): void {
