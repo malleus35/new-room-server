@@ -12,7 +12,8 @@ node_modules/*
 # production
 
 # misc
-Untitled.code-workspace
 yarn.lock
 envs/
 config/
+
+Untitled.code-workspace
