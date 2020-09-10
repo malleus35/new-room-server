@@ -1,4 +1,4 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes } from "sequelize";
 import LogService from "@src/custom/LogService";
 import env from "@src/custom/dotenv";
 import DBManager from "@src/DAO/DBManager";
@@ -51,9 +51,9 @@ describe("sequelize and postgresql test", () => {
             }
         };
         connection.initModel(ObjDao, attr);
-        logger.info(`${ObjDao === connection.getConnection().models.ObjDao}`);
-        logger.info(`${connection.getConnection().models.ObjModel}`);
-        logger.info(`${ObjDao}`);
+        logger.info(ObjDao === connection.getConnection().models.ObjDao);
+        logger.info(connection.getConnection().models.ObjModel);
+        logger.info(ObjDao);
     });
     it("test to make model form of class extends", () => {
         attr = {
@@ -83,9 +83,9 @@ describe("sequelize and postgresql test", () => {
             }
         };
         connection.initModel(UserDao, attr);
-        logger.info(`${UserDao === connection.getConnection().models.UserDao}`);
-        logger.info(`${connection.getConnection().models.UserDao}`);
-        logger.info(`${UserDao}`);
+        logger.info(UserDao === connection.getConnection().models.UserDao);
+        logger.info(connection.getConnection().models.UserDao);
+        logger.info(UserDao);
     });
 
     it("Test sync to syncronize database", () => {

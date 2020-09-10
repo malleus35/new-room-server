@@ -85,21 +85,24 @@ class LogService {
         return this.getInstance().logger;
     }
 
-    log({ level, message }: any): void {
-        LogService.instance.logger.log({ level, message });
+    log(level: string, message: unknown): void {
+        LogService.instance.logger.log(
+            level,
+            `${message}`
+        );
     }
 
-    info(msg: string): void {
+    info(msg: unknown): void {
         LogService.instance.logger.info({
-            message: msg,
+            message: `${msg}`,
             additional: "properties",
             are: "passed along"
         });
     }
 
-    error(msg: string): void {
+    error(msg: unknown): void {
         LogService.instance.logger.error({
-            message: msg,
+            message: `${msg}`,
             additional: "properties",
             are: "passed along"
         });

@@ -1,4 +1,5 @@
 import { Model } from "sequelize";
-type IDao = Model;
+
+interface IDao extends Model {}
 
 export default IDao;

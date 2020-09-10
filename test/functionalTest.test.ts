@@ -4,6 +4,13 @@ import app from "@src/app";
 import { SignInBody, SignUpBody } from "customTypes/auth";
 
 const logger = LogService.getInstance();
+    interface dontTypeSchoolRequestBody {
+        name: string;
+        email: string;
+        pwd: string;
+        grade: number;
+        stdNum: string;
+    }
 describe("functional test", () => {
     //정훈이는 앱을 실행시키고 로그인 화면을 본다.
     //정훈이는 이 앱을 처음 사용하기 때문에, 회원가입 화면을 본다.
@@ -50,13 +57,6 @@ describe("functional test", () => {
     회원가입 화면에서 회원가입을 시도하다가 요구 사항중에서 학교를 적지 못했다.
     학교를 적지 못하자 학교란을 입력해달라고 하며 에러가 난다.
     */
-    interface dontTypeSchoolRequestBody {
-        name: string;
-        email: string;
-        pwd: string;
-        grade: number;
-        stdNum: string;
-    }
     it("Try to SignUp. but don't type school and check error", async () => {
         const dontTypeSchoolRequestBody: dontTypeSchoolRequestBody = {
             name: "minho park",
