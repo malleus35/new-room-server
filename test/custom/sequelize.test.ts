@@ -1,4 +1,4 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
+import { DataTypes, Model } from "sequelize";
 import LogService from "@src/custom/LogService";
 import env from "@src/custom/dotenv";
 import DBManager from "@src/DAO/DBManager";
@@ -10,72 +10,21 @@ const logger = LogService.getInstance();
 
 env.chooseEnv();
 describe("sequelize and postgresql test", () => {
-    let sequelize: Sequelize;
-    beforeEach(() => {
-        sequelize = new Sequelize(
-            process.env.DATABASE,
-            process.env.DB_USERNAME,
-            process.env.DB_PASSWORD,
-            {
-                host: process.env.DB_HOST,
-                dialect: process.env.DB_DIALECT,
-                logging: logger.info.bind(logger)
-            }
-        );
+    let connection: DBManager;
+    let attr: any;
+    beforeAll(() => {
+        connection = new DBManager();
     });
-    afterEach(() => {
-        sequelize.close();
+    afterAll(() => {
+        connection.close();
     });
 
     it("make sequelize and connect database to another rule", async () => {
-        try {
-            await sequelize.authenticate();
-            logger.info("Connection has been established successfully.");
-        } catch (error: Error) {
-            logger.error(`Unable to connect to the database: ${error}`);
-        }
-    });
-
-    it("Test to make new User model", async () => {
-        class User extends Model {}
-
-        User.init(
-            {
-                name: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                email: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                pwd: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                grade: {
-                    type: DataTypes.INTEGER,
-                    allowNull: false
-                },
-                school: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                stdNum: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                }
-            },
-            {
-                sequelize,
-                freezeTableName: true
-            }
-        );
-        logger.info(`${User === sequelize.models.User}`);
+        connection.checkConnection();
     });
 
     it("test to make model form of class", () => {
-        const attr = {
+        attr = {
             name: {
                 type: DataTypes.STRING,
                 allowNull: false
@@ -101,15 +50,13 @@ describe("sequelize and postgresql test", () => {
                 allowNull: false
             }
         };
-
-        const connection = new DBManager(attr);
-        connection.initModel(ObjDao);
-        console.log(ObjDao === connection.getConnection().models.ObjDao);
-        console.log(connection.getConnection().models.ObjModel);
-        console.log(ObjDao);
+        connection.initModel(ObjDao, attr);
+        logger.info(`${ObjDao === connection.getConnection().models.ObjDao}`);
+        logger.info(`${connection.getConnection().models.ObjModel}`);
+        logger.info(`${ObjDao}`);
     });
     it("test to make model form of class extends", () => {
-        const attr = {
+        attr = {
             name: {
                 type: DataTypes.STRING,
                 allowNull: false
@@ -135,11 +82,13 @@ describe("sequelize and postgresql test", () => {
                 allowNull: false
             }
         };
+        connection.initModel(UserDao, attr);
+        logger.info(`${UserDao === connection.getConnection().models.UserDao}`);
+        logger.info(`${connection.getConnection().models.UserDao}`);
+        logger.info(`${UserDao}`);
+    });
 
-        const connection = new DBManager(attr);
-        connection.initModel(UserDao);
-        console.log(UserDao === connection.getConnection().models.UserDao);
-        console.log(connection.getConnection().models.UserDao);
-        console.log(UserDao);
+    it("Test sync to syncronize database", () => {
+        expect(1).toBe(1);
     });
 });

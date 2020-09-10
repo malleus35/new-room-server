@@ -4,9 +4,7 @@ import IDao from "@src/DAO/IDao";
 class DBManager {
     private readonly connection: Sequelize;
 
-    private objAttr: ModelAttributes;
-    constructor(objAttr: ModelAttributes) {
-        this.objAttr = objAttr;
+    constructor() {
         this.connection = new Sequelize(
             process.env.DATABASE,
             process.env.DB_USERNAME,
@@ -34,8 +32,8 @@ class DBManager {
         }
     }
 
-    initModel(dao: typeof IDao): any {
-        dao.initModel(this.objAttr, {
+    initModel(dao: typeof IDao, objAttr: ModelAttributes): any {
+        dao.initModel(objAttr, {
             sequelize: this.connection,
             freezeTableName: true
         });
