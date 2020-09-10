@@ -1,10 +1,10 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
-import LogService from "@src/custom/winston";
+import LogService from "@src/custom/LogService";
 import env from "@src/custom/dotenv";
-import DBConnection from "@src/DAO/DBConnection";
-import ObjModel from "@src/DAO/objModel";
-import UserModel from "@src/DAO/userModel";
-import IModel from "@src/DAO/iModel";
+import DBManager from "@src/DAO/DBManager";
+import ObjModel from "@src/DAO/ObjModel";
+import UserModel from "@src/DAO/UserModel";
+import IModel from "@src/DAO/IModel";
 
 const logger = LogService.getInstance();
 
@@ -102,7 +102,7 @@ describe("sequelize and postgresql test", () => {
             }
         };
 
-        const connection = new DBConnection(attr);
+        const connection = new DBManager(attr);
         connection.initModel(UserModel);
         console.log(UserModel === connection.getConnection().models.UserModel);
         console.log(connection.getConnection().models.UserModel);
@@ -137,7 +137,7 @@ describe("sequelize and postgresql test", () => {
             }
         };
 
-        const connection = new DBConnection(attr);
+        const connection = new DBManager(attr);
         connection.initModel(ObjModel);
         console.log(ObjModel === connection.getConnection().models.ObjModel);
         console.log(connection.getConnection().models.ObjModel);

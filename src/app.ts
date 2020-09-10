@@ -2,7 +2,7 @@ import "module-alias/register";
 import express from "express";
 import morgan from "morgan";
 import env from "@src/custom/dotenv";
-import LogService from "@src/custom/winston";
+import LogService from "@src/custom/LogService";
 import apiRouter from "@src/routes/index";
 
 env.chooseEnv();

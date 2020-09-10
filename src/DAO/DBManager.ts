@@ -1,7 +1,7 @@
 import { Sequelize, ModelAttributes } from "sequelize";
-import LogService from "@src/custom/winston";
-import IModel from "@src/DAO/iModel";
-class DBConnection {
+import LogService from "@src/custom/LogService";
+import IModel from "@src/DAO/IModel";
+class DBManager {
     private readonly connection: Sequelize;
 
     // 테이블에 관련된 프로퍼티를 가진다.
@@ -51,4 +51,4 @@ class DBConnection {
     }
 }
 
-export default DBConnection;
+export default DBManager;

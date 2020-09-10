@@ -1,4 +1,4 @@
-import { Model, ModelAttributes, InitOptions } from "sequelize";
+import { Model } from "sequelize";
 type IModel = Model;
 
 export default IModel;

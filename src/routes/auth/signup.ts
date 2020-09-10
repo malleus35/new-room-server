@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import LogService from "@src/custom/winston";
+import LogService from "@src/custom/LogService";
 import { SignUpBody } from "@customTypes/auth";
 const router = Router();
 
