@@ -29,6 +29,6 @@
         },
         "import/extensions": {
             ".ts": "never"
-        }
+        },
     }
 }

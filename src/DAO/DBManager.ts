@@ -1,22 +1,17 @@
-import { Sequelize, ModelAttributes } from "sequelize";
-import LogService from "@src/custom/winston";
-import IModel from "@src/DAO/iModel";
-class DBConnection {
+import { Sequelize, ModelAttributes, Model } from "sequelize";
+import LogService from "@src/custom/LogService";
+import IDao from "@src/DAO/IDao";
+class DBManager {
     private readonly connection: Sequelize;
 
-    // 테이블에 관련된 프로퍼티를 가진다.
-    // 가진 테이블객체에게
-
-    private objAttr: ModelAttributes;
-    constructor(objAttr: ModelAttributes) {
-        this.objAttr = objAttr;
+    constructor() {
         this.connection = new Sequelize(
-            process.env.DATABASE,
-            process.env.DB_USERNAME,
+            process.env.DATABASE || "postgres",
+            process.env.DB_USERNAME || "postgres",
             process.env.DB_PASSWORD,
             {
                 host: process.env.DB_HOST,
-                dialect: process.env.DB_DIALECT,
+                dialect: process.env.DB_DIALECT || "postgres",
                 logging: LogService.getInstance().info.bind(
                     LogService.getLogger()
                 )
@@ -24,31 +19,31 @@ class DBConnection {
         );
     }
 
-    async checkConnection(): void {
+    async checkConnection(): Promise<void> {
         try {
             await this.connection.authenticate();
             LogService.getInstance().info(
                 "Connection has been established successfully."
             );
-        } catch (error: Error) {
+        } catch (error) {
             LogService.getInstance().error(
                 `Unable to connect to the database: ${error}`
             );
         }
     }
 
-    initModel(model: typeof IModel): any {
-        model.initModel(this.objAttr, {
+    initModel(dao: typeof IDao, objAttr: ModelAttributes): () => Model {
+        return (): Model => dao.initModel(objAttr, {
             sequelize: this.connection,
             freezeTableName: true
         });
     }
-    getConnection() {
+    getConnection(): Sequelize {
         return this.connection;
     }
-    close(): void {
-        this.connection.close();
+    close(): Promise<void> {
+        return this.connection.close();
     }
 }
 
-export default DBConnection;
+export default DBManager;

@@ -1,81 +1,61 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
-import LogService from "@src/custom/winston";
+import { DataTypes } from "sequelize";
+import LogService from "@src/custom/LogService";
 import env from "@src/custom/dotenv";
-import DBConnection from "@src/DAO/DBConnection";
-import ObjModel from "@src/DAO/objModel";
-import UserModel from "@src/DAO/userModel";
-import IModel from "@src/DAO/iModel";
+import DBManager from "@src/DAO/DBManager";
+import ObjDao from "@src/DAO/ObjDao";
+import UserDao from "@src/DAO/UserDao";
+import IDao from "@src/DAO/IDao";
 
 const logger = LogService.getInstance();
 
 describe("sequelize and postgresql test", () => {
-    env.chooseEnv();
-    let sequelize: Sequelize;
-    beforeEach(() => {
-        sequelize = new Sequelize(
-            process.env.DATABASE,
-            process.env.DB_USERNAME,
-            process.env.DB_PASSWORD,
-            {
-                host: process.env.DB_HOST,
-                dialect: process.env.DB_DIALECT,
-                logging: logger.info.bind(logger)
-            }
-        );
+    let connection: DBManager;
+    let attr: any;
+    beforeAll(() => {
+        connection = new DBManager();
     });
-    afterEach(() => {
-        sequelize.close();
+    afterAll(() => {
+        connection.close();
     });
 
     it("make sequelize and connect database to another rule", async () => {
-        try {
-            await sequelize.authenticate();
-            logger.info("Connection has been established successfully.");
-        } catch (error: Error) {
-            logger.error(`Unable to connect to the database: ${error}`);
-        }
+        connection.checkConnection();
     });
 
-    it("Test to make new User model", async () => {
-        class User extends Model {}
-
-        User.init(
-            {
-                name: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                email: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                pwd: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                grade: {
-                    type: DataTypes.INTEGER,
-                    allowNull: false
-                },
-                school: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                stdNum: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                }
+    it("test to make model form of class", ():void => {
+        attr = {
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false
             },
-            {
-                sequelize,
-                freezeTableName: true
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            pwd: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            grade: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            school: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            stdNum: {
+                type: DataTypes.STRING,
+                allowNull: false
             }
-        );
-        logger.info(`${User === sequelize.models.User}`);
+        };
+        connection.initModel(ObjDao, attr);
+        logger.info(ObjDao === connection.getConnection().models.ObjDao);
+        logger.info(connection.getConnection().models.ObjModel);
+        logger.info(ObjDao);
     });
-
     it("test to make model form of class extends", () => {
-        const attr = {
+        attr = {
             name: {
                 type: DataTypes.STRING,
                 allowNull: false
@@ -101,46 +81,13 @@ describe("sequelize and postgresql test", () => {
                 allowNull: false
             }
         };
-
-        const connection = new DBConnection(attr);
-        connection.initModel(UserModel);
-        console.log(UserModel === connection.getConnection().models.UserModel);
-        console.log(connection.getConnection().models.UserModel);
-        console.log(UserModel);
+        connection.initModel(UserDao, attr);
+        logger.info(UserDao === connection.getConnection().models.UserDao);
+        logger.info(connection.getConnection().models.UserDao);
+        logger.info(UserDao);
     });
 
-    it("test to make model form of class", () => {
-        const attr = {
-            name: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            email: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            pwd: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            grade: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-            school: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            stdNum: {
-                type: DataTypes.STRING,
-                allowNull: false
-            }
-        };
-
-        const connection = new DBConnection(attr);
-        connection.initModel(ObjModel);
-        console.log(ObjModel === connection.getConnection().models.ObjModel);
-        console.log(connection.getConnection().models.ObjModel);
-        console.log(ObjModel);
+    it("Test sync to syncronize database", () => {
+        expect(1).toBe(1);
     });
 });

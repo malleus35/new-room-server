@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
-import LogService from "@src/custom/winston";
-import { SignInBody } from "@src/customTypes/auth";
+import LogService from "@src/custom/LogService";
+import { SignInBody } from "@customTypes/auth";
 const router = Router();
 const logger = LogService.getInstance();
 

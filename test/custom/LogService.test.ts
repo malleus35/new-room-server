@@ -1,10 +1,10 @@
-import LogService from "@src/custom/winston";
+import LogService from "@src/custom/LogService";
 
 describe("custom logger test", () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
-    it("winston test", () => {
+    it("LogService test", () => {
         jest.mock("winston", () => {
             const mockLogger = {
                 debug: jest.fn(),
@@ -36,7 +36,7 @@ describe("custom logger test", () => {
         expect(mockCreateService).toHaveBeenCalled();
         expect(realLogService).toBeDefined();
 
-        realLogService.log({ level: "error", message: "Hello Winston!" });
+        realLogService.log("error", "Hello Winston!");
         expect(mockCreateLog).toHaveBeenCalled();
 
         realLogService.info("Use a helper method if you want");
