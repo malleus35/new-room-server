@@ -1,6 +1,7 @@
 import { Model, ModelAttributes, InitOptions } from "sequelize";
-class ObjModel extends Model {
-    initModel(attr: ModelAttributes, opt: InitOptions): void {
+import IModel from "@src/DAO/iModel";
+class ObjModel extends Model implements IModel {
+    static initModel(attr: ModelAttributes, opt: InitOptions): void {
         this.init(attr, opt);
     }
 }

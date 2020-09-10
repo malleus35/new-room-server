@@ -1,8 +1,12 @@
 import { Sequelize, ModelAttributes } from "sequelize";
 import LogService from "@src/custom/winston";
-
+import IModel from "@src/DAO/iModel";
 class DBConnection {
     private readonly connection: Sequelize;
+
+    // 테이블에 관련된 프로퍼티를 가진다.
+    // 가진 테이블객체에게
+
     private objAttr: ModelAttributes;
     constructor(objAttr: ModelAttributes) {
         this.objAttr = objAttr;
@@ -19,6 +23,7 @@ class DBConnection {
             }
         );
     }
+
     async checkConnection(): void {
         try {
             await this.connection.authenticate();
@@ -32,6 +37,12 @@ class DBConnection {
         }
     }
 
+    initModel(model: typeof IModel): any {
+        model.initModel(this.objAttr, {
+            sequelize: this.connection,
+            freezeTableName: true
+        });
+    }
     getConnection() {
         return this.connection;
     }
