@@ -1,7 +1,7 @@
 import request from "supertest";
 import LogService from "@src/custom/LogService";
 import app from "@src/app";
-import { SignInBody, SignUpBody } from "customTypes/auth";
+import { SignInBody, SignUpBody } from "@src/customTypes/auth";
 
 const logger = LogService.getInstance();
     interface dontTypeSchoolRequestBody {

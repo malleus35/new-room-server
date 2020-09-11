@@ -61,7 +61,6 @@
     /* Base directory to resolve non-absolute module names. */
     "paths": {
       "@src/*": ["src/*"],
-      "@customTypes/*": ["customTypes/*"],
       "@env/*": ["envs/*"],
       "@log/*": ["log/*"]
 
@@ -96,7 +95,6 @@
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
   },
   "include": [
-    "src/**/*",
-
+    "src/**/*"
   ]
 }
