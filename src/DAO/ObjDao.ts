@@ -8,6 +8,10 @@ class ObjDao extends Model {
     static sync() {
         return super.sync();
     }
+
+    static create(value: any) {
+        return super.create(value);
+    }
 }
 
 export default ObjDao;

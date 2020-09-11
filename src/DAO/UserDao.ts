@@ -13,6 +13,10 @@ class UserDao extends ObjDao {
     static sync() {
         return super.sync();
     }
+
+    static create(value: UserDaoTypes.IUserScheme) {
+        return super.create(value);
+    }
 }
 
 export default UserDao;
