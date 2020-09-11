@@ -86,10 +86,7 @@ class LogService {
     }
 
     log(level: string, message: unknown): void {
-        LogService.instance.logger.log(
-            level,
-            `${message}`
-        );
+        LogService.instance.logger.log(level, `${message}`);
     }
 
     info(msg: unknown): void {

@@ -7,36 +7,36 @@ module.exports = {
     entry: "./src/app.ts",
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "app.bundle.js"
+        filename: "loginServer.bundle.js"
     },
 
     resolve: {
         extensions: [".ts", ".tsx", ".js", ".json"],
         alias: {
             "@src": path.resolve(__dirname, "src"),
-            "@env": path.resolve(__dirname, "envs")
+            "@env": path.resolve(__dirname, "envs"),
+            "@log": path.resolve(__dirname, "log")
+
         }
     },
     module: {
-        rules: [
-            {
-                test: /\.(ts|tsx)$/,
-                exclude: [/node_modules/, /test/],
-                use: {
-                    loader: "babel-loader",
-                    options: {
-                        presets: [
-                            "@babel/preset-env",
-                            "@babel/preset-typescript"
-                        ],
-                        plugins: [
-                            "@babel/proposal-class-properties",
-                            "@babel/proposal-object-rest-spread"
-                        ]
-                    }
+        rules: [{
+            test: /\.(ts|tsx)$/,
+            exclude: [/node_modules/, /test/],
+            use: {
+                loader: "babel-loader",
+                options: {
+                    presets: [
+                        "@babel/preset-env",
+                        "@babel/preset-typescript"
+                    ],
+                    plugins: [
+                        "@babel/proposal-class-properties",
+                        "@babel/proposal-object-rest-spread"
+                    ]
                 }
             }
-        ]
+        }]
     },
     plugins: [
         new Dotenv({
