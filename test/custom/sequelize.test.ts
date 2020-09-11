@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes } from "sequelize";
 import LogService from "@src/custom/LogService";
 import env from "@src/custom/dotenv";
 import DBManager from "@src/DAO/DBManager";
