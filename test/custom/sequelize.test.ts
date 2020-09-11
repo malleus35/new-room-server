@@ -73,6 +73,24 @@ describe("sequelize and postgresql test", () => {
         });
         expect(UserDao).toBe(cntn.getConnection().models.UserDao);
         await UserDao.sync();
-        // expect(2).toEqual(1);
+    });
+
+    it("Test create Table row", async () => {
+        UserDao.init(attr, {
+            sequelize: cntn.getConnection(),
+            tableName: "User"
+        });
+        expect(UserDao).toBe(cntn.getConnection().models.UserDao);
+        await UserDao.sync();
+        const junghun = await UserDao.create({
+            name: "junghun",
+            email: "maestroprog@seoultech.ac.kr",
+            pwd: "didwjdgns1",
+            grade: 4,
+            school: "seoultech",
+            stdNum: "15109342"
+        });
+        expect(junghun instanceof UserDao).toBeTruthy();
+        expect(junghun.name).toEqual("junghun");
     });
 });
