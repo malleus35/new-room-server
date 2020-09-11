@@ -1,7 +1,7 @@
 import { Model } from "sequelize";
 import IDao from "@src/DAO/IDao";
 import ObjDao from "@src/DAO/ObjDao";
-import { UserDaoTypes } from "@customTypes/auth/UserDao";
+import { UserDaoTypes } from "@src/customTypes/auth/UserDao";
 class UserDao extends ObjDao {
     static init(
         attr: UserDaoTypes.IUserScheme,

@@ -1,22 +1,23 @@
 import request from "supertest";
 import LogService from "@src/custom/LogService";
 import app from "@src/app";
-import { SignInBody, SignUpBody } from "@src/customTypes/auth";
+import { SignInTypes } from "@src/customTypes/auth/SignIn";
+import { SignUpTypes } from "@src/customTypes/auth/SignUp";
 
 const logger = LogService.getInstance();
-    interface dontTypeSchoolRequestBody {
-        name: string;
-        email: string;
-        pwd: string;
-        grade: number;
-        stdNum: string;
-    }
+interface dontTypeSchoolRequestBody {
+    name: string;
+    email: string;
+    pwd: string;
+    grade: number;
+    stdNum: string;
+}
 describe("functional test", () => {
     //정훈이는 앱을 실행시키고 로그인 화면을 본다.
     //정훈이는 이 앱을 처음 사용하기 때문에, 회원가입 화면을 본다.
     //정훈이는 회원가입 화면에서 이름, 이메일, 비밀번호, 비밀번호 확인 ,학교, 학번, 학년을 입력하고 회원가입 신청을 한다.
     it("First access to app and SignUp account", async () => {
-        const reqBody: SignUpBody = {
+        const reqBody: SignUpTypes.SignUpBody = {
             name: "junghun yang",
             email: "maestroprog@seoultech.ac.kr",
             pwd: "1234",
@@ -77,7 +78,7 @@ describe("functional test", () => {
     그러나 이 입력정보는 잘못 되었던 것이고, 이메일이나 비밀번호가 틀렸음을 전달받는다.
     */
     it("Try to signin, but type wrong information", async () => {
-        const wrongPwdReqBody: SignInBody = {
+        const wrongPwdReqBody: SignInTypes.SignInBody = {
             email: "minoflower31@gmail.com",
             pwd: "1233"
         };

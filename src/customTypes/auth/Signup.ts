@@ -1,5 +1,5 @@
 export namespace SignUpTypes {
-    interface SignUpBody {
+    export interface SignUpBody {
         name: string;
         email: string;
         pwd: string;

@@ -5,7 +5,7 @@ import DBManager from "@src/DAO/DBManager";
 import ObjDao from "@src/DAO/ObjDao";
 import UserDao from "@src/DAO/UserDao";
 import IDao from "@src/DAO/IDao";
-import { UserDaoTypes } from "@customTypes/auth/UserDao";
+import { UserDaoTypes } from "@src/customTypes/auth/UserDao";
 
 const logger = LogService.getInstance();
 env.chooseEnv();

@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
 import LogService from "@src/custom/LogService";
-import { SignUpBody } from "@customTypes/auth/Signup";
+import { SignUpTypes } from "@src/customTypes/auth/Signup";
 const router = Router();
 
 const logger = LogService.getInstance();
@@ -8,7 +8,14 @@ const logger = LogService.getInstance();
 router.post("/", (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const { name, email, pwd, grade, school, stdNum }: SignUpBody = req.body;
+    const {
+        name,
+        email,
+        pwd,
+        grade,
+        school,
+        stdNum
+    }: SignUpTypes.SignUpBody = req.body;
     let flag = true;
 
     if (name && email && pwd && grade && school && stdNum) flag = false;
