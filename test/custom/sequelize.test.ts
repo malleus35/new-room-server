@@ -5,90 +5,74 @@ import DBManager from "@src/DAO/DBManager";
 import ObjDao from "@src/DAO/ObjDao";
 import UserDao from "@src/DAO/UserDao";
 import IDao from "@src/DAO/IDao";
+import { UserDaoTypes } from "@customTypes/auth/UserDao";
 
 const logger = LogService.getInstance();
-
 env.chooseEnv();
 describe("sequelize and postgresql test", () => {
-    let connection: DBManager;
-    let attr: any;
+    let cntn: DBManager;
+    let attr: UserDaoTypes.IUserScheme;
+
     beforeAll(() => {
-        connection = new DBManager();
+        cntn = new DBManager();
+        attr = {
+            name: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            email: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            pwd: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            grade: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            school: {
+                type: DataTypes.STRING,
+                allowNull: false
+            },
+            stdNum: {
+                type: DataTypes.STRING,
+                allowNull: false
+            }
+        };
     });
     afterAll(() => {
-        connection.close();
+        cntn.close();
     });
 
     it("make sequelize and connect database to another rule", async () => {
-        connection.checkConnection();
+        //Log 내용 테스트 추가 필요?
+        await cntn.checkConnection();
     });
 
-    it("test to make model form of class", () => {
-        attr = {
-            name: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            email: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            pwd: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            grade: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-            school: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            stdNum: {
-                type: DataTypes.STRING,
-                allowNull: false
-            }
-        };
-        connection.initModel(ObjDao, attr);
-        logger.info(ObjDao === connection.getConnection().models.ObjDao);
-        logger.info(connection.getConnection().models.ObjModel);
-        logger.info(ObjDao);
+    it("test to make model form of class", async () => {
+        ObjDao.init(attr, {
+            sequelize: cntn.getConnection(),
+            tableName: "Obj"
+        });
+        expect(ObjDao).toBe(cntn.getConnection().models.ObjDao);
     });
-    it("test to make model form of class extends", () => {
-        attr = {
-            name: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            email: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            pwd: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            grade: {
-                type: DataTypes.INTEGER,
-                allowNull: false
-            },
-            school: {
-                type: DataTypes.STRING,
-                allowNull: false
-            },
-            stdNum: {
-                type: DataTypes.STRING,
-                allowNull: false
-            }
-        };
-        connection.initModel(UserDao, attr);
-        logger.info(UserDao === connection.getConnection().models.UserDao);
-        logger.info(connection.getConnection().models.UserDao);
-        logger.info(UserDao);
+    it("test to make model form of class extends", async () => {
+        UserDao.init(attr, {
+            sequelize: cntn.getConnection(),
+            tableName: "User"
+        });
+        expect(UserDao).toBe(cntn.getConnection().models.UserDao);
     });
 
-    it("Test sync to syncronize database", () => {
-        expect(1).toBe(1);
+    it("Test sync to syncronize database", async () => {
+        UserDao.init(attr, {
+            sequelize: cntn.getConnection(),
+            tableName: "User"
+        });
+        expect(UserDao).toBe(cntn.getConnection().models.UserDao);
+        await UserDao.sync();
+        // expect(2).toEqual(1);
     });
 });

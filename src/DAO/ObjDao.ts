@@ -1,9 +1,12 @@
 import { Model, ModelAttributes, InitOptions } from "sequelize";
 import IDao from "@src/DAO/IDao";
-class ObjDao extends Model implements IDao {
+class ObjDao extends Model {
+    static init(attr: ModelAttributes, opt: InitOptions): Model {
+        return super.init(attr, opt);
+    }
 
-    static initModel(attr: ModelAttributes, opt: InitOptions): () => Model {
-        return () => this.init(attr, opt);
+    static sync() {
+        return super.sync();
     }
 }
 

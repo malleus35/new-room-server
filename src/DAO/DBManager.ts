@@ -1,8 +1,8 @@
-import { Sequelize, ModelAttributes, Model } from "sequelize";
+import { Sequelize } from "sequelize";
 import LogService from "@src/custom/LogService";
-import IDao from "@src/DAO/IDao";
+
 class DBManager {
-    private readonly connection: Sequelize;
+    private connection: Sequelize;
 
     constructor() {
         this.connection = new Sequelize(
@@ -11,7 +11,7 @@ class DBManager {
             process.env.DB_PASSWORD,
             {
                 host: process.env.DB_HOST,
-                dialect: process.env.DB_DIALECT || "postgres",
+                dialect: "postgres",
                 logging: LogService.getInstance().info.bind(
                     LogService.getLogger()
                 )
@@ -20,29 +20,27 @@ class DBManager {
     }
 
     async checkConnection(): Promise<void> {
-        try {
-            await this.connection.authenticate();
-            LogService.getInstance().info(
-                "Connection has been established successfully."
+        await this.connection
+            .authenticate()
+            .then(() =>
+                LogService.getInstance().info(
+                    "Connection has been established successfully."
+                )
+            )
+            .catch((err) =>
+                LogService.getInstance().error(
+                    `Unable to connect to the database: ${err}`
+                )
             );
-        } catch (error) {
-            LogService.getInstance().error(
-                `Unable to connect to the database: ${error}`
-            );
-        }
-    }
-
-    initModel(dao: typeof IDao, objAttr: ModelAttributes): () => Model {
-        return (): Model => dao.initModel(objAttr, {
-            sequelize: this.connection,
-            freezeTableName: true
-        });
     }
     getConnection(): Sequelize {
         return this.connection;
     }
-    close(): Promise<void> {
-        return this.connection.close();
+    async close(): Promise<void> {
+        await this.connection
+            .close()
+            .then(() => LogService.getInstance().info("Connection end"))
+            .catch((err) => LogService.getInstance().error(err));
     }
 }
 
