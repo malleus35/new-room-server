@@ -4,7 +4,7 @@ import LogService from "@src/utils/LogService";
 
 const logger = LogService.getInstance();
 env.chooseEnv();
-class Webtoken {
+class JwtService {
     constructor() {}
 
     static createToken(payload, options): string {
@@ -23,4 +23,4 @@ class Webtoken {
         return validToken;
     }
 }
-export default Webtoken;
+export default JwtService;
