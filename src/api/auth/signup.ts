@@ -2,7 +2,6 @@ import { Request, Response, Router } from "express";
 import LogService from "@src/utils/LogService";
 import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
 import JwtController from "@src/controllers/JwtController";
-import JwtService from "@src/services/middlewares/JwtService";
 const router = Router();
 
 const logger = LogService.getInstance();

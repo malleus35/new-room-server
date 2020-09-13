@@ -7,7 +7,7 @@ class JwtService {
         const options = {
             expiresIn: "1h"
         };
-        const token = jwt.sign(payload, "MINO_JUNGHUN_JONGHEE", options);
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, options);
         return token;
     }
 
