@@ -4,7 +4,7 @@ import env from "@src/custom/dotenv";
 import LogService from "@src/custom/LogService";
 const logger = LogService.getInstance();
 
-env.chooseEnv(env.envTestConfig);
+env.chooseEnv();
 describe("json webtoken test", () => {
     it("Test basic json webtoken sign", () => {
         const mJwtSign = jest.spyOn(jwt, "sign");
