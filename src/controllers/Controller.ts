@@ -8,21 +8,29 @@ import {
 } from "express";
 
 abstract class Controller {
-    protected controlFunction:
-        | RequestHandler
-        | RequestParamHandler
-        | ErrorRequestHandler;
-    protected abstract doService(): unknown;
-    protected abstract doResponse(): unknown;
+    protected controlFunction: any;
+    protected abstract doService(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void;
+    protected abstract doResponse(
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void;
     constructor() {
-        this.controlFunction = (
+        this.controlFunction = async (
             req: Request,
             res: Response,
             next: NextFunction
         ) => {
-            this.doService();
-            this.doResponse();
+            await this.doService(req, res, next);
+            await this.doResponse(req, res, next);
         };
+    }
+    getController() {
+        return this.controlFunction;
     }
 }
 

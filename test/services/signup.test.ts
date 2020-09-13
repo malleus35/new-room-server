@@ -6,6 +6,7 @@ describe("make server and test login request", () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         await request(app)
             .post("/api/auth/signup/")
+            .set("Accept", "application/json")
             .send({
                 name: "junghun yang",
                 pwd: "1234",

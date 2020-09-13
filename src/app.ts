@@ -1,6 +1,6 @@
 import express from "express";
 import morgan from "morgan";
-import env from "@src/utils/dotenv";
+import env from "@src/utils/Dotenv";
 import LogService from "@src/utils/LogService";
 import apiRouter from "@src/api/index";
 
