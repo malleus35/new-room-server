@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import LogService from "@src/utils/LogService";
-import env from "@src/utils/dotenv";
+import env from "@src/utils/Dotenv";
 import DBManager from "@src/models/DBManager";
 import ObjModel from "@src/models/ObjModel";
 import UserModel from "@src/models/UserModel";

@@ -1,4 +1,4 @@
-import env from "@src/utils/dotenv";
+import env from "@src/utils/Dotenv";
 import jwt from "jsonwebtoken";
 import LogService from "@src/utils/LogService";
 

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-import env from "@src/utils/dotenv";
+import env from "@src/utils/Dotenv";
 import LogService from "@src/utils/LogService";
 const logger = LogService.getInstance();
 
