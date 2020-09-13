@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
-import LogService from "@src/custom/LogService";
-import { SignUpTypes } from "@src/customTypes/auth/Signup";
+import LogService from "@src/utils/LogService";
+import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
 const router = Router();
 
 const logger = LogService.getInstance();

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authRouter from "@src/routes/auth";
+import authRouter from "@src/api/auth";
 
 const router = Router();
 

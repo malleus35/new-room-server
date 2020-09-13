@@ -1,7 +1,6 @@
-import env from "@src/custom/dotenv";
+import env from "@src/utils/dotenv";
 import jwt from "jsonwebtoken";
-import { Router } from "express";
-import LogService from "@src/custom/LogService";
+import LogService from "@src/utils/LogService";
 
 const logger = LogService.getInstance();
 env.chooseEnv();
@@ -23,11 +22,5 @@ class Webtoken {
         }
         return validToken;
     }
-
-    // static decode(token): object | null {
-    //     let decoded = this.verifyToken(token);
-    //     if (!decoded) return null;
-    //     return decoded;
-    // }
 }
 export default Webtoken;

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
-import env from "@src/custom/dotenv";
-import LogService from "@src/custom/LogService";
+import env from "@src/utils/dotenv";
+import LogService from "@src/utils/LogService";
 const logger = LogService.getInstance();
 
 env.chooseEnv();

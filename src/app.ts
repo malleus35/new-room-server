@@ -1,8 +1,8 @@
 import express from "express";
 import morgan from "morgan";
-import env from "@src/custom/dotenv";
-import LogService from "@src/custom/LogService";
-import apiRouter from "@src/routes/index";
+import env from "@src/utils/dotenv";
+import LogService from "@src/utils/LogService";
+import apiRouter from "@src/api/index";
 
 env.chooseEnv();
 const app = express();

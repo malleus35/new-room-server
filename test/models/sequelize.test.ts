@@ -1,17 +1,17 @@
 import { DataTypes } from "sequelize";
-import LogService from "@src/custom/LogService";
-import env from "@src/custom/dotenv";
-import DBManager from "@src/DAO/DBManager";
-import ObjDao from "@src/DAO/ObjDao";
-import UserDao from "@src/DAO/UserDao";
-import IDao from "@src/DAO/IDao";
-import { UserDaoTypes } from "@src/customTypes/auth/UserDao";
+import LogService from "@src/utils/LogService";
+import env from "@src/utils/dotenv";
+import DBManager from "@src/models/DBManager";
+import ObjModel from "@src/models/ObjModel";
+import UserModel from "@src/models/UserModel";
+import IModel from "@src/models/IModel";
+import { UserModelTypes } from "@src/customTypes/auth/models/UserModel";
 
 const logger = LogService.getInstance();
 env.chooseEnv();
 describe("sequelize and postgresql test", () => {
     let cntn: DBManager;
-    let attr: UserDaoTypes.IUserScheme;
+    let attr: UserModelTypes.IUserScheme;
 
     beforeAll(async () => {
         cntn = new DBManager();
@@ -56,50 +56,50 @@ describe("sequelize and postgresql test", () => {
     });
 
     it("test to make model form of class", async () => {
-        ObjDao.init(attr, {
+        ObjModel.init(attr, {
             sequelize: cntn.getConnection(),
             tableName: "Obj"
         });
-        expect(ObjDao).toBe(cntn.getConnection().models.ObjDao);
+        expect(ObjModel).toBe(cntn.getConnection().models.ObjModel);
     });
     it("test to make model form of class extends", async () => {
-        let mUserDao: any;
-        jest.spyOn(UserDao, "init").mockResolvedValue(mUserDao);
-        UserDao.init(attr, {
+        let mUserModel: any;
+        jest.spyOn(UserModel, "init").mockResolvedValue(mUserModel);
+        UserModel.init(attr, {
             sequelize: cntn.getConnection(),
             tableName: "User"
         });
-        expect(mUserDao).toBe(cntn.getConnection().models.UserDao);
-        expect(UserDao.init).toBeCalledWith(attr, {
+        expect(mUserModel).toBe(cntn.getConnection().models.UserModel);
+        expect(UserModel.init).toBeCalledWith(attr, {
             sequelize: cntn.getConnection(),
             tableName: "User"
         });
     });
 
     it("Test sync to syncronize database", async () => {
-        let mUserDao: any;
-        let mUserDaoSync: any;
-        jest.spyOn(UserDao, "init").mockResolvedValueOnce(mUserDao);
-        UserDao.init(attr, {
+        let mUserModel: any;
+        let mUserModelSync: any;
+        jest.spyOn(UserModel, "init").mockResolvedValueOnce(mUserModel);
+        UserModel.init(attr, {
             sequelize: cntn.getConnection(),
             tableName: "User"
         });
-        expect(mUserDao).toBe(cntn.getConnection().models.UserDao);
-        jest.spyOn(UserDao, "sync").mockResolvedValue(mUserDaoSync);
-        await UserDao.sync();
-        expect(UserDao.sync).toBeCalledTimes(1);
+        expect(mUserModel).toBe(cntn.getConnection().models.UserModel);
+        jest.spyOn(UserModel, "sync").mockResolvedValue(mUserModelSync);
+        await UserModel.sync();
+        expect(UserModel.sync).toBeCalledTimes(1);
     });
 
     it("Test create Table row", async () => {
-        let mUserDao: any;
-        jest.spyOn(UserDao, "init").mockResolvedValueOnce(mUserDao);
-        UserDao.init(attr, {
+        let mUserModel: any;
+        jest.spyOn(UserModel, "init").mockResolvedValueOnce(mUserModel);
+        UserModel.init(attr, {
             sequelize: cntn.getConnection(),
             tableName: "User"
         });
-        expect(mUserDao).toBe(cntn.getConnection().models.UserDao);
-        await UserDao.sync();
-        const junghun = await UserDao.create({
+        expect(mUserModel).toBe(cntn.getConnection().models.UserModel);
+        await UserModel.sync();
+        const junghun = await UserModel.create({
             name: "junghun",
             email: "maestroprog@seoultech.ac.kr",
             pwd: "didwjdgns1",
@@ -107,20 +107,20 @@ describe("sequelize and postgresql test", () => {
             school: "seoultech",
             stdNum: "15109342"
         });
-        expect(junghun instanceof UserDao).toBeTruthy();
+        expect(junghun instanceof UserModel).toBeTruthy();
         expect(junghun.name).toEqual("junghun");
     });
 
     it("Test create user with mock", async () => {
-        let mUser: UserDao;
-        jest.spyOn(UserDao, "create").mockResolvedValueOnce(mUser);
+        let mUser: UserModel;
+        jest.spyOn(UserModel, "create").mockResolvedValueOnce(mUser);
         const name = "junghun";
         const email = "maestroprog@seoultech.ac.kr";
         const pwd = "didwjdgns1";
         const grade = 4;
         const school = "seoultech";
         const stdNum = "15109342";
-        await UserDao.create({
+        await UserModel.create({
             name,
             email,
             pwd,
@@ -128,7 +128,7 @@ describe("sequelize and postgresql test", () => {
             school,
             stdNum
         });
-        expect(UserDao.create).toBeCalledWith({
+        expect(UserModel.create).toBeCalledWith({
             name,
             email,
             pwd,

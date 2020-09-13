@@ -1,4 +1,4 @@
-import LogService from "@src/custom/LogService";
+import LogService from "@src/utils/LogService";
 
 describe("custom logger test", () => {
     afterEach(() => {

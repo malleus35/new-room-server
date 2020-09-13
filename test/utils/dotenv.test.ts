@@ -1,4 +1,4 @@
-import env from "@src/custom/dotenv";
+import env from "@src/utils/dotenv";
 describe("Test dotenv test", () => {
     it("custom dotenv test", () => {
         env.chooseEnv();
