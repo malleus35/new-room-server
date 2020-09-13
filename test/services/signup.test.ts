@@ -2,9 +2,9 @@ import request from "supertest";
 import app from "@src/app";
 
 describe("make server and test login request", () => {
-    it("POST /signup", async () => {
+    it("POST /signup", (done) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        await request(app)
+        request(app)
             .post("/api/auth/signup/")
             .set("Accept", "application/json")
             .send({
@@ -15,6 +15,9 @@ describe("make server and test login request", () => {
                 school: "seoultech",
                 stdNum: "15109342"
             })
-            .expect(200, { msg: "Signup Success!" });
+            .end((err, res) => {
+                expect(res.body.msg).toEqual("Signup Success!");
+                done();
+            });
     });
 });

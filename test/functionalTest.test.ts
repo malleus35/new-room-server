@@ -16,7 +16,7 @@ describe("functional test", () => {
     //정훈이는 앱을 실행시키고 로그인 화면을 본다.
     //정훈이는 이 앱을 처음 사용하기 때문에, 회원가입 화면을 본다.
     //정훈이는 회원가입 화면에서 이름, 이메일, 비밀번호, 비밀번호 확인 ,학교, 학번, 학년을 입력하고 회원가입 신청을 한다.
-    it("First access to app and SignUp account", async () => {
+    it("First access to app and SignUp account", (done) => {
         const reqBody: SignUpTypes.SignUpBody = {
             name: "junghun yang",
             email: "maestroprog@seoultech.ac.kr",
@@ -25,12 +25,16 @@ describe("functional test", () => {
             school: "seoultech",
             stdNum: "15109342"
         };
-        await request(app)
+        request(app)
             .post("/api/auth/signup")
             .send(reqBody)
             .set("Accept", "application/json")
             .expect("Content-Type", /json/)
-            .expect(200, { msg: "Signup Success!" });
+            .expect(200)
+            .end((err, res) => {
+                expect(res.body.msg).toEqual("Signup Success!");
+                done();
+            });
         logger.info("Signup success!");
     });
     //서버는 회원가입 요청을 받아서 데이터베이스에 저장한다.
