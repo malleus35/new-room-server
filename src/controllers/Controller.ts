@@ -9,16 +9,16 @@ import {
 
 abstract class Controller {
     protected controlFunction: any;
-    protected abstract doService(
+    protected abstract async doService(
         req: Request,
         res: Response,
         next: NextFunction
-    ): void;
-    protected abstract doResponse(
+    ): Promise<void>;
+    protected abstract async doResponse(
         req: Request,
         res: Response,
         next: NextFunction
-    ): void;
+    ): Promise<void>;
     constructor() {
         this.controlFunction = async (
             req: Request,
