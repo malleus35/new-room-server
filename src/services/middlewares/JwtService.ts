@@ -11,12 +11,13 @@ class JwtService {
         return token;
     }
 
-    static verifyToken(token): object | string | null {
-        let validToken: object | string;
+    static verifyToken(token): string | object | null {
+        let validToken: string | object;
         try {
             validToken = jwt.verify(token, "MINO_JUNGHUN_JONGHEE");
         } catch (err) {
             logger.error(err);
+            logger.error("this token is invalid!");
             return null;
         }
         return validToken;

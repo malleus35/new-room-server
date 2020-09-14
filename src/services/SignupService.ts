@@ -1,5 +1,7 @@
 import express from "express";
 
-class SignupService {}
+class SignupService {
+    static signup() {}
+}
 
 export default SignupService;

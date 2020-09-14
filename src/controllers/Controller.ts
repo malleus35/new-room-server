@@ -1,11 +1,4 @@
-import {
-    ErrorRequestHandler,
-    NextFunction,
-    Request,
-    RequestHandler,
-    RequestParamHandler,
-    Response
-} from "express";
+import { NextFunction, Request, Response } from "express";
 
 abstract class Controller {
     protected controlFunction: any;
