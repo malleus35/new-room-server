@@ -5,6 +5,11 @@ import JwtController from "@src/controllers/JwtController";
 const router = Router();
 
 const logger = LogService.getInstance();
+interface resDataTypes {
+    msg: string;
+    accessToken?: string | undefined;
+    refreshToken?: string | undefined;
+}
 router.post(
     "/",
     new JwtController().getController(),
@@ -27,8 +32,16 @@ router.post(
             res.status(400).json({ msg: "school field is empty!" });
         }
 
-        logger.info("Signup Success!");
-        res.json({ msg: "Signup Success!", token: req.body.token });
+        const resData: resDataTypes = {
+            msg: "Signup Success!"
+        };
+        if (req.body.tokens.accessToken !== undefined) {
+            resData.accessToken = req.body.tokens.accessToken;
+        }
+        if (req.body.tokens.refreshToken !== undefined) {
+            resData.refreshToken = req.body.tokens.refreshToken;
+        }
+        res.json(resData);
     }
 );
 

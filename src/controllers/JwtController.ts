@@ -5,19 +5,39 @@ import { NextFunction, Request, Response } from "express";
 
 const logger = LogService.getInstance();
 class JwtController extends MiddlewareController {
-    private token: string | unknown;
-    private checkValid: string | object | null;
+    private accessToken: string | unknown;
+    private refreshToken: string | unknown;
+    private checkValidAccess: string | object | null;
+    private checkValidRefresh: string | object | null;
     constructor() {
         super();
-        this.checkValid = "";
+        this.checkValidAccess = "";
+        this.checkValidRefresh = "";
     }
 
     async doService(req, res, next): Promise<void> {
-        if (req.body.token === "" || req.body.token == null) {
-            this.token = await JwtService.createToken({ name: "junghun Yang" });
+        if (
+            (req.body.accessToken === "" ||
+                req.body.accessToken === undefined) &&
+            (req.body.refreshToken === "" ||
+                req.body.refreshToken === undefined)
+        ) {
+            this.accessToken = await JwtService.createAccessToken({
+                name: req.body.name
+            });
+            this.refreshToken = await JwtService.createRefreshToken({
+                name: req.body.name
+            });
         } else {
-            this.token = req.body.token;
-            this.checkValid = await JwtService.verifyToken(this.token);
+            this.accessToken = req.body.accessToken;
+            this.refreshToken = req.body.refreshToken;
+
+            this.checkValidAccess = await JwtService.verifyToken(
+                this.accessToken
+            );
+            this.checkValidRefresh = await JwtService.verifyToken(
+                this.refreshToken
+            );
         }
     }
     async doMiddlewareResponse(
@@ -25,25 +45,60 @@ class JwtController extends MiddlewareController {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        if (!this.token || this.token === "") {
+        req.body.tokens = {};
+        req.body.tokens.accessToken = undefined;
+        req.body.tokens.refreshToken = undefined;
+        if (!this.accessToken || this.accessToken === "") {
             logger.error("Internal Server Error for create Jwt Token.");
             res.status(500).json({
                 msg: "Internal Server Error for create Jwt Token"
             });
-        } else if (this.checkValid === "ExpiredToken") {
-            logger.error("This Token is expired.");
-            res.status(401).json({
-                msg: "This Token is expired"
-            });
-        } else if (this.checkValid === "InvalidToken") {
-            logger.error("This Token is not valid.");
-            res.status(401).json({
-                msg: "This Token is not valid"
-            });
-        } else {
-            logger.info("Token Successfully Verified");
-            req.body.token = this.token;
+        } else if (
+            this.checkValidAccess === "" &&
+            this.checkValidRefresh === ""
+        ) {
+            logger.info("Refresh Token Successfully Created");
+            req.body.tokens.accessToken = this.accessToken;
+            req.body.tokens.refreshToken = this.refreshToken;
             next();
+        } else if (this.checkValidRefresh === "NoExistedToken") {
+            if (this.checkValidAccess === "ExpiredToken") {
+                logger.error("Access Token is expired.");
+                res.status(401).json({
+                    msg: "Access Token is expired"
+                });
+            } else if (this.checkValidAccess === "InvalidToken") {
+                logger.error("Access Token is Invalid.");
+                res.status(401).json({
+                    msg: "Access Token is Invalid"
+                });
+            } else {
+                logger.info("Access Token Successfully Verified");
+                next();
+            }
+        } else {
+            if (this.checkValidRefresh === "ExpiredToken") {
+                logger.info("Refresh Token is expired");
+                res.status(401).json({
+                    msg: "Refresh Token is expired",
+                    accessToken: "",
+                    refreshToken: ""
+                });
+            } else if (this.checkValidRefresh === "InvalidToken") {
+                logger.info("Refresh Token is Invalid");
+                res.status(401).json({
+                    msg: "Refresh Token is Invalid",
+                    accessToken: "",
+                    refreshToken: ""
+                });
+            } else {
+                logger.info("Refresh Token Successfully Verified");
+                this.accessToken = await JwtService.createAccessToken({
+                    name: req.body.name
+                });
+                req.body.tokens.accessToken = this.accessToken;
+                next();
+            }
         }
     }
 }

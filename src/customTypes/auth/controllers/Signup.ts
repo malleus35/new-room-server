@@ -6,5 +6,8 @@ export namespace SignUpTypes {
         grade: number;
         school: string;
         stdNum: string;
+
+        accessToken?: string;
+        refreshToken?: string;
     }
 }
