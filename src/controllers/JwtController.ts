@@ -6,10 +6,10 @@ import { NextFunction, Request, Response } from "express";
 const logger = LogService.getInstance();
 class JwtController extends MiddlewareController {
     private token: string | unknown;
-    private isValid: boolean;
+    private checkValid: string | object | null;
     constructor() {
         super();
-        this.isValid = true;
+        this.checkValid = "";
     }
 
     async doService(req, res, next): Promise<void> {
@@ -17,10 +17,8 @@ class JwtController extends MiddlewareController {
             this.token = await JwtService.createToken({ name: "junghun Yang" });
         } else {
             this.token = req.body.token;
-            const checkValid = await JwtService.verifyToken(this.token);
-            if (!checkValid) this.isValid = false;
+            this.checkValid = await JwtService.verifyToken(this.token);
         }
-        logger.info(this.token);
     }
     async doMiddlewareResponse(
         req: Request,
@@ -32,13 +30,18 @@ class JwtController extends MiddlewareController {
             res.status(500).json({
                 msg: "Internal Server Error for create Jwt Token"
             });
-        } else if (!this.isValid) {
+        } else if (this.checkValid === "ExpiredToken") {
+            logger.error("This Token is expired.");
+            res.status(401).json({
+                msg: "This Token is expired"
+            });
+        } else if (this.checkValid === "InvalidToken") {
             logger.error("This Token is not valid.");
             res.status(401).json({
                 msg: "This Token is not valid"
             });
         } else {
-            logger.info("Token Successfully created");
+            logger.info("Token Successfully Verified");
             req.body.token = this.token;
             next();
         }

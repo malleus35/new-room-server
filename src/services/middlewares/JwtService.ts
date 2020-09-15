@@ -1,24 +1,34 @@
-import jwt from "jsonwebtoken";
+import jwt, {
+    JsonWebTokenError,
+    TokenExpiredError,
+    VerifyErrors
+} from "jsonwebtoken";
 import LogService from "@src/utils/LogService";
 
 const logger = LogService.getInstance();
 class JwtService {
-    static createToken(payload): string {
+    static async createToken(payload): Promise<string> {
         const options = {
-            expiresIn: "1h"
+            expiresIn: "10s"
         };
-        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, options);
+        const token = await jwt.sign(
+            payload,
+            process.env.JWT_SECRET_KEY,
+            options
+        );
         return token;
     }
 
-    static verifyToken(token): string | object | null {
-        let validToken: string | object;
+    static async verifyToken(token): Promise<string | object | null> {
+        let validToken: string | object | null = "";
         try {
-            validToken = jwt.verify(token, "MINO_JUNGHUN_JONGHEE");
+            validToken = await jwt.verify(token, process.env.JWT_SECRET_KEY);
         } catch (err) {
-            logger.error(err);
-            logger.error("this token is invalid!");
-            return null;
+            if (err instanceof TokenExpiredError) {
+                validToken = "ExpiredToken";
+            } else {
+                validToken = "InvalidToken";
+            }
         }
         return validToken;
     }
