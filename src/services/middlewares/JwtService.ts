@@ -1,8 +1,4 @@
-import jwt, {
-    JsonWebTokenError,
-    TokenExpiredError,
-    VerifyErrors
-} from "jsonwebtoken";
+import jwt, { TokenExpiredError } from "jsonwebtoken";
 import LogService from "@src/utils/LogService";
 
 const logger = LogService.getInstance();
