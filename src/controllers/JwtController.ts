@@ -187,7 +187,7 @@ class JwtController extends MiddlewareController {
         logger.info(this.refreshToken);
     }
 
-    private sendResponse(
+    private chooseAndSendRightResponse(
         req: Request,
         res: Response,
         next: NextFunction
@@ -217,7 +217,7 @@ class JwtController extends MiddlewareController {
         next: NextFunction
     ): Promise<void> {
         this.initResponse(req);
-        this.sendResponse(req, res, next);
+        this.chooseAndSendRightResponse(req, res, next);
     }
 }
 
