@@ -1,7 +1,6 @@
 import jwt, { TokenExpiredError } from "jsonwebtoken";
 import LogService from "@src/utils/LogService";
 
-const logger = LogService.getInstance();
 class JwtService {
     static async createAccessToken(payload): Promise<string> {
         const options = {
