@@ -33,6 +33,7 @@ describe("functional test", () => {
             .expect(200)
             .end((err, res) => {
                 expect(res.body.msg).toEqual("Signup Success!");
+                console.log(res.body);
                 done();
             });
         logger.info("Signup success!");
@@ -49,7 +50,7 @@ describe("functional test", () => {
                 pwd: "1234"
             })
             .expect("Content-Type", /json/)
-            .expect(200, { msg: "Login Success!" });
+            .expect(200, { status: 200, msg: "Login Success!" });
     });
     //정훈이는 로그인 화면에서 이메일과 비밀번호를 입력하고, 로그인 버튼을 누른다.
     //정훈이는 로그인을 성공하고 서버로부터 로그인 성공 response를 받는다.
@@ -74,7 +75,7 @@ describe("functional test", () => {
             .post("/api/auth/signup")
             .send(dontTypeSchoolRequestBody)
             .expect("Content-Type", /json/)
-            .expect(400, { msg: "No Data with fields" });
+            .expect(400, { status: 400, msg: "Bad Request!" });
     });
 
     /*
@@ -90,6 +91,6 @@ describe("functional test", () => {
             .post("/api/auth/signin")
             .send(wrongPwdReqBody)
             .expect("Content-Type", /json/)
-            .expect(500, { msg: "Email or password is wrong!" });
+            .expect(400, { status: 400, msg: "Bad Request!" });
     });
 });

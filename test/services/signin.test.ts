@@ -9,7 +9,7 @@ describe("make server and test login request", () => {
         await request(app)
             .post("/api/auth/signin")
             .send({ email: "maestroprog@seoultech.ac.kr", pwd: "1234" })
-            .expect(200, { msg: "Login Success!" });
+            .expect(200, { status: 200, msg: "Login Success!" });
     });
 
     // it("200 OK and sign accessToken and refreshToken POST /signin ", (done) => {

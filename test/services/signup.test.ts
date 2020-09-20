@@ -40,7 +40,7 @@ describe("make server and test signup request", () => {
                     logger.error(err);
                     done();
                 }
-                expect(res.body.msg).toEqual("No Data with fields");
+                expect(res.body.msg).toEqual("Bad Request!");
                 done();
             });
     });

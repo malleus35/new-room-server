@@ -2,7 +2,7 @@ import MiddlewareController from "@src/controllers/MiddlewareController";
 import JwtService from "@src/services/middlewares/JwtService";
 import LogService from "@src/utils/LogService";
 import { NextFunction, Request, Response } from "express";
-
+import resTypes from "@src/customTypes/auth/resTypes";
 const logger = LogService.getInstance();
 /*
 로직
@@ -24,12 +24,7 @@ class JwtController extends MiddlewareController {
         if (typeof verify !== "string") {
             req.body.decoded = verify;
             next();
-        } else {
-            res.status(401).json({
-                status: 401,
-                msg: "Token is Invalid or Expired!"
-            });
-        }
+        } else resTypes.tokenErrorRes(res);
     }
 
     static async verifyRefreshToken(
@@ -44,23 +39,14 @@ class JwtController extends MiddlewareController {
                 req.headers.accessToken
             );
             if (decode !== null && typeof decode !== "string") {
-                res.status(200).json({
-                    status: 200,
-                    msg: "Resign success!",
-                    data: {
-                        accessToken: await JwtService.createAccessToken(
-                            decode.payload.email
-                        ),
-                        refreshToken: await JwtService.createRefreshToken()
-                    }
+                resTypes.successRes(res, "Resign", {
+                    accessToken: await JwtService.createAccessToken(
+                        decode.payload.email
+                    ),
+                    refreshToken: await JwtService.createRefreshToken()
                 });
-            }
-        } else {
-            res.status(401).json({
-                status: 401,
-                msg: "Token is Invalid or Expired!"
-            });
-        }
+            } else resTypes.tokenErrorRes(res);
+        } else resTypes.tokenErrorRes(res);
     }
 
     async doService(
