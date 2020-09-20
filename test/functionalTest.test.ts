@@ -74,7 +74,7 @@ describe("functional test", () => {
             .post("/api/auth/signup")
             .send(dontTypeSchoolRequestBody)
             .expect("Content-Type", /json/)
-            .expect(400, { msg: "school field is empty!" });
+            .expect(400, { msg: "No Data with fields" });
     });
 
     /*

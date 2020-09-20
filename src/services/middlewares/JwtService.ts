@@ -1,5 +1,4 @@
 import jwt, { TokenExpiredError } from "jsonwebtoken";
-import LogService from "@src/utils/LogService";
 
 class JwtService {
     static async createAccessToken(email): Promise<string> {
@@ -34,7 +33,6 @@ class JwtService {
 
     static async verifyToken(token): Promise<string | object | null> {
         let validToken: string | object | undefined = "";
-        // if (token === "" || token === undefined) return "NoExistedToken";
         try {
             validToken = await jwt.verify(token, process.env.JWT_SECRET_KEY);
         } catch (err) {
@@ -47,15 +45,10 @@ class JwtService {
         return validToken;
     }
 
-    static async decodeToken(token): Promise<{ [key: string]: any }> {
-        let decodeToken;
-        decodeToken = await jwt.decode(token, { complete: true });
-        // try {
-        //     decodeToken = await jwt.decode(token);
-        // } catch (err) {
-        //     decodeToken = "InvalidToken";
-        // }
-        return decodeToken;
+    static async decodeToken(
+        token
+    ): Promise<{ [key: string]: any } | string | null> {
+        return await jwt.decode(token, { complete: true });
     }
 }
 export default JwtService;

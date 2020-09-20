@@ -32,7 +32,6 @@ describe("make server and test signup request", () => {
                 pwd: "1234",
                 email: "maestroprog@seoultech.ac.kr",
                 grade: 4,
-                school: "seoultech",
                 stdNum: "15109342"
             })
             .expect(401)
@@ -46,7 +45,7 @@ describe("make server and test signup request", () => {
             });
     });
 
-    it("401 Already Existed User POST /signup", (done) => {
+    it.skip("401 Already Existed User POST /signup", (done) => {
         request(app)
             .post("/api/auth/signup/")
             .set("Accept", "application/json")
