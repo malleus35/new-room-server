@@ -39,8 +39,8 @@ describe("make server and test login request", () => {
             .post("/api/auth/signin/")
             .set("Accept", "application/json")
             .send({
-                // email: "maestroprog@seoultech.ac.kr",
-                // pwd: "1234",
+                email: "maestroprog@seoultech.ac.kr",
+                pwd: "1234",
                 //token expired In 150D
                 accessToken:
                     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoianVuZ2h1biBZYW5nIiwiaWF0IjoxNjAwMDc2Nzk3LCJleHAiOjE2MTMwMzY3OTd9.PjhxKdQNomsMLlH4mxmhTz-8D0DdyFIYj66T_U4U9m8"
@@ -64,8 +64,8 @@ describe("make server and test login request", () => {
             .post("/api/auth/signin/")
             .set("Accept", "application/json")
             .send({
-                // email: "maestroprog@seoultech.ac.kr",
-                // pwd: "1234",
+                email: "maestroprog@seoultech.ac.kr",
+                pwd: "1234",
                 //token expiredIn 150D
                 accessToken:
                     "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoianVuZ2h1biBZYW5nIiwiaWF0IjoxNjAwMDc2Nzk3LCJleHAiOjE2MTMwMzY3OTd9.PjhxKdQNomsMLlH4mxmhTz-8D0DdyFIYj66T_U4U9m8"
