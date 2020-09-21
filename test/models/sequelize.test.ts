@@ -99,16 +99,16 @@ describe("sequelize and postgresql test", () => {
         });
         expect(mUserModel).toBe(cntn.getConnection().models.UserModel);
         await UserModel.sync();
-        const junghun = await UserModel.create({
-            name: "junghun",
-            email: "maestroprog@seoultech.ac.kr",
-            pwd: "didwjdgns1",
-            grade: 4,
-            school: "seoultech",
-            stdNum: "15109342"
-        });
-        expect(junghun instanceof UserModel).toBeTruthy();
-        expect(junghun.name).toEqual("junghun");
+        // const junghun = await UserModel.create({
+        //     name: "junghun",
+        //     email: "maestroprog@seoultech.ac.kr",
+        //     pwd: "didwjdgns1",
+        //     grade: 4,
+        //     school: "seoultech",
+        //     stdNum: "15109342"
+        // });
+        // expect(junghun instanceof UserModel).toBeTruthy();
+        // expect(junghun.name).toEqual("junghun");
     });
 
     it("Test create user with mock", async () => {

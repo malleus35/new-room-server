@@ -13,7 +13,6 @@ router.post("/", (req: Request, res: Response) => {
         logger.error("Email or password fail");
         resTypes.badRequestErrorRes(res);
     }
-    console.log(resBody);
     resTypes.successRes(res, "Login");
 });
 
