@@ -2,7 +2,7 @@ import Controller from "@src/controllers/Controller";
 import JwtService from "@src/services/middlewares/JwtService";
 import LogService from "@src/utils/LogService";
 import { NextFunction, Request, Response } from "express";
-import resTypes from "@src/customTypes/auth/resTypes";
+import resTypes from "@src/utils/resTypes";
 const logger = LogService.getInstance();
 /*
 로직

@@ -1,20 +1,34 @@
-import { Model } from "sequelize";
-import IModel from "@src/models/IModel";
-import ObjModel from "@src/models/ObjModel";
+import { DataTypes, Model, Sequelize, Optional } from "sequelize";
 import { UserModelTypes } from "@src/customTypes/auth/models/UserModel";
-class UserModel extends ObjModel {
-    static init(
-        attr: UserModelTypes.IUserScheme,
-        opt: UserModelTypes.IBaseUserTableOptions
-    ): Model {
-        return super.init(attr, opt);
+import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
+
+interface UserCreationAttributes
+    extends Optional<SignUpTypes.SignUpBody, "id"> {}
+class UserModel
+    extends Model<SignUpTypes.SignUpBody, UserCreationAttributes>
+    implements SignUpTypes.SignUpBody {
+    private id!: number;
+    private name!: string;
+    private email!: string;
+    private pwd!: string;
+    private grade!: number;
+    private school!: string;
+    private stdNum!: string;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
+    static init(connection: Sequelize): Model {
+        const opt: UserModelTypes.IBaseUserTableOptions = {
+            sequelize: connection,
+            tableName: "User"
+        };
+        return super.init(UserModelTypes.attr, opt);
     }
 
     static sync() {
         return super.sync();
     }
 
-    static create(value: UserModelTypes.IUserScheme) {
+    static create(value: SignUpTypes.SignUpPostBody) {
         return super.create(value);
     }
 }

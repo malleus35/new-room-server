@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import LogService from "@src/utils/LogService";
 import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
-import resTypes from "@src/customTypes/auth/resTypes";
+import resTypes from "@src/utils/resTypes";
 const router = Router();
 
 const logger = LogService.getInstance();
@@ -16,7 +16,7 @@ router.post("/", (req: Request, res: Response) => {
         grade,
         school,
         stdNum
-    }: SignUpTypes.SignUpBody = req.body;
+    }: SignUpTypes.SignUpPostBody = req.body;
     let flag = true;
 
     if (name && email && pwd && grade && school && stdNum) flag = false;
