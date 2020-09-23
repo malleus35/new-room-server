@@ -47,9 +47,9 @@ describe("make server and test signup request", () => {
             });
     });
 
-    it("401 Already Existed User POST /signup", async (done) => {
+    it("409 Already Existed User POST /signup", async (done) => {
         const db = new DBManager();
-        UserModel.init(db.getConnection());
+        UserModel.initiate(db.getConnection());
         const newUser = await UserModel.create({
             name: "junghun yang",
             pwd: "1234",
@@ -70,7 +70,7 @@ describe("make server and test signup request", () => {
                 school: "seoultech",
                 stdNum: "15109342"
             })
-            .expect(401)
+            .expect(409)
             .end((err, res) => {
                 if (err) {
                     logger.error(err);

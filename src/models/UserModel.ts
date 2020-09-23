@@ -7,29 +7,29 @@ interface UserCreationAttributes
 class UserModel
     extends Model<SignUpTypes.SignUpBody, UserCreationAttributes>
     implements SignUpTypes.SignUpBody {
-    private id!: number;
-    private name!: string;
-    private email!: string;
-    private pwd!: string;
-    private grade!: number;
-    private school!: string;
-    private stdNum!: string;
+    public id!: number;
+    public name!: string;
+    public email!: string;
+    public pwd!: string;
+    public grade!: number;
+    public school!: string;
+    public stdNum!: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
-    static init(connection: Sequelize): Model {
+    static initiate(connection: Sequelize): Model {
         const opt: UserModelTypes.IBaseUserTableOptions = {
             sequelize: connection,
             tableName: "User"
         };
-        return super.init(UserModelTypes.attr, opt);
+        return UserModel.init(UserModelTypes.attr, opt);
     }
 
-    static sync(opt?: any) {
-        return super.sync(opt);
+    static syncDB(opt?: any) {
+        return UserModel.sync(opt);
     }
 
-    static create(value: SignUpTypes.SignUpPostBody) {
-        return super.create(value);
+    static createUser(value: SignUpTypes.SignUpPostBody) {
+        return UserModel.create(value);
     }
 }
 

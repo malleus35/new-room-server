@@ -11,14 +11,21 @@ class SignupService {
     static async isAlreadyHaveAccount(req: Request): Promise<string> {
         const signupBody: SignUpTypes.SignUpPostBody = req.body;
         const db = new DBManager();
-        UserModel.init(db.getConnection());
-        await UserModel.sync();
-
+        UserModel.initiate(db.getConnection());
+        if (
+            !signupBody.name ||
+            !signupBody.email ||
+            !signupBody.pwd ||
+            !signupBody.grade ||
+            !signupBody.school ||
+            !signupBody.stdNum
+        )
+            return "BadRequest";
         let find: Model[] = [];
         try {
             find = await UserModel.findAll({
                 where: {
-                    ...signupBody
+                    email: signupBody.email
                 }
             });
         } catch (err) {
@@ -38,15 +45,25 @@ class SignupService {
     ): Promise<string> {
         const signupBody: SignUpTypes.SignUpPostBody = req.body;
         const db = new DBManager();
-        UserModel.init(db.getConnection());
-        if (process.env.NODE_ENV === "production") await UserModel.sync();
-        else await UserModel.sync({ force: true });
+        UserModel.initiate(db.getConnection());
+        if (process.env.NODE_ENV === "test")
+            await UserModel.syncDB({ force: true });
+
+        if (
+            !signupBody.name ||
+            !signupBody.email ||
+            !signupBody.pwd ||
+            !signupBody.grade ||
+            !signupBody.school ||
+            !signupBody.stdNum
+        )
+            return "BadRequest";
         let newUser: Model | null = null;
         try {
-            newUser = await UserModel.create(signupBody);
+            newUser = await UserModel.createUser(signupBody);
         } catch (err) {
             logger.error(err);
-            return "BadRequest";
+            return "InteralServerError";
         }
         db.getConnection().close();
         if (newUser === null) return "InteralServerError";
