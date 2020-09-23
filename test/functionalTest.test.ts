@@ -1,4 +1,5 @@
 import request from "supertest";
+import argon2 from "argon2";
 import LogService from "@src/utils/LogService";
 import app from "@src/app";
 import { SignInTypes } from "@src/customTypes/auth/controllers/Signin";
@@ -17,11 +18,11 @@ describe("functional test", () => {
     //정훈이는 앱을 실행시키고 로그인 화면을 본다.
     //정훈이는 이 앱을 처음 사용하기 때문에, 회원가입 화면을 본다.
     //정훈이는 회원가입 화면에서 이름, 이메일, 비밀번호, 비밀번호 확인 ,학교, 학번, 학년을 입력하고 회원가입 신청을 한다.
-    it("First access to app and SignUp account", (done) => {
+    it("First access to app and SignUp account", async (done) => {
         const reqBody: SignUpTypes.SignUpPostBody = {
             name: "junghun yang1",
             email: "thisiscool@seoultech.ac.kr",
-            pwd: "1234",
+            pwd: await argon2.hash("1234"),
             grade: 4,
             school: "seoultech",
             stdNum: "15109342"
@@ -42,26 +43,33 @@ describe("functional test", () => {
     //데이터베이스에 저장할 때는 암호화하고 보낸다.
     //승인이 완료되었음과 함께 JWT을 생성해서 보낸다.
     //정훈이는 회원가입이 승인되고, 로그인 화면에 온다.
-    it("Finish signup and try to input login info", async () => {
+    it("Finish signup and try to input login info", async (done) => {
         const db = new DBManager();
         UserModel.initiate(db.getConnection());
         const newUser = await UserModel.create({
             name: "junghun yang",
-            pwd: "1234",
+            pwd: await argon2.hash("1234"),
             email: "maestroprog@seoultech.ac.kr",
             grade: 4,
             school: "seoultech",
             stdNum: "15109342"
         });
         db.getConnection().close();
-        await request(app)
+        request(app)
             .post("/api/auth/signin")
             .send({
                 email: "maestroprog@seoultech.ac.kr",
                 pwd: "1234"
             })
             .expect("Content-Type", /json/)
-            .expect(200, { status: 200, msg: "Login Success!" });
+            .end((err, res) => {
+                expect(res.status).toBe(200);
+                expect(res.body.msg).toEqual("Login Success!");
+                logger.info(res.body.data.accessToken);
+                logger.info(res.body.data.refreshToken);
+            });
+
+        done();
     });
     //정훈이는 로그인 화면에서 이메일과 비밀번호를 입력하고, 로그인 버튼을 누른다.
     //정훈이는 로그인을 성공하고 서버로부터 로그인 성공 response를 받는다.
@@ -78,7 +86,7 @@ describe("functional test", () => {
         const dontTypeSchoolRequestBody: dontTypeSchoolRequestBody = {
             name: "minho park",
             email: "minoflower31@gmail.com",
-            pwd: "1234",
+            pwd: await argon2.hash("1234"),
             grade: 4,
             stdNum: "14109324"
         };
@@ -99,7 +107,7 @@ describe("functional test", () => {
         const newUser = await UserModel.create({
             name: "minho park",
             email: "minoflower31@gmail.com",
-            pwd: "1234",
+            pwd: await argon2.hash("1234"),
             grade: 4,
             stdNum: "14109324",
             school: "seoultech"
@@ -113,6 +121,6 @@ describe("functional test", () => {
             .post("/api/auth/signin")
             .send(wrongPwdReqBody)
             .expect("Content-Type", /json/)
-            .expect(502, { status: 502, msg: "DB Error!" });
+            .expect(401, { status: 401, msg: "Wrong Password!" });
     });
 });

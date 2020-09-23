@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { Model } from "sequelize";
+import argon2 from "argon2";
+
 import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
 import DBManager from "@src/models/DBManager";
 import UserModel from "@src/models/UserModel";
@@ -59,6 +61,8 @@ class SignupService {
         )
             return "BadRequest";
         let newUser: Model | null = null;
+        signupBody.pwd = await argon2.hash(signupBody.pwd);
+        console.log(signupBody);
         try {
             newUser = await UserModel.createUser(signupBody);
         } catch (err) {

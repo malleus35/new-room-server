@@ -3,11 +3,10 @@ import jwt, { TokenExpiredError } from "jsonwebtoken";
 class JwtService {
     static async createAccessToken(email): Promise<string> {
         const payload = {
-            email,
-            exp: "2020-11-18T20:25:43.511Z"
+            email
         };
         const options = {
-            expiresIn: "10s"
+            expiresIn: "1h"
         };
         const token = await jwt.sign(
             payload,
@@ -17,9 +16,7 @@ class JwtService {
         return token;
     }
     static async createRefreshToken(): Promise<string> {
-        const payload = {
-            exp: "2020-11-18T20:25:43.511Z"
-        };
+        const payload = {};
         const options = {
             expiresIn: "2 week"
         };

@@ -1,4 +1,5 @@
 import request from "supertest";
+import argon2 from "argon2";
 import app from "@src/app";
 import LogService from "@src/utils/LogService";
 import DBManager from "@src/models/DBManager";
@@ -31,7 +32,7 @@ describe("make server and test signup request", () => {
             .set("Accept", "application/json")
             .send({
                 name: "junghun yang",
-                pwd: "1234",
+                pwd: "12345",
                 email: "maestroprog@seoultech.ac.kr",
                 grade: 4,
                 stdNum: "15109342"
@@ -52,7 +53,7 @@ describe("make server and test signup request", () => {
         UserModel.initiate(db.getConnection());
         const newUser = await UserModel.create({
             name: "junghun yang",
-            pwd: "1234",
+            pwd: await argon2.hash("1234"),
             email: "maestroprog@seoultech.ac.kr",
             grade: 4,
             school: "seoultech",

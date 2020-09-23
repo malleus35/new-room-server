@@ -27,6 +27,7 @@ class SignupController extends Controller {
         if (this.result === "BadRequest") resTypes.badRequestErrorRes(res);
         else if (this.result === "InternalServerError")
             resTypes.internalErrorRes(res);
+        else if (this.result === "PasswordFail") resTypes.wrongPasswordRes(res);
         else resTypes.successRes(res, "Signup");
     }
 }

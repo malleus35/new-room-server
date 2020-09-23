@@ -1,8 +1,11 @@
 import { Request, Response, NextFunction } from "express";
+import argon2 from "argon2";
+
 import { SignInTypes } from "@src/customTypes/auth/controllers/Signin";
 import DBManager from "@src/models/DBManager";
 import UserModel from "@src/models/UserModel";
 import LogService from "@src/utils/LogService";
+
 const logger = LogService.getInstance();
 class SigninService {
     static async signin(
@@ -14,13 +17,12 @@ class SigninService {
         const db = new DBManager();
         UserModel.initiate(db.getConnection());
         if (!signinBody.email || !signinBody.pwd) return "BadRequest";
-        let user: UserModel | null = null;
+        let user: UserModel | null | any = null;
 
         try {
             user = await UserModel.findOne({
                 where: {
-                    email: signinBody.email,
-                    pwd: signinBody.pwd
+                    email: signinBody.email
                 }
             });
         } catch (err) {
@@ -29,6 +31,8 @@ class SigninService {
         }
         db.getConnection().close();
         if (user === null) return "NoExistUser";
+        else if ((await argon2.verify(user.pwd, signinBody.pwd)) === false)
+            return "WrongPassword";
         else return "Success";
     }
 }

@@ -1,4 +1,5 @@
 import request from "supertest";
+import argon2 from "argon2";
 import app from "@src/app";
 import LogService from "@src/utils/LogService";
 import DBManager from "@src/models/DBManager";
@@ -6,24 +7,30 @@ import UserModel from "@src/models/UserModel";
 
 const logger = LogService.getInstance();
 describe("make server and test login request", () => {
-    it("200 OK POST /signin", async () => {
+    it("200 OK POST /signin", async (done) => {
         const db = new DBManager();
         UserModel.initiate(db.getConnection());
-        const newUser = await UserModel.create({
+        const testdata = {
             name: "junghun yang",
             pwd: "1234",
             email: "maestroprog@seoultech.ac.kr",
             grade: 4,
             school: "seoultech",
             stdNum: "15109342"
-        });
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        // await UserModel.syncDB({ force: true });
+        };
+        testdata.pwd = await argon2.hash("1234");
+        const newUser = await UserModel.create(testdata);
         db.getConnection().close();
-        await request(app)
+        request(app)
             .post("/api/auth/signin")
             .send({ email: "maestroprog@seoultech.ac.kr", pwd: "1234" })
-            .expect(200, { status: 200, msg: "Login Success!" });
+            .expect(200)
+            .end((err, res) => {
+                expect(res.body.msg).toEqual("Login Success!");
+                logger.info(res.body.data.accessToken);
+                logger.info(res.body.data.refreshToken);
+                done();
+            });
     });
 
     // it("200 OK and sign accessToken and refreshToken POST /signin ", (done) => {
