@@ -1,9 +1,11 @@
 import request from "supertest";
 import app from "@src/app";
 import LogService from "@src/utils/LogService";
+import DBManager from "@src/models/DBManager";
+import UserModel from "@src/models/UserModel";
 describe("make server and test signup request", () => {
     const logger = LogService.getInstance();
-    it("200 OK and sign accessToken and refreshToken POST /signup ", (done) => {
+    it("200 OK and sign POST /signup ", (done) => {
         request(app)
             .post("/api/auth/signup/")
             .set("Accept", "application/json")
@@ -30,7 +32,7 @@ describe("make server and test signup request", () => {
             .send({
                 name: "junghun yang",
                 pwd: "1234",
-                email: "maestroprog@seoultech.ac.kr",
+                email: "maestroprog1@seoultech.ac.kr",
                 grade: 4,
                 stdNum: "15109342"
             })
@@ -45,7 +47,18 @@ describe("make server and test signup request", () => {
             });
     });
 
-    it.skip("401 Already Existed User POST /signup", (done) => {
+    it("401 Already Existed User POST /signup", async (done) => {
+        const db = new DBManager();
+        UserModel.init(db.getConnection());
+        const newUser = await UserModel.create({
+            name: "junghun yang",
+            pwd: "1234",
+            email: "maestroprog@seoultech.ac.kr",
+            grade: 4,
+            school: "seoultech",
+            stdNum: "15109342"
+        });
+        db.getConnection().close();
         request(app)
             .post("/api/auth/signup/")
             .set("Accept", "application/json")
@@ -63,7 +76,7 @@ describe("make server and test signup request", () => {
                     logger.error(err);
                     done();
                 }
-                expect(res.body.msg).toEqual("Already Existed User!");
+                expect(res.body.msg).toEqual("Already have Item!");
                 done();
             });
     });

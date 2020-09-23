@@ -19,7 +19,7 @@ export namespace UserModelTypes {
     }
     export const attr: UserModelTypes.IUserScheme = {
         id: {
-            type: DataTypes.INTEGER.UNSIGNED,
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },

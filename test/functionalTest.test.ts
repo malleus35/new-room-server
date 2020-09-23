@@ -18,8 +18,8 @@ describe("functional test", () => {
     //정훈이는 회원가입 화면에서 이름, 이메일, 비밀번호, 비밀번호 확인 ,학교, 학번, 학년을 입력하고 회원가입 신청을 한다.
     it("First access to app and SignUp account", (done) => {
         const reqBody: SignUpTypes.SignUpBody = {
-            name: "junghun yang",
-            email: "maestroprog@seoultech.ac.kr",
+            name: "junghun yang1",
+            email: "maestroprog2@seoultech.ac.kr",
             pwd: "1234",
             grade: 4,
             school: "seoultech",

@@ -1,26 +1,25 @@
-import { Model } from "sequelize";
-import Controller from "@src/controllers/Controller";
 import { NextFunction, Request, Response } from "express";
+
+import Controller from "@src/controllers/Controller";
+
 import resTypes from "@src/utils/resTypes";
-import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
-import DBManager from "@src/models/DBManager";
-import UserModel from "@src/models/UserModel";
+
+import LogService from "@src/utils/LogService";
+import SignupService from "@src/services/SignupService";
 class SignupController extends Controller {
-    private newUser: Model | null;
+    private result: string;
     constructor() {
         super();
-        this.newUser = null;
+        this.result = "";
     }
     async doService(req: Request, res: Response, next: NextFunction) {
-        const signupBody: SignUpTypes.SignUpBody = req.body;
-        const db = new DBManager();
-        UserModel.init(db.getConnection());
-        await UserModel.sync();
-        this.newUser = await UserModel.create(signupBody);
+        this.result = await SignupService.signup(req, res, next);
     }
     async doResponse(req: Request, res: Response, next: NextFunction) {
-        if (this.newUser == null) resTypes.internalErrorRes(res);
-        else resTypes.successRes(res, "Create User");
+        if (this.result === "BadRequest") resTypes.badRequestErrorRes(res);
+        else if (this.result === "InternalServerError")
+            resTypes.internalErrorRes(res);
+        else resTypes.successRes(res, "Signup");
     }
 }
 

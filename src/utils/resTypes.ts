@@ -19,6 +19,8 @@ const resTypes = {
     internalErrorRes: (res: Response) =>
         resData(res, 500, "Internal Server Error!"),
     dbErrorRes: (res: Response) => resData(res, 502, "DB Error!"),
+    alreadyHaveItemRes: (res: Response) =>
+        resData(res, 502, `Already have Item!`),
     badRequestErrorRes: (res: Response) => resData(res, 400, "Bad Request!"),
     tokenErrorRes: (res: Response) =>
         resData(res, 401, "Token is Invalid or Expired!")

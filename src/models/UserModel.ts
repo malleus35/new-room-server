@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize, Optional } from "sequelize";
+import { Model, Sequelize, Optional } from "sequelize";
 import { UserModelTypes } from "@src/customTypes/auth/models/UserModel";
 import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
 
@@ -24,8 +24,8 @@ class UserModel
         return super.init(UserModelTypes.attr, opt);
     }
 
-    static sync() {
-        return super.sync();
+    static sync(opt?: any) {
+        return super.sync(opt);
     }
 
     static create(value: SignUpTypes.SignUpPostBody) {

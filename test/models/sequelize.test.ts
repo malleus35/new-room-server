@@ -2,9 +2,7 @@ import { DataTypes } from "sequelize";
 import LogService from "@src/utils/LogService";
 import env from "@src/utils/Dotenv";
 import DBManager from "@src/models/DBManager";
-import ObjModel from "@src/models/ObjModel";
 import UserModel from "@src/models/UserModel";
-import IModel from "@src/models/IModel";
 import { UserModelTypes } from "@src/customTypes/auth/models/UserModel";
 
 const logger = LogService.getInstance();
@@ -55,13 +53,6 @@ describe("sequelize and postgresql test", () => {
         expect(cntn.checkConnection).toBeCalledTimes(1);
     });
 
-    it("test to make model form of class", async () => {
-        ObjModel.init(attr, {
-            sequelize: cntn.getConnection(),
-            tableName: "Obj"
-        });
-        expect(ObjModel).toBe(cntn.getConnection().models.ObjModel);
-    });
     it("test to make model form of class extends", async () => {
         let mUserModel: any;
         jest.spyOn(UserModel, "init").mockResolvedValue(mUserModel);
