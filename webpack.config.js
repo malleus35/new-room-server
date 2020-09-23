@@ -7,7 +7,7 @@ module.exports = {
     entry: "./src/app.ts",
     output: {
         path: path.resolve(__dirname, "dist"),
-        filename: "loginServer.bundle.js"
+        filename: "authServer.js"
     },
 
     resolve: {
