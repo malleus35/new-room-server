@@ -1,8 +1,12 @@
 {
-  "presets": ["@babel/preset-typescript"],
-  "plugins": [
-    ["@babel/plugin-transform-typescript", {
-      "allowNamespaces": true
-    }]
-  ]
+    "presets": ["@babel/preset-typescript"],
+    "plugins": [
+        [
+            "@babel/plugin-transform-typescript",
+            {
+                "allowNamespaces": true
+            }
+        ],
+        "@babel/plugin-transform-runtime"
+    ]
 }
