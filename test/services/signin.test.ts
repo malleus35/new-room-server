@@ -1,11 +1,25 @@
 import request from "supertest";
 import app from "@src/app";
 import LogService from "@src/utils/LogService";
+import DBManager from "@src/models/DBManager";
+import UserModel from "@src/models/UserModel";
 
 const logger = LogService.getInstance();
 describe("make server and test login request", () => {
-    it("POST /signin", async () => {
+    it("200 OK POST /signin", async () => {
+        const db = new DBManager();
+        UserModel.initiate(db.getConnection());
+        const newUser = await UserModel.create({
+            name: "junghun yang",
+            pwd: "1234",
+            email: "maestroprog@seoultech.ac.kr",
+            grade: 4,
+            school: "seoultech",
+            stdNum: "15109342"
+        });
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // await UserModel.syncDB({ force: true });
+        db.getConnection().close();
         await request(app)
             .post("/api/auth/signin")
             .send({ email: "maestroprog@seoultech.ac.kr", pwd: "1234" })

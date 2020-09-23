@@ -2,23 +2,24 @@ import { NextFunction, Request, Response } from "express";
 
 import Controller from "@src/controllers/Controller";
 
-import resTypes from "@src/utils/resTypes";
+import SigninService from "@src/services/SigninService";
 
-import LogService from "@src/utils/LogService";
-import SignupService from "@src/services/SignupService";
-class SignupController extends Controller {
+import resTypes from "@src/utils/resTypes";
+class SigninController extends Controller {
     private result: string;
     constructor() {
         super();
         this.result = "";
     }
+
     async doService(
         req: Request,
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.result = await SignupService.signup(req, res, next);
+        this.result = await SigninService.signin(req, res, next);
     }
+
     async doResponse(
         req: Request,
         res: Response,
@@ -27,8 +28,9 @@ class SignupController extends Controller {
         if (this.result === "BadRequest") resTypes.badRequestErrorRes(res);
         else if (this.result === "InternalServerError")
             resTypes.internalErrorRes(res);
-        else resTypes.successRes(res, "Signup");
+        else if (this.result === "NoExistUser") resTypes.dbErrorRes(res);
+        else resTypes.successRes(res, "Login");
     }
 }
 
-export default SignupController;
+export default SigninController;

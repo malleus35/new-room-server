@@ -10,12 +10,12 @@ describe("make server and test signup request", () => {
             .post("/api/auth/signup/")
             .set("Accept", "application/json")
             .send({
-                name: "junghun yang",
+                name: "yang Hoya",
                 pwd: "1234",
-                email: "maestroprog@seoultech.ac.kr",
-                grade: 4,
+                email: "luciferkala@seoultech.ac.kr",
+                grade: 3,
                 school: "seoultech",
-                stdNum: "15109342"
+                stdNum: "17293873"
             })
             .expect(200)
             .end((err, res) => {
@@ -32,7 +32,7 @@ describe("make server and test signup request", () => {
             .send({
                 name: "junghun yang",
                 pwd: "1234",
-                email: "maestroprog1@seoultech.ac.kr",
+                email: "maestroprog@seoultech.ac.kr",
                 grade: 4,
                 stdNum: "15109342"
             })

@@ -3,7 +3,8 @@ import LogService from "@src/utils/LogService";
 import app from "@src/app";
 import { SignInTypes } from "@src/customTypes/auth/controllers/Signin";
 import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
-
+import DBManager from "@src/models/DBManager";
+import UserModel from "@src/models/UserModel";
 const logger = LogService.getInstance();
 interface dontTypeSchoolRequestBody {
     name: string;
@@ -17,9 +18,9 @@ describe("functional test", () => {
     //정훈이는 이 앱을 처음 사용하기 때문에, 회원가입 화면을 본다.
     //정훈이는 회원가입 화면에서 이름, 이메일, 비밀번호, 비밀번호 확인 ,학교, 학번, 학년을 입력하고 회원가입 신청을 한다.
     it("First access to app and SignUp account", (done) => {
-        const reqBody: SignUpTypes.SignUpBody = {
+        const reqBody: SignUpTypes.SignUpPostBody = {
             name: "junghun yang1",
-            email: "maestroprog2@seoultech.ac.kr",
+            email: "thisiscool@seoultech.ac.kr",
             pwd: "1234",
             grade: 4,
             school: "seoultech",
@@ -33,7 +34,6 @@ describe("functional test", () => {
             .expect(200)
             .end((err, res) => {
                 expect(res.body.msg).toEqual("Signup Success!");
-                console.log(res.body);
                 done();
             });
         logger.info("Signup success!");
@@ -43,6 +43,17 @@ describe("functional test", () => {
     //승인이 완료되었음과 함께 JWT을 생성해서 보낸다.
     //정훈이는 회원가입이 승인되고, 로그인 화면에 온다.
     it("Finish signup and try to input login info", async () => {
+        const db = new DBManager();
+        UserModel.initiate(db.getConnection());
+        const newUser = await UserModel.create({
+            name: "junghun yang",
+            pwd: "1234",
+            email: "maestroprog@seoultech.ac.kr",
+            grade: 4,
+            school: "seoultech",
+            stdNum: "15109342"
+        });
+        db.getConnection().close();
         await request(app)
             .post("/api/auth/signin")
             .send({
@@ -83,6 +94,17 @@ describe("functional test", () => {
     그러나 이 입력정보는 잘못 되었던 것이고, 이메일이나 비밀번호가 틀렸음을 전달받는다.
     */
     it("Try to signin, but type wrong information", async () => {
+        const db = new DBManager();
+        UserModel.initiate(db.getConnection());
+        const newUser = await UserModel.create({
+            name: "minho park",
+            email: "minoflower31@gmail.com",
+            pwd: "1234",
+            grade: 4,
+            stdNum: "14109324",
+            school: "seoultech"
+        });
+        db.getConnection().close();
         const wrongPwdReqBody: SignInTypes.SignInBody = {
             email: "minoflower31@gmail.com",
             pwd: "1233"
@@ -91,6 +113,6 @@ describe("functional test", () => {
             .post("/api/auth/signin")
             .send(wrongPwdReqBody)
             .expect("Content-Type", /json/)
-            .expect(400, { status: 400, msg: "Bad Request!" });
+            .expect(502, { status: 502, msg: "DB Error!" });
     });
 });
