@@ -18,7 +18,7 @@ class JwtService {
     static async createRefreshToken(): Promise<string> {
         const payload = {};
         const options = {
-            expiresIn: "2 week"
+            expiresIn: "1 year"
         };
         const token = await jwt.sign(
             payload,

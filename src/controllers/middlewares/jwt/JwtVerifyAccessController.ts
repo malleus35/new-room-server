@@ -23,14 +23,15 @@ class JwtVerifyAccessController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.verify = await JwtService.verifyToken(req.headers.accesstoken);
+        this.verify = await JwtService.verifyToken(
+            req.headers.authorization?.split(" ")[1]
+        );
     }
     async doResponse(
         req: Request,
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        console.log(this.verify);
         if (typeof this.verify !== "string") {
             req.body.decoded = this.verify;
             next();

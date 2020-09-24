@@ -13,11 +13,12 @@ const logger = LogService.getInstance();
 */
 
 class JwtVerifyRefreshController extends Controller {
-    private verify: string | object | null;
+    private verify: string | object | undefined;
+
     private decode: any;
     constructor() {
         super();
-        this.verify = null;
+        this.verify = undefined;
         this.decode = null;
     }
     async doService(
@@ -25,8 +26,12 @@ class JwtVerifyRefreshController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.verify = await JwtService.verifyToken(req.headers.refreshToken);
-        this.decode = await JwtService.decodeToken(req.headers.accessToken);
+        const refreshToken =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MDA5MjIzNDAsImV4cCI6MTYzMjQ3OTk0MH0.qqAMhL5eKlzHyz2KPQztrRAzMUK3LnNKPOqfeSrQ_cs"; // 1year from redis
+        this.verify = await JwtService.verifyToken(refreshToken);
+        this.decode = await JwtService.decodeToken(
+            req.headers.authorization?.split(" ")[1]
+        );
     }
     async doResponse(
         req: Request,
@@ -34,10 +39,10 @@ class JwtVerifyRefreshController extends Controller {
         next: NextFunction
     ): Promise<void> {
         if (typeof this.verify === "string") resTypes.tokenErrorRes(res);
-        else if (this.decode !== null && typeof this.decode !== "string") {
-            resTypes.successRes(res, "Resign", {
+        else if (this.decode !== undefined && typeof this.decode !== "string") {
+            resTypes.successRes(res, "Resign accessToken", {
                 accessToken: await JwtService.createAccessToken(
-                    this.decode.payload.email
+                    this.decode.email
                 ),
                 refreshToken: await JwtService.createRefreshToken()
             });

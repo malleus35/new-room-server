@@ -39,8 +39,9 @@ describe("make server and test login request", () => {
             .post("/api/auth/signin/verify/")
             .set("Accept", "application/json")
             .set(
-                "accessToken",
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hZXN0cm9wcm9nQHNlb3VsdGVjaC5hYy5rciIsImlhdCI6MTYwMDkxODkyNywiZXhwIjoxNjEzODc4OTI3fQ.1SViyS4d_1e9fu23I3878zGS-CLfHM32zEYLacLsGho"
+                "Authorization",
+                "bearer " +
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hZXN0cm9wcm9nQHNlb3VsdGVjaC5hYy5rciIsImlhdCI6MTYwMDkxODkyNywiZXhwIjoxNjEzODc4OTI3fQ.1SViyS4d_1e9fu23I3878zGS-CLfHM32zEYLacLsGho"
             )
             .expect(200)
             .end((err, res) => {
