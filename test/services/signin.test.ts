@@ -33,27 +33,23 @@ describe("make server and test login request", () => {
             });
     });
 
-    // it("200 OK and sign accessToken and refreshToken POST /signin ", (done) => {
-    //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    //     request(app)
-    //         .post("/api/auth/signin/")
-    //         .set("Accept", "application/json")
-    //         .send({
-    //             email: "maestroprog@seoultech.ac.kr",
-    //             pwd: "1234"
-    //         })
-    //         .expect(200)
-    //         .end((err, res) => {
-    //             console.log(res.body);
-    //             expect(res.body.msg).toEqual("Signin Success!");
-    //             expect(res.body.accessToken).not.toBeUndefined();
-    //             expect(res.body.refreshToken).not.toBeUndefined();
-    //             logger.info("200 OK BASE");
-    //             logger.info(res.body.accessToken);
-    //             logger.info(res.body.refreshToken);
-    //             done();
-    //         });
-    // });
+    it("200 OK and sign accessToken and refreshToken POST /verify ", (done) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        request(app)
+            .post("/api/auth/signin/verify/")
+            .set("Accept", "application/json")
+            .set(
+                "accessToken",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hZXN0cm9wcm9nQHNlb3VsdGVjaC5hYy5rciIsImlhdCI6MTYwMDkxODkyNywiZXhwIjoxNjEzODc4OTI3fQ.1SViyS4d_1e9fu23I3878zGS-CLfHM32zEYLacLsGho"
+            )
+            .expect(200)
+            .end((err, res) => {
+                console.log(res.body);
+                expect(res.body.msg).toEqual("Login Success!");
+                logger.info("200 OK BASE");
+                done();
+            });
+    });
 
     // it("200 OK with verify accessToken jwtToken POST /signin", (done) => {
     //     request(app)

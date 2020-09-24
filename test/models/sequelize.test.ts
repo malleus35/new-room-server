@@ -1,4 +1,5 @@
 import { DataTypes } from "sequelize";
+import argon2 from "argon2";
 import LogService from "@src/utils/LogService";
 import env from "@src/utils/Dotenv";
 import DBManager from "@src/models/DBManager";
@@ -90,10 +91,10 @@ describe("sequelize and postgresql test", () => {
         });
         expect(mUserModel).toBe(cntn.getConnection().models.UserModel);
         await UserModel.sync();
-        // const junghun = await UserModel.create({
+        // const junghun = await UserModel.createUser({
         //     name: "junghun",
         //     email: "maestroprog@seoultech.ac.kr",
-        //     pwd: "didwjdgns1",
+        //     pwd: await argon2.hash("didwjdgns1"),
         //     grade: 4,
         //     school: "seoultech",
         //     stdNum: "15109342"

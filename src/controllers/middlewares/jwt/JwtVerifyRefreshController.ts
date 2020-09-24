@@ -44,3 +44,5 @@ class JwtVerifyRefreshController extends Controller {
         } else resTypes.tokenErrorRes(res);
     }
 }
+
+export default JwtVerifyRefreshController;

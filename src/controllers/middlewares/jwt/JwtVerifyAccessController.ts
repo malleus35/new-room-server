@@ -13,26 +13,29 @@ const logger = LogService.getInstance();
 */
 
 class JwtVerifyAccessController extends Controller {
-    private verify: string | object | null;
+    private verify: string | object | undefined;
     constructor() {
         super();
-        this.verify = null;
+        this.verify = undefined;
     }
     async doService(
         req: Request,
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.verify = await JwtService.verifyToken(req.headers.accessToken);
+        this.verify = await JwtService.verifyToken(req.headers.accesstoken);
     }
     async doResponse(
         req: Request,
         res: Response,
         next: NextFunction
     ): Promise<void> {
+        console.log(this.verify);
         if (typeof this.verify !== "string") {
             req.body.decoded = this.verify;
             next();
         } else resTypes.tokenErrorRes(res);
     }
 }
+
+export default JwtVerifyAccessController;

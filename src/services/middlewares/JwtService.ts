@@ -6,7 +6,7 @@ class JwtService {
             email
         };
         const options = {
-            expiresIn: "1h"
+            expiresIn: "150D"
         };
         const token = await jwt.sign(
             payload,
@@ -28,7 +28,7 @@ class JwtService {
         return token;
     }
 
-    static async verifyToken(token): Promise<string | object | null> {
+    static async verifyToken(token): Promise<string | object | undefined> {
         let validToken: string | object | undefined = "";
         try {
             validToken = await jwt.verify(token, process.env.JWT_SECRET_KEY);
