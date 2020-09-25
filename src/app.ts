@@ -7,6 +7,8 @@ import apiRouter from "@src/api/index";
 env.chooseEnv();
 const app = express();
 
+const logger = LogService.getInstance();
+
 app.use(express.json());
 app.use(
     morgan("combined", {
@@ -14,6 +16,8 @@ app.use(
     })
 );
 app.use("/api", apiRouter);
-if (process.env.NODE_ENV !== "test") app.listen(process.env.PORT || 3000);
+if (process.env.NODE_ENV !== "test")
+    app.listen(process.env.SERVER_PORT || 3000);
 
+logger.info(`Server is running on ${process.env.SERVER_PORT || 3000}!`);
 export default app;

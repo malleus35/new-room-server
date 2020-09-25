@@ -1,11 +1,11 @@
 import redis from "redis";
 import { promisify } from "util";
 describe("Redis test", () => {
-    let getAsync;
-    let setAsync;
-    let ttlAsync;
-    let flushallAsync;
-    let client;
+    let getAsync: Function;
+    let setAsync: Function;
+    let ttlAsync: Function;
+    let flushallAsync: Function;
+    let client: redis.RedisClient;
     beforeEach(async () => {
         client = redis.createClient({
             host: "127.0.0.1",
