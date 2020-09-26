@@ -6,15 +6,19 @@ import SigninService from "@src/services/SigninService";
 
 import resTypes from "@src/utils/resTypes";
 import JwtService from "@src/services/middlewares/JwtService";
+import RedisService from "@src/services/middlewares/RedisService";
+
 class SigninController extends Controller {
     private result: string;
     private accessToken: string;
     private refreshToken: string;
+    private isSaved: string | number;
     constructor() {
         super();
         this.result = "";
         this.accessToken = "";
         this.refreshToken = "";
+        this.isSaved = "";
     }
 
     async doService(
@@ -25,6 +29,11 @@ class SigninController extends Controller {
         this.result = await SigninService.signin(req, res, next);
         this.accessToken = await JwtService.createAccessToken(req.body.email);
         this.refreshToken = await JwtService.createRefreshToken();
+
+        this.isSaved = await RedisService.saveToken(
+            req.body.email,
+            this.refreshToken
+        );
     }
 
     async doResponse(

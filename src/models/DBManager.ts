@@ -17,6 +17,7 @@ class DBManager {
                 )
             }
         );
+        this.checkConnection();
     }
 
     async checkConnection(): Promise<void> {

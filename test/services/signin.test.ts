@@ -2,8 +2,11 @@ import request from "supertest";
 import argon2 from "argon2";
 import app from "@src/app";
 import LogService from "@src/utils/LogService";
+
 import DBManager from "@src/models/DBManager";
 import UserModel from "@src/models/UserModel";
+
+import RedisManager from "@src/models/RedisManager";
 
 const logger = LogService.getInstance();
 describe("make server and test login request", () => {
@@ -21,6 +24,7 @@ describe("make server and test login request", () => {
         testdata.pwd = await argon2.hash("1234");
         const newUser = await UserModel.create(testdata);
         db.getConnection().close();
+        let refreshToken = "";
         request(app)
             .post("/api/auth/signin")
             .send({ email: "maestroprog@seoultech.ac.kr", pwd: "1234" })
@@ -29,8 +33,14 @@ describe("make server and test login request", () => {
                 expect(res.body.msg).toEqual("Login Success!");
                 logger.info(res.body.data.accessToken);
                 logger.info(res.body.data.refreshToken);
+                refreshToken = res.body.data.refreshToken;
                 done();
             });
+        const tokenDB = new RedisManager();
+        expect(tokenDB.find("maestroprog@seoultech.ac.kr")).toEqual(
+            refreshToken
+        );
+        console.log(tokenDB.checkTTL("maestroprog@seoultech.ac.kr"));
     });
 
     it("200 OK and sign accessToken and refreshToken POST /verify ", (done) => {
