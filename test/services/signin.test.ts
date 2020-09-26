@@ -6,7 +6,7 @@ import LogService from "@src/utils/LogService";
 import DBManager from "@src/models/DBManager";
 import UserModel from "@src/models/UserModel";
 
-import RedisManager from "@src/models/RedisManager";
+import RedisSerivce from "@src/services/middlewares/RedisService";
 
 const logger = LogService.getInstance();
 describe("make server and test login request", () => {
@@ -36,11 +36,13 @@ describe("make server and test login request", () => {
                 refreshToken = res.body.data.refreshToken;
                 done();
             });
-        const tokenDB = new RedisManager();
-        expect(tokenDB.find("maestroprog@seoultech.ac.kr")).toEqual(
-            refreshToken
-        );
-        console.log(tokenDB.checkTTL("maestroprog@seoultech.ac.kr"));
+
+        // expect(
+        //     await RedisSerivce.findToken("maestroprog@seoultech.ac.kr")
+        // ).toEqual(refreshToken);
+        // console.log(
+        //     await RedisSerivce.isTokenExpired("maestroprog@seoultech.ac.kr")
+        // );
     });
 
     it("200 OK and sign accessToken and refreshToken POST /verify ", (done) => {
