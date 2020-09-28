@@ -11,7 +11,7 @@ describe("sequelize and postgresql test", () => {
     let cntn: DBManager;
     let attr: UserModelTypes.IUserScheme;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
         cntn = new DBManager();
         attr = {
             name: {
@@ -41,7 +41,7 @@ describe("sequelize and postgresql test", () => {
         };
         await cntn.getConnection().sync({ force: true });
     });
-    afterAll(() => {
+    afterEach(() => {
         cntn.close();
     });
 
