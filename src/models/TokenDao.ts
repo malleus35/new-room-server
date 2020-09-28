@@ -3,8 +3,8 @@ import LogSerivce from "@src/utils/LogService";
 import RedisManager from "./TokenDBManager";
 
 const logger = LogSerivce.getInstance();
-class TokenModel {
-    private static instance: TokenModel;
+class TokenDao {
+    private static instance: TokenDao;
     private db: RedisManager | undefined;
     private getAsync: Function | undefined;
     private setAsync: Function | undefined;
@@ -16,10 +16,10 @@ class TokenModel {
         this.INIT_NUM = -987654321;
     }
     private static setSingleton(): void {
-        if (TokenModel.instance == null) TokenModel.instance = new TokenModel();
+        if (TokenDao.instance == null) TokenDao.instance = new TokenDao();
     }
-    static getInstance(): TokenModel {
-        if (TokenModel.instance == null) TokenModel.setSingleton();
+    static getInstance(): TokenDao {
+        if (TokenDao.instance == null) TokenDao.setSingleton();
         return this.instance;
     }
     private connect() {
@@ -118,4 +118,4 @@ class TokenModel {
     }
 }
 
-export default TokenModel;
+export default TokenDao;

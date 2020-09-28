@@ -6,7 +6,7 @@ import SigninService from "@src/services/SigninService";
 
 import resTypes from "@src/utils/resTypes";
 import JwtService from "@src/services/middlewares/JwtService";
-import TokenModel from "@src/models/TokenModel";
+import TokenDao from "@src/models/TokenDao";
 
 class SigninController extends Controller {
     private result: string;
@@ -30,8 +30,8 @@ class SigninController extends Controller {
         this.accessToken = await JwtService.createAccessToken(req.body.email);
         this.refreshToken = await JwtService.createRefreshToken();
 
-        await TokenModel.getInstance().save(req.body.email, this.refreshToken);
-        await TokenModel.getInstance().find(req.body.email);
+        await TokenDao.getInstance().save(req.body.email, this.refreshToken);
+        await TokenDao.getInstance().find(req.body.email);
     }
 
     async doResolve(
