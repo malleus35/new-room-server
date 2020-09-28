@@ -6,7 +6,10 @@ import DBManager from "@src/models/DBManager";
 import UserModel from "@src/models/UserModel";
 describe("make server and test signup request", () => {
     const logger = LogService.getInstance();
-    it("200 OK and sign POST /signup ", (done) => {
+    it("200 OK and sign POST /signup ", async (done) => {
+        const db = new DBManager();
+        UserModel.initiate(db.getConnection());
+        await UserModel.sync();
         request(app)
             .post("/api/auth/signup/")
             .set("Accept", "application/json")

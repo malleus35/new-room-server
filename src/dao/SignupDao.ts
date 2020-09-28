@@ -37,6 +37,7 @@ class SignupDao {
         UserModel.initiate(db.getConnection());
         if (process.env.NODE_ENV === "test")
             await UserModel.sync({ force: true });
+        else await UserModel.sync();
 
         let newUser: UserModel | null = null;
         userData.pwd = await argon2.hash(userData.pwd);
