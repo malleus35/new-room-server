@@ -6,7 +6,7 @@ import SigninService from "@src/services/SigninService";
 
 import resTypes from "@src/utils/resTypes";
 import JwtService from "@src/services/middlewares/JwtService";
-import RedisService from "@src/services/middlewares/RedisService";
+import TokenModel from "@src/models/TokenModel";
 
 class SigninController extends Controller {
     private result: string;
@@ -30,11 +30,8 @@ class SigninController extends Controller {
         this.accessToken = await JwtService.createAccessToken(req.body.email);
         this.refreshToken = await JwtService.createRefreshToken();
 
-        await RedisService.getInstance().saveToken(
-            req.body.email,
-            this.refreshToken
-        );
-        await RedisService.getInstance().findToken(req.body.email);
+        await TokenModel.getInstance().save(req.body.email, this.refreshToken);
+        await TokenModel.getInstance().find(req.body.email);
     }
 
     async doResolve(
