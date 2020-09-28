@@ -12,13 +12,11 @@ class SigninController extends Controller {
     private result: string;
     private accessToken: string;
     private refreshToken: string;
-    private isSaved: string | number;
     constructor() {
         super();
         this.result = "";
         this.accessToken = "";
         this.refreshToken = "";
-        this.isSaved = "";
     }
 
     async doService(
