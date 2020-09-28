@@ -39,17 +39,25 @@ class SigninController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        if (this.result === "BadRequest") resTypes.badRequestErrorRes(res);
-        else if (this.result === "InternalServerError")
-            resTypes.internalErrorRes(res);
-        else if (this.result === "NoExistUser") resTypes.noExistUserRes(res);
-        else if (this.result === "WrongPassword")
-            resTypes.wrongPasswordRes(res);
-        else
-            resTypes.successRes(res, "Login", {
-                accessToken: this.accessToken,
-                refreshToken: this.refreshToken
-            });
+        switch (this.result) {
+            case "BadRequest":
+                resTypes.badRequestErrorRes(res);
+                break;
+            case "InternalServerError":
+                resTypes.internalErrorRes(res);
+                break;
+            case "NoExistUser":
+                resTypes.noExistUserRes(res);
+                break;
+            case "WrongPassword":
+                resTypes.wrongPasswordRes(res);
+                break;
+            default:
+                resTypes.successRes(res, "Login", {
+                    accessToken: this.accessToken,
+                    refreshToken: this.refreshToken
+                });
+        }
     }
 }
 

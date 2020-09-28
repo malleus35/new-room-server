@@ -1,6 +1,6 @@
 import { promisify } from "util";
 import LogSerivce from "@src/utils/LogService";
-import RedisManager from "./TokenManager";
+import RedisManager from "./TokenDBManager";
 
 const logger = LogSerivce.getInstance();
 class TokenModel {
