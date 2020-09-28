@@ -1,16 +1,18 @@
+import { Model } from "sequelize";
 import DBManager from "@src/models/DBManager";
 import UserModel from "@src/models/UserModel";
+
 import LogService from "@src/utils/LogService";
 
 const logger = LogService.getInstance();
-class SigninDao {
-    static async find(email: string): Promise<UserModel | null | undefined> {
+
+class SignupDao {
+    static async find(email: string): Promise<Model | null | undefined> {
         const db = new DBManager();
         UserModel.initiate(db.getConnection());
-        let user: UserModel | null = null;
-
+        let find: Model | null = null;
         try {
-            user = await UserModel.findOne({
+            find = await UserModel.findOne({
                 where: {
                     email: email
                 }
@@ -21,8 +23,8 @@ class SigninDao {
             return undefined;
         }
         db.getConnection().close();
-        return user;
+        return find;
     }
 }
 
-export default SigninDao;
+export default SignupDao;

@@ -9,11 +9,11 @@ import UserModel from "@src/models/UserModel";
 import LogService from "@src/utils/LogService";
 
 const logger = LogService.getInstance();
+
+import SignupDao from "@src/dao/SignupDao";
 class SignupService {
     static async isAlreadyHaveAccount(req: Request): Promise<string> {
         const signupBody: SignUpTypes.SignUpPostBody = req.body;
-        const db = new DBManager();
-        UserModel.initiate(db.getConnection());
         if (
             !signupBody.name ||
             !signupBody.email ||
@@ -23,21 +23,14 @@ class SignupService {
             !signupBody.stdNum
         )
             return "BadRequest";
-        let find: Model[] = [];
-        try {
-            find = await UserModel.findAll({
-                where: {
-                    email: signupBody.email
-                }
-            });
-        } catch (err) {
-            logger.error(err);
-            db.getConnection().close();
-            return "InternalServerError";
+        const find = await SignupDao.find(signupBody.email);
+        switch (find) {
+            case undefined:
+                return "InternalServerError";
+            default:
+                if (find !== null) return "AlreadyExistUser";
+                else return "SuccessSignUp";
         }
-        db.getConnection().close();
-        if (find.length !== 0) return "AlreadyExistUser";
-        else return "SuccessSignUp";
     }
 
     static async signup(
@@ -46,11 +39,6 @@ class SignupService {
         next: NextFunction
     ): Promise<string> {
         const signupBody: SignUpTypes.SignUpPostBody = req.body;
-        const db = new DBManager();
-        UserModel.initiate(db.getConnection());
-        if (process.env.NODE_ENV === "test")
-            await UserModel.syncDB({ force: true });
-
         if (
             !signupBody.name ||
             !signupBody.email ||
@@ -60,6 +48,12 @@ class SignupService {
             !signupBody.stdNum
         )
             return "BadRequest";
+
+        const db = new DBManager();
+        UserModel.initiate(db.getConnection());
+        if (process.env.NODE_ENV === "test")
+            await UserModel.syncDB({ force: true });
+
         let newUser: Model | null = null;
         signupBody.pwd = await argon2.hash(signupBody.pwd);
         console.log(signupBody);
