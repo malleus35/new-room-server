@@ -8,7 +8,7 @@ class SigninDao {
         const db = new DBManager();
         UserModel.initiate(db.getConnection());
         let user: UserModel | null = null;
-
+        console.log(user);
         try {
             user = await UserModel.findOne({
                 where: {
