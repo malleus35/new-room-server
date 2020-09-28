@@ -49,23 +49,13 @@ class SignupService {
         )
             return "BadRequest";
 
-        const db = new DBManager();
-        UserModel.initiate(db.getConnection());
-        if (process.env.NODE_ENV === "test")
-            await UserModel.syncDB({ force: true });
-
-        let newUser: Model | null = null;
-        signupBody.pwd = await argon2.hash(signupBody.pwd);
-        console.log(signupBody);
-        try {
-            newUser = await UserModel.createUser(signupBody);
-        } catch (err) {
-            logger.error(err);
-            return "InteralServerError";
+        const newUser = await SignupDao.save(signupBody);
+        switch (newUser) {
+            case undefined:
+                return "InteralServerError";
+            default:
+                return "Success";
         }
-        db.getConnection().close();
-        if (newUser === null) return "InteralServerError";
-        else return "Success";
     }
 }
 
