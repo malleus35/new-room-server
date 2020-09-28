@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import argon2 from "argon2";
 
-import { SignInTypes } from "@src/customTypes/auth/controllers/Signin";
+import { SignInTypes } from "@src/vo/auth/controllers/Signin";
 
 import UserModel from "@src/models/UserModel";
 

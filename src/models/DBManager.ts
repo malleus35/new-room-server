@@ -33,6 +33,16 @@ class DBManager {
                     `Unable to connect to the database: ${err}`
                 )
             );
+        // try {
+        //     await this.connection.authenticate();
+        //     LogService.getInstance().info(
+        //         "Connection has been established successfully."
+        //     );
+        // } catch (err) {
+        //     LogService.getInstance().error(
+        //         `Unable to connect to the database: ${err}`
+        //     );
+        // }
     }
     getConnection(): Sequelize {
         return this.connection;
@@ -42,6 +52,12 @@ class DBManager {
             .close()
             .then(() => LogService.getInstance().info("Connection end"))
             .catch((err) => LogService.getInstance().error(err));
+        // try {
+        //     await this.connection.close();
+        //     LogService.getInstance().info("Connection end");
+        // } catch (err) {
+        //     LogService.getInstance().error(err);
+        // }
     }
 }
 

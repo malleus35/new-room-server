@@ -1,10 +1,9 @@
 import { DataTypes } from "sequelize";
-import argon2 from "argon2";
 import LogService from "@src/utils/LogService";
 import env from "@src/utils/Dotenv";
 import DBManager from "@src/models/DBManager";
 import UserModel from "@src/models/UserModel";
-import { UserModelTypes } from "@src/customTypes/auth/models/UserModel";
+import { UserModelTypes } from "@src/vo/auth/models/UserModel";
 
 const logger = LogService.getInstance();
 env.chooseEnv();
@@ -48,7 +47,7 @@ describe("sequelize and postgresql test", () => {
 
     it("make sequelize and connect database to another rule", async () => {
         //Log 내용 테스트 추가 필요?
-        let seqTest: DBManager;
+        let seqTest: any;
         jest.spyOn(cntn, "checkConnection").mockResolvedValue(seqTest);
         await cntn.checkConnection();
         expect(cntn.checkConnection).toBeCalledTimes(1);

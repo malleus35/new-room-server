@@ -1,10 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { Model } from "sequelize";
-import argon2 from "argon2";
 
-import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
-import DBManager from "@src/models/DBManager";
-import UserModel from "@src/models/UserModel";
+import { SignUpTypes } from "@src/vo/auth/controllers/Signup";
 
 import LogService from "@src/utils/LogService";
 

@@ -1,6 +1,6 @@
 import { Model, Sequelize, Optional } from "sequelize";
-import { UserModelTypes } from "@src/customTypes/auth/models/UserModel";
-import { SignUpTypes } from "@src/customTypes/auth/controllers/Signup";
+import { UserModelTypes } from "@src/vo/auth/models/UserModel";
+import { SignUpTypes } from "@src/vo/auth/controllers/Signup";
 
 interface UserCreationAttributes
     extends Optional<SignUpTypes.SignUpBody, "id"> {}
@@ -23,14 +23,9 @@ class UserModel
         };
         return UserModel.init(UserModelTypes.attr, opt);
     }
-
-    static syncDB(opt?: any) {
-        return UserModel.sync(opt);
-    }
-
-    static createUser(value: SignUpTypes.SignUpPostBody) {
-        return UserModel.create(value);
-    }
+    // static createUser(value: SignUpTypes.SignUpPostBody) {
+    //     return UserModel.create(value);
+    // }
 }
 
 export default UserModel;
