@@ -10,8 +10,7 @@ class JwtService {
         };
         const token = await jwt.sign(
             payload,
-            // process.env.JWT_SECRET_KEY,
-            "MINO_JUNGHUN_JONGHEE",
+            process.env.JWT_SECRET_KEY,
             options
         );
         return token;
@@ -23,8 +22,7 @@ class JwtService {
         };
         const token = await jwt.sign(
             payload,
-            // process.env.JWT_SECRET_KEY,
-            "MINO_JUNGHUN_JONGHEE",
+            process.env.JWT_SECRET_KEY,
             options
         );
         return token;
@@ -33,7 +31,7 @@ class JwtService {
     static async verifyToken(token): Promise<string | object | undefined> {
         let validToken: string | object | undefined = "";
         try {
-            validToken = await jwt.verify(token, "MINO_JUNGHUN_JONGHEE"); //process.env.JWT_SECRET_KEY);
+            validToken = await jwt.verify(token, process.env.JWT_SECRET_KEY);
         } catch (err) {
             if (err instanceof TokenExpiredError) {
                 validToken = "ExpiredToken";
