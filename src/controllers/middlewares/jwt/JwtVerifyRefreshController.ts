@@ -5,7 +5,7 @@ import JwtService from "@src/services/middlewares/JwtService";
 import LogService from "@src/utils/LogService";
 import resTypes from "@src/utils/resTypes";
 
-// import TokenDao from
+import TokenDao from "@src/dao/TokenDao";
 const logger = LogService.getInstance();
 /*
 로직
@@ -49,6 +49,10 @@ class JwtVerifyRefreshController extends Controller {
             this.newRefreshToken = await JwtService.createRefreshToken();
             this.newAccessToken = await JwtService.createAccessToken(
                 this.decode.email
+            );
+            await TokenDao.getInstance().save(
+                this.decode.email,
+                this.newRefreshToken
             );
         }
     }
