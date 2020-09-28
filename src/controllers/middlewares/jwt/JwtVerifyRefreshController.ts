@@ -46,14 +46,22 @@ class JwtVerifyRefreshController extends Controller {
             this.decode !== undefined &&
             typeof this.decode !== "string"
         ) {
-            this.newRefreshToken = await JwtService.createRefreshToken();
-            this.newAccessToken = await JwtService.createAccessToken(
+            const refreshToken = await TokenDao.getInstance().find(
                 this.decode.email
             );
-            await TokenDao.getInstance().save(
-                this.decode.email,
-                this.newRefreshToken
-            );
+            if (refreshToken !== req.headers.refresh) {
+                this.verify = "TokenError";
+                return;
+            } else {
+                this.newRefreshToken = await JwtService.createRefreshToken();
+                this.newAccessToken = await JwtService.createAccessToken(
+                    this.decode.email
+                );
+                await TokenDao.getInstance().save(
+                    this.decode.email,
+                    this.newRefreshToken
+                );
+            }
         }
     }
     async doResolve(
