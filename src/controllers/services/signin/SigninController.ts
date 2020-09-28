@@ -2,11 +2,11 @@ import { NextFunction, Request, Response } from "express";
 
 import Controller from "@src/controllers/Controller";
 
-import SigninService from "@src/services/SigninService";
+import SigninService from "@src/services/signinService";
 
 import resTypes from "@src/utils/resTypes";
 import JwtService from "@src/services/middlewares/JwtService";
-import TokenDao from "@src/models/TokenDao";
+import TokenDao from "@src/dao/TokenDao";
 
 class SigninController extends Controller {
     private result: string;
