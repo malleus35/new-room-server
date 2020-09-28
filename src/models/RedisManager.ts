@@ -23,7 +23,7 @@ class RedisManager {
     }
     async save(key: string, value: string): Promise<string | number> {
         let result = this.INIT_NUM;
-        await this.setAsync(key, value, "EX", 60 * 60 * 24 * 14, "NX")
+        await this.setAsync(key, value, "EX", 60 * 60 * 24 * 14)
             .then((reply) => {
                 result = reply;
                 logger.info(reply.toString());
@@ -71,7 +71,6 @@ class RedisManager {
     }
     endConnection(): void {
         this.client.quit();
-        this.client.end(true);
     }
 }
 

@@ -27,7 +27,7 @@ class TokenSigninController extends Controller {
         );
     }
 
-    async doResponse(
+    async doResolve(
         req: Request,
         res: Response,
         next: NextFunction

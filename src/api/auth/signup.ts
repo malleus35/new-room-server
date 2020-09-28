@@ -5,8 +5,8 @@ const router = Router();
 
 router.post(
     "/",
-    new CheckValidAccountController().getController(),
-    new SignupController().getController()
+    new CheckValidAccountController().excute(),
+    new SignupController().excute()
 );
 
 export default router;

@@ -19,7 +19,7 @@ class SignupController extends Controller {
     ): Promise<void> {
         this.result = await SignupService.signup(req, res, next);
     }
-    async doResponse(
+    async doResolve(
         req: Request,
         res: Response,
         next: NextFunction

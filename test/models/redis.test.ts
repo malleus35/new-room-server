@@ -28,8 +28,8 @@ describe("Redis test", () => {
     });
 
     afterEach(() => {
-        client.quit();
         client.end(true);
+        client.quit();
     });
     it("create redis connection and test get,set method", async () => {
         await setAsync(
@@ -233,5 +233,48 @@ describe("Redis test", () => {
             .catch((err) => {
                 console.log(err);
             });
+    });
+
+    it("create redis connection and test disconnect and get,set method", async () => {
+        let client = redis.createClient({
+            host: process.env.REDIS_HOST,
+            port: Number(process.env.REDIS_PORT)
+        });
+        let flushallAsync = promisify(client.flushall).bind(client);
+
+        let getAsync = promisify(client.get).bind(client);
+        let setAsync = promisify(client.set).bind(client);
+        let ttlAsync = promisify(client.ttl).bind(client);
+        let delAsync = promisify(client.del).bind(client);
+        await setAsync(
+            "maestroprog@seoultech.ac.kr",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoianVuZ2h1biBZYW5nIiwiaWF0IjoxNjAwMDc2Nzk3LCJleHAiOjE2MTMwMzY3OTd9.PjhxKdQNomsMLlH4mxmhTz-8D0DdyFIYj66T_U4U9m"
+        )
+            .then((reply: any) => {
+                console.log(reply.toString());
+                expect(reply.toString()).toEqual("OK");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        client.end(true);
+        client = redis.createClient({
+            host: process.env.REDIS_HOST,
+            port: Number(process.env.REDIS_PORT)
+        });
+        getAsync = promisify(client.get).bind(client);
+        await getAsync("maestroprog@seoultech.ac.kr")
+            .then((reply: any) => {
+                console.log(reply.toString());
+                expect(reply.toString()).toEqual(
+                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoianVuZ2h1biBZYW5nIiwiaWF0IjoxNjAwMDc2Nzk3LCJleHAiOjE2MTMwMzY3OTd9.PjhxKdQNomsMLlH4mxmhTz-8D0DdyFIYj66T_U4U9m"
+                );
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        client.quit();
+        // client.end(true);
+        // client.quit();
     });
 });

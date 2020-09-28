@@ -6,7 +6,9 @@ import LogService from "@src/utils/LogService";
 import DBManager from "@src/models/DBManager";
 import UserModel from "@src/models/UserModel";
 
-import RedisSerivce from "@src/services/middlewares/RedisService";
+import redis from "redis";
+import { promisify } from "util";
+// import RedisSerivce from "@src/services/middlewares/RedisService";
 
 const logger = LogService.getInstance();
 describe("make server and test login request", () => {
@@ -36,13 +38,6 @@ describe("make server and test login request", () => {
                 refreshToken = res.body.data.refreshToken;
                 done();
             });
-
-        // expect(
-        //     await RedisSerivce.findToken("maestroprog@seoultech.ac.kr")
-        // ).toEqual(refreshToken);
-        // console.log(
-        //     await RedisSerivce.isTokenExpired("maestroprog@seoultech.ac.kr")
-        // );
     });
 
     it("200 OK and sign accessToken and refreshToken POST /verify ", (done) => {

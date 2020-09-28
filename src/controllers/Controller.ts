@@ -7,7 +7,7 @@ abstract class Controller {
         res: Response,
         next: NextFunction
     ): Promise<void>;
-    protected abstract async doResponse(
+    protected abstract async doResolve(
         req: Request,
         res: Response,
         next: NextFunction
@@ -19,10 +19,10 @@ abstract class Controller {
             next: NextFunction
         ) => {
             await this.doService(req, res, next);
-            await this.doResponse(req, res, next);
+            await this.doResolve(req, res, next);
         };
     }
-    getController() {
+    excute() {
         return this.controlFunction;
     }
 }

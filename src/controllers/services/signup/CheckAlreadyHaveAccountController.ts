@@ -16,7 +16,7 @@ class CheckValidAccountController extends Controller {
             req
         );
     }
-    async doResponse(req, res, next) {
+    async doResolve(req, res, next) {
         if (this.isAlreadyHaveAccount === "InternalServerError")
             resTypes.internalErrorRes(res);
         else if (this.isAlreadyHaveAccount === "AlreadyExistUser")

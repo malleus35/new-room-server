@@ -27,7 +27,7 @@ class JwtVerifyAccessController extends Controller {
             req.headers.authorization?.split(" ")[1]
         );
     }
-    async doResponse(
+    async doResolve(
         req: Request,
         res: Response,
         next: NextFunction

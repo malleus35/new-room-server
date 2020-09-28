@@ -30,13 +30,14 @@ class SigninController extends Controller {
         this.accessToken = await JwtService.createAccessToken(req.body.email);
         this.refreshToken = await JwtService.createRefreshToken();
 
-        // this.isSaved = await RedisService.saveToken(
-        //     req.body.email,
-        //     this.refreshToken
-        // );
+        await RedisService.getInstance().saveToken(
+            req.body.email,
+            this.refreshToken
+        );
+        await RedisService.getInstance().findToken(req.body.email);
     }
 
-    async doResponse(
+    async doResolve(
         req: Request,
         res: Response,
         next: NextFunction
