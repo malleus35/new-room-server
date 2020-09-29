@@ -1,5 +1,7 @@
 import express from "express";
 import morgan from "morgan";
+import compression from "compression";
+import helmet from "helmet";
 import env from "@src/utils/Dotenv";
 import LogService from "@src/utils/LogService";
 import apiRouter from "@src/api/index";
@@ -9,6 +11,8 @@ const app = express();
 
 const logger = LogService.getInstance();
 
+app.use(helmet());
+app.use(compression());
 app.use(express.json());
 app.use(
     morgan("combined", {
