@@ -47,7 +47,7 @@ class DBManager {
     getConnection(): Sequelize {
         return this.connection;
     }
-    async close(): Promise<void> {
+    async endConnection(): Promise<void> {
         await this.connection
             .close()
             .then(() => LogService.getInstance().info("Connection end"))

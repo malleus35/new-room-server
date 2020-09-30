@@ -23,10 +23,10 @@ class SignupDao {
             });
         } catch (err) {
             logger.error(err);
-            db.getConnection().close();
+            await db.endConnection();
             return undefined;
         }
-        db.getConnection().close();
+        await db.endConnection();
         return find;
     }
 
@@ -47,7 +47,7 @@ class SignupDao {
             logger.error(err);
             return undefined;
         }
-        db.getConnection().close();
+        await db.endConnection();
         return newUser;
     }
 }

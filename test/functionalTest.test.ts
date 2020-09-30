@@ -18,7 +18,7 @@ describe("functional test", () => {
     //정훈이는 앱을 실행시키고 로그인 화면을 본다.
     //정훈이는 이 앱을 처음 사용하기 때문에, 회원가입 화면을 본다.
     //정훈이는 회원가입 화면에서 이름, 이메일, 비밀번호, 비밀번호 확인 ,학교, 학번, 학년을 입력하고 회원가입 신청을 한다.
-    it("First access to app and SignUp account", async (done) => {
+    it.skip("First access to app and SignUp account", async (done) => {
         const reqBody: SignUpTypes.SignUpPostBody = {
             name: "junghun yang1",
             email: "thisiscool@seoultech.ac.kr",

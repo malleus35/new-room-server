@@ -17,10 +17,10 @@ class SigninDao {
             });
         } catch (err) {
             logger.error(err);
-            db.getConnection().close();
+            await db.endConnection();
             return undefined;
         }
-        db.getConnection().close();
+        await db.endConnection();
         return user;
     }
 }

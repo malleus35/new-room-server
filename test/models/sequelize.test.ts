@@ -42,7 +42,7 @@ describe("sequelize and postgresql test", () => {
         await cntn.getConnection().sync({ force: true });
     });
     afterEach(() => {
-        cntn.close();
+        cntn.endConnection();
     });
 
     it("make sequelize and connect database to another rule", async () => {
