@@ -1,18 +1,19 @@
 import redis from "redis";
+import DBManager from "@src/models/DBManager";
 
-class TokenDBManager {
-    private client: redis.RedisClient;
+class TokenDBManager extends DBManager {
     constructor() {
-        this.client = redis.createClient({
+        super();
+        this.connection = redis.createClient({
             host: process.env.REDIS_HOST,
             port: Number(process.env.REDIS_PORT)
         });
     }
     getConnection() {
-        return this.client;
+        return this.connection;
     }
     endConnection(): void {
-        this.client.quit();
+        this.connection.quit();
     }
 }
 

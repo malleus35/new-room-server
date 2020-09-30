@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize";
 import LogService from "@src/utils/LogService";
+import DBManager from "@src/models/DBManager";
 
-class AuthDBManager {
-    private connection: Sequelize;
-
+class AuthDBManager extends DBManager {
     constructor() {
+        super();
         this.connection = new Sequelize(
             process.env.DATABASE || "postgres",
             process.env.DB_USERNAME || "postgres",
