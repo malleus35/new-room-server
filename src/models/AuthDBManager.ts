@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 import LogService from "@src/utils/LogService";
 
-class DBManager {
+class AuthDBManager {
     private connection: Sequelize;
 
     constructor() {
@@ -17,7 +17,7 @@ class DBManager {
                 )
             }
         );
-        this.checkConnection();
+        async () => await this.checkConnection();
     }
 
     async checkConnection(): Promise<void> {
@@ -33,16 +33,6 @@ class DBManager {
                     `Unable to connect to the database: ${err}`
                 )
             );
-        // try {
-        //     await this.connection.authenticate();
-        //     LogService.getInstance().info(
-        //         "Connection has been established successfully."
-        //     );
-        // } catch (err) {
-        //     LogService.getInstance().error(
-        //         `Unable to connect to the database: ${err}`
-        //     );
-        // }
     }
     getConnection(): Sequelize {
         return this.connection;
@@ -52,13 +42,7 @@ class DBManager {
             .close()
             .then(() => LogService.getInstance().info("Connection end"))
             .catch((err) => LogService.getInstance().error(err));
-        // try {
-        //     await this.connection.close();
-        //     LogService.getInstance().info("Connection end");
-        // } catch (err) {
-        //     LogService.getInstance().error(err);
-        // }
     }
 }
 
-export default DBManager;
+export default AuthDBManager;

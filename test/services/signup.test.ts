@@ -2,12 +2,12 @@ import request from "supertest";
 import argon2 from "argon2";
 import app from "@src/app";
 import LogService from "@src/utils/LogService";
-import DBManager from "@src/models/DBManager";
+import AuthDBManager from "@src/models/AuthDBManager";
 import UserModel from "@src/models/UserModel";
 describe("make server and test signup request", () => {
     const logger = LogService.getInstance();
     it.skip("200 OK and sign POST /signup ", async (done) => {
-        const db = new DBManager();
+        const db = new AuthDBManager();
         UserModel.initiate(db.getConnection());
         await UserModel.sync();
         request(app)
@@ -52,7 +52,7 @@ describe("make server and test signup request", () => {
     });
 
     it("409 Already Existed User POST /signup", async (done) => {
-        const db = new DBManager();
+        const db = new AuthDBManager();
         UserModel.initiate(db.getConnection());
         const newUser = await UserModel.create({
             name: "junghun yang",

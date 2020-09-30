@@ -1,6 +1,6 @@
 import redis from "redis";
 
-class RedisManager {
+class TokenDBManager {
     private client: redis.RedisClient;
     constructor() {
         this.client = redis.createClient({
@@ -16,4 +16,4 @@ class RedisManager {
     }
 }
 
-export default RedisManager;
+export default TokenDBManager;

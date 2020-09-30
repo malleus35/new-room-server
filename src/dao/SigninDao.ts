@@ -1,11 +1,11 @@
-import DBManager from "@src/models/DBManager";
+import AuthDBManager from "@src/models/AuthDBManager";
 import UserModel from "@src/models/UserModel";
 import LogService from "@src/utils/LogService";
 
 const logger = LogService.getInstance();
 class SigninDao {
     static async find(email: string): Promise<UserModel | null | undefined> {
-        const db = new DBManager();
+        const db = new AuthDBManager();
         UserModel.initiate(db.getConnection());
         let user: UserModel | null = null;
         console.log(user);

@@ -1,11 +1,11 @@
 import { promisify } from "util";
 import LogSerivce from "@src/utils/LogService";
-import RedisManager from "@src/models/TokenDBManager";
+import TokenDBManager from "@src/models/TokenDBManager";
 
 const logger = LogSerivce.getInstance();
 class TokenDao {
     private static instance: TokenDao;
-    private db: RedisManager | undefined;
+    private db: TokenDBManager | undefined;
     private getAsync: Function | undefined;
     private setAsync: Function | undefined;
     private ttlAsync: Function | undefined;
@@ -23,7 +23,7 @@ class TokenDao {
         return this.instance;
     }
     private connect() {
-        this.db = new RedisManager();
+        this.db = new TokenDBManager();
         this.getAsync = promisify(this.db.getConnection().get).bind(
             this.db.getConnection()
         );

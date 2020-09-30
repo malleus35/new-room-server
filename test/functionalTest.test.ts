@@ -4,7 +4,7 @@ import LogService from "@src/utils/LogService";
 import app from "@src/app";
 import { SignInTypes } from "@src/vo/auth/controllers/Signin";
 import { SignUpTypes } from "@src/vo/auth/controllers/Signup";
-import DBManager from "@src/models/DBManager";
+import AuthDBManager from "@src/models/AuthDBManager";
 import UserModel from "@src/models/UserModel";
 const logger = LogService.getInstance();
 interface dontTypeSchoolRequestBody {
@@ -44,7 +44,7 @@ describe("functional test", () => {
     //승인이 완료되었음과 함께 JWT을 생성해서 보낸다.
     //정훈이는 회원가입이 승인되고, 로그인 화면에 온다.
     it("Finish signup and try to input login info", async (done) => {
-        const db = new DBManager();
+        const db = new AuthDBManager();
         UserModel.initiate(db.getConnection());
         const newUser = await UserModel.create({
             name: "junghun yang",
@@ -102,7 +102,7 @@ describe("functional test", () => {
     그러나 이 입력정보는 잘못 되었던 것이고, 이메일이나 비밀번호가 틀렸음을 전달받는다.
     */
     it("Try to signin, but type wrong information", async () => {
-        const db = new DBManager();
+        const db = new AuthDBManager();
         UserModel.initiate(db.getConnection());
         const newUser = await UserModel.create({
             name: "minho park",

@@ -3,7 +3,7 @@ import argon2 from "argon2";
 import app from "@src/app";
 import LogService from "@src/utils/LogService";
 
-import DBManager from "@src/models/DBManager";
+import AuthDBManager from "@src/models/AuthDBManager";
 import UserModel from "@src/models/UserModel";
 
 import redis from "redis";
@@ -13,7 +13,7 @@ import { promisify } from "util";
 const logger = LogService.getInstance();
 describe("make server and test login request", () => {
     it("200 OK POST /signin", async (done) => {
-        const db = new DBManager();
+        const db = new AuthDBManager();
         UserModel.initiate(db.getConnection());
         const testdata = {
             name: "junghun yang",

@@ -1,7 +1,7 @@
 import { Model } from "sequelize";
 import argon2 from "argon2";
 
-import DBManager from "@src/models/DBManager";
+import AuthDBManager from "@src/models/AuthDBManager";
 import UserModel from "@src/models/UserModel";
 
 import LogService from "@src/utils/LogService";
@@ -12,7 +12,7 @@ const logger = LogService.getInstance();
 
 class SignupDao {
     static async find(email: string): Promise<Model | null | undefined> {
-        const db = new DBManager();
+        const db = new AuthDBManager();
         UserModel.initiate(db.getConnection());
         let find: Model | null = null;
         try {
@@ -33,7 +33,7 @@ class SignupDao {
     static async save(
         userData: SignUpTypes.SignUpPostBody
     ): Promise<UserModel | undefined> {
-        const db = new DBManager();
+        const db = new AuthDBManager();
         UserModel.initiate(db.getConnection());
         if (process.env.NODE_ENV === "test")
             await UserModel.sync({ force: true });
