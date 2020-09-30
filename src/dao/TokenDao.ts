@@ -99,7 +99,7 @@ class TokenDao {
             return result;
         }
     }
-    async delete(key: string): Promise<number> {
+    async remove(key: string): Promise<number> {
         this.connect();
         if (this.db === undefined || this.delAsync === undefined) {
             throw Error("Connect Redis Fail!");
