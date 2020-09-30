@@ -15,9 +15,10 @@ class SigninService {
         const signinBody: SignInTypes.SignInBody = req.body;
         if (!signinBody.email || !signinBody.pwd) return "BadRequest";
 
-        const user: UserModel | null | undefined = await SigninDao.find(
-            signinBody.email
-        );
+        const user:
+            | UserModel
+            | null
+            | undefined = await SigninDao.getInstance().find(signinBody.email);
         switch (user) {
             case undefined:
                 return "InternalServerError";

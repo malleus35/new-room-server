@@ -4,9 +4,27 @@ import LogService from "@src/utils/LogService";
 
 const logger = LogService.getInstance();
 class SigninDao {
-    static async find(email: string): Promise<UserModel | null | undefined> {
-        const db = new AuthDBManager();
-        UserModel.initiate(db.getConnection());
+    private static instance: SigninDao;
+    private db: AuthDBManager | undefined;
+
+    private constructor() {}
+    private static setSingleton(): void {
+        if (SigninDao.instance == null) SigninDao.instance = new SigninDao();
+    }
+    static getInstance(): SigninDao {
+        if (SigninDao.instance == null) SigninDao.setSingleton();
+        return this.instance;
+    }
+    private connect() {
+        this.db = new AuthDBManager();
+        UserModel.initiate(this.db.getConnection());
+    }
+
+    private async endConnect() {
+        await this.db?.endConnection();
+    }
+    async find(email: string): Promise<UserModel | null | undefined> {
+        this.connect();
         let user: UserModel | null = null;
         console.log(user);
         try {
@@ -17,10 +35,10 @@ class SigninDao {
             });
         } catch (err) {
             logger.error(err);
-            await db.endConnection();
+            await this.endConnect();
             return undefined;
         }
-        await db.endConnection();
+        await this.endConnect();
         return user;
     }
 }
