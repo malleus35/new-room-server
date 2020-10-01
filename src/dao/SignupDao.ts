@@ -7,27 +7,21 @@ import UserModel from "@src/models/UserModel";
 import LogService from "@src/utils/LogService";
 
 import { SignUpTypes } from "@src/vo/auth/controllers/Signup";
+import Dao from "./Dao";
 
 const logger = LogService.getInstance();
 
-class SignupDao {
-    private static instance: SignupDao;
-    private db: AuthDBManager | undefined;
+class SignupDao extends Dao {
+    constructor() {
+        super();
+    }
 
-    private constructor() {}
-    private static setSingleton(): void {
-        if (SignupDao.instance == null) SignupDao.instance = new SignupDao();
-    }
-    static getInstance(): SignupDao {
-        if (SignupDao.instance == null) SignupDao.setSingleton();
-        return this.instance;
-    }
-    private connect() {
+    protected connect() {
         this.db = new AuthDBManager();
         UserModel.initiate(this.db.getConnection());
     }
 
-    private async endConnect() {
+    protected async endConnect() {
         await this.db?.endConnection();
     }
     async find(email: string): Promise<Model | null | undefined> {

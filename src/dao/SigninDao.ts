@@ -1,26 +1,18 @@
 import AuthDBManager from "@src/models/AuthDBManager";
 import UserModel from "@src/models/UserModel";
 import LogService from "@src/utils/LogService";
-
+import Dao from "@src/dao/Dao";
 const logger = LogService.getInstance();
-class SigninDao {
-    private static instance: SigninDao;
-    private db: AuthDBManager | undefined;
-
-    private constructor() {}
-    private static setSingleton(): void {
-        if (SigninDao.instance == null) SigninDao.instance = new SigninDao();
+class SigninDao extends Dao {
+    private constructor() {
+        super();
     }
-    static getInstance(): SigninDao {
-        if (SigninDao.instance == null) SigninDao.setSingleton();
-        return this.instance;
-    }
-    private connect() {
+    protected connect() {
         this.db = new AuthDBManager();
         UserModel.initiate(this.db.getConnection());
     }
 
-    private async endConnect() {
+    protected async endConnect() {
         await this.db?.endConnection();
     }
     async find(email: string): Promise<UserModel | null | undefined> {
