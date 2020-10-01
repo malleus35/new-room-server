@@ -11,9 +11,27 @@ import { SignUpTypes } from "@src/vo/auth/controllers/Signup";
 const logger = LogService.getInstance();
 
 class SignupDao {
-    static async find(email: string): Promise<Model | null | undefined> {
-        const db = new AuthDBManager();
-        UserModel.initiate(db.getConnection());
+    private static instance: SignupDao;
+    private db: AuthDBManager | undefined;
+
+    private constructor() {}
+    private static setSingleton(): void {
+        if (SignupDao.instance == null) SignupDao.instance = new SignupDao();
+    }
+    static getInstance(): SignupDao {
+        if (SignupDao.instance == null) SignupDao.setSingleton();
+        return this.instance;
+    }
+    private connect() {
+        this.db = new AuthDBManager();
+        UserModel.initiate(this.db.getConnection());
+    }
+
+    private async endConnect() {
+        await this.db?.endConnection();
+    }
+    async find(email: string): Promise<Model | null | undefined> {
+        this.connect();
         let find: Model | null = null;
         try {
             find = await UserModel.findOne({
@@ -23,18 +41,17 @@ class SignupDao {
             });
         } catch (err) {
             logger.error(err);
-            await db.endConnection();
+            await this.endConnect();
             return undefined;
         }
-        await db.endConnection();
+        await this.endConnect();
         return find;
     }
 
-    static async save(
+    async save(
         userData: SignUpTypes.SignUpPostBody
     ): Promise<UserModel | undefined> {
-        const db = new AuthDBManager();
-        UserModel.initiate(db.getConnection());
+        this.connect();
         if (process.env.NODE_ENV === "test")
             await UserModel.sync({ force: true });
         else await UserModel.sync();
@@ -47,7 +64,7 @@ class SignupDao {
             logger.error(err);
             return undefined;
         }
-        await db.endConnection();
+        await this.endConnect();
         return newUser;
     }
 }

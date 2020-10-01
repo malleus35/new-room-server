@@ -19,7 +19,7 @@ class SignupService {
             !signupBody.stdNum
         )
             return "BadRequest";
-        const find = await SignupDao.find(signupBody.email);
+        const find = await SignupDao.getInstance().find(signupBody.email);
         switch (find) {
             case undefined:
                 return "InternalServerError";
@@ -45,7 +45,7 @@ class SignupService {
         )
             return "BadRequest";
 
-        const newUser = await SignupDao.save(signupBody);
+        const newUser = await SignupDao.getInstance().save(signupBody);
         switch (newUser) {
             case undefined:
                 return "InteralServerError";
