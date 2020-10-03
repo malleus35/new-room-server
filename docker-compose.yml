@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  server:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./envs/.env.production
+    networks:
+      auth:
+        aliases:
+          - "server"
+
+  postgres:
+    image: "postgres"
+    ports:
+      - "8081:5432"
+    env_file:
+      - ../.db.auth.docker.env
+    networks:
+      auth:
+        aliases:
+          - "postgres"
+
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "8082:6379"
+    networks:
+      auth:
+        aliases:
+          - "redis"
+
+networks:
+  auth:

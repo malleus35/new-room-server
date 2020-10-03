@@ -16,16 +16,17 @@ class SignupDao extends Dao {
         super();
     }
 
-    protected connect() {
+    protected async connect() {
         this.db = new AuthDBManager();
         UserModel.initiate(this.db.getConnection());
+        await UserModel.sync();
     }
 
     protected async endConnect() {
         await this.db?.endConnection();
     }
     async find(email: string): Promise<Model | null | undefined> {
-        this.connect();
+        await this.connect();
         let find: Model | null = null;
         try {
             find = await UserModel.findOne({
@@ -45,7 +46,7 @@ class SignupDao extends Dao {
     async save(
         userData: SignUpTypes.SignUpPostBody
     ): Promise<UserModel | undefined> {
-        this.connect();
+        await this.connect();
         if (process.env.NODE_ENV === "test")
             await UserModel.sync({ force: true });
         else await UserModel.sync();

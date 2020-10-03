@@ -7,16 +7,17 @@ class SigninDao extends Dao {
     private constructor() {
         super();
     }
-    protected connect() {
+    protected async connect() {
         this.db = new AuthDBManager();
         UserModel.initiate(this.db.getConnection());
+        await UserModel.sync();
     }
 
     protected async endConnect() {
         await this.db?.endConnection();
     }
     async find(email: string): Promise<UserModel | null | undefined> {
-        this.connect();
+        await this.connect();
         let user: UserModel | null = null;
         console.log(user);
         try {
