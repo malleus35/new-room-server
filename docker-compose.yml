@@ -1,35 +1,45 @@
 version: "3.8"
 services:
-  server:
-    build: .
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./envs/.env.production
-    networks:
-      auth:
-        aliases:
-          - "server"
+    server:
+        build: .
+        ports:
+            - "8080:8080"
+        env_file:
+            - ./envs/.env.production
+        networks:
+            - auth
+            - default
+            # aliases:
+            #   - "server"
 
-  postgres:
-    image: "postgres"
-    ports:
-      - "8081:5432"
-    env_file:
-      - ../.db.auth.docker.env
-    networks:
-      auth:
-        aliases:
-          - "postgres"
+    postgres:
+        image: "postgres"
+        ports:
+            - "8081:5432"
+        env_file:
+            - ../.db.auth.docker.env
+        volumes:
+            - "postgres_data:/var/lib/postgresql/data"
+        networks:
+            - auth
+            - default
 
-  redis:
-    image: "redis:alpine"
-    ports:
-      - "8082:6379"
-    networks:
-      auth:
-        aliases:
-          - "redis"
+    redis:
+        image: "redis:alpine"
+        ports:
+            - "8082:6379"
+        networks:
+            - auth
+            - default
 
 networks:
-  auth:
+    default:
+        external:
+            name: messageQ
+        driver: host
+    auth:
+        external: true
+        driver: bridge
+
+volumes:
+    postgres_data:
