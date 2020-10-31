@@ -9,8 +9,6 @@ services:
         networks:
             - auth
             - default
-            # aliases:
-            #   - "server"
 
     postgres:
         image: "postgres"
@@ -36,7 +34,7 @@ networks:
     default:
         external:
             name: messageQ
-        driver: host
+        driver: bridge
     auth:
         external: true
         driver: bridge
