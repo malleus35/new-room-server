@@ -17,7 +17,7 @@ services:
         env_file:
             - ../.db.auth.docker.env
         volumes:
-            - "postgres_data:/var/lib/postgresql/data"
+            - "auth_postgres_data:/var/lib/postgresql/data"
         networks:
             - auth
             - default
@@ -26,6 +26,8 @@ services:
         image: "redis:alpine"
         ports:
             - "8082:6379"
+        volumes:
+            - "auth_redis_data:/data"
         networks:
             - auth
             - default
@@ -40,4 +42,5 @@ networks:
         driver: bridge
 
 volumes:
-    postgres_data:
+    auth_postgres_data:
+    auth_redis_data:
