@@ -18,7 +18,7 @@ export namespace UserModelTypes {
     }
     export const attr: UserModelTypes.IUserScheme = {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             autoIncrement: true,
             primaryKey: true
         },
@@ -35,7 +35,7 @@ export namespace UserModelTypes {
             allowNull: false
         },
         grade: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INTEGER.UNSIGNED,
             allowNull: false
         },
         school: {
