@@ -3,7 +3,7 @@ import argon2 from "argon2";
 
 import { SignInTypes } from "@src/vo/auth/controllers/Signin";
 
-import UserModel from "@src/models/UserModel";
+import User from "@src/models/UserModel";
 
 import SigninDao from "@src/dao/SigninDao";
 class SigninService {
@@ -16,7 +16,7 @@ class SigninService {
         if (!signinBody.email || !signinBody.pwd) return "BadRequest";
 
         const user:
-            | UserModel
+            | User
             | null
             | undefined = await SigninDao.getInstance().find(signinBody.email);
         switch (user) {

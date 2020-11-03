@@ -1,5 +1,5 @@
 import AuthDBManager from "@src/models/AuthDBManager";
-import UserModel from "@src/models/UserModel";
+import User from "@src/models/UserModel";
 import LogService from "@src/utils/LogService";
 import Dao from "@src/dao/Dao";
 const logger = LogService.getInstance();
@@ -9,19 +9,19 @@ class SigninDao extends Dao {
     }
     protected async connect() {
         this.db = new AuthDBManager();
-        UserModel.initiate(this.db.getConnection());
-        await UserModel.sync();
+        User.initiate(this.db.getConnection());
+        await User.sync();
     }
 
     protected async endConnect() {
         await this.db?.endConnection();
     }
-    async find(email: string): Promise<UserModel | null | undefined> {
+    async find(email: string): Promise<User | null | undefined> {
         await this.connect();
-        let user: UserModel | null = null;
+        let user: User | null = null;
         console.log(user);
         try {
-            user = await UserModel.findOne({
+            user = await User.findOne({
                 where: {
                     email: email
                 }

@@ -2,7 +2,7 @@ import { Model } from "sequelize";
 import argon2 from "argon2";
 
 import AuthDBManager from "@src/models/AuthDBManager";
-import UserModel from "@src/models/UserModel";
+import User from "@src/models/UserModel";
 
 import LogService from "@src/utils/LogService";
 
@@ -18,8 +18,8 @@ class SignupDao extends Dao {
 
     protected async connect() {
         this.db = new AuthDBManager();
-        UserModel.initiate(this.db.getConnection());
-        await UserModel.sync();
+        User.initiate(this.db.getConnection());
+        await User.sync();
     }
 
     protected async endConnect() {
@@ -29,7 +29,7 @@ class SignupDao extends Dao {
         await this.connect();
         let find: Model | null = null;
         try {
-            find = await UserModel.findOne({
+            find = await User.findOne({
                 where: {
                     email: email
                 }
@@ -45,16 +45,15 @@ class SignupDao extends Dao {
 
     async save(
         userData: SignUpTypes.SignUpPostBody
-    ): Promise<UserModel | undefined> {
+    ): Promise<User | undefined> {
         await this.connect();
-        if (process.env.NODE_ENV === "test")
-            await UserModel.sync({ force: true });
-        else await UserModel.sync();
+        if (process.env.NODE_ENV === "test") await User.sync({ force: true });
+        else await User.sync();
 
-        let newUser: UserModel | null = null;
+        let newUser: User | null = null;
         userData.pwd = await argon2.hash(userData.pwd);
         try {
-            newUser = await UserModel.create(userData);
+            newUser = await User.create(userData);
         } catch (err) {
             logger.error(err);
             return undefined;

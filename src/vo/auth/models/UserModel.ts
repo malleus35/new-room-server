@@ -2,7 +2,6 @@ import { Sequelize, DataTypes, InitOptions, ModelAttributes } from "sequelize";
 export namespace UserModelTypes {
     export interface IBaseUserTableOptions extends InitOptions {
         sequelize: Sequelize;
-
         tableName: string;
     }
     export interface IColumnOption {

@@ -4,7 +4,7 @@ import { SignUpTypes } from "@src/vo/auth/controllers/Signup";
 
 interface UserCreationAttributes
     extends Optional<SignUpTypes.SignUpBody, "id"> {}
-class UserModel
+class User
     extends Model<SignUpTypes.SignUpBody, UserCreationAttributes>
     implements SignUpTypes.SignUpBody {
     public id!: number;
@@ -21,11 +21,11 @@ class UserModel
             sequelize: connection,
             tableName: "User"
         };
-        return UserModel.init(UserModelTypes.attr, opt);
+        return User.init(UserModelTypes.attr, opt);
     }
     // static createUser(value: SignUpTypes.SignUpPostBody) {
     //     return UserModel.create(value);
     // }
 }
 
-export default UserModel;
+export default User;
