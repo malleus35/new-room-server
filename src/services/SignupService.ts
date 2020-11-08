@@ -9,17 +9,17 @@ const logger = LogService.getInstance();
 import SignupDao from "@src/dao/SignupDao";
 class SignupService {
     static async isAlreadyHaveAccount(req: Request): Promise<string> {
-        const signupBody: SignUpTypes.SignUpPostBody = req.body;
+        const signupBody: SignUpTypes.SignUpBody = req.body;
         if (
-            !signupBody.name ||
             !signupBody.email ||
             !signupBody.pwd ||
+            !signupBody.name ||
             !signupBody.grade ||
             !signupBody.school ||
             !signupBody.stdNum
         )
             return "BadRequest";
-        const find = await SignupDao.getInstance().find(signupBody.email);
+        const find = await SignupDao.getInstance().findByPK(signupBody.email);
         switch (find) {
             case undefined:
                 return "InternalServerError";
@@ -34,11 +34,11 @@ class SignupService {
         res: Response,
         next: NextFunction
     ): Promise<string> {
-        const signupBody: SignUpTypes.SignUpPostBody = req.body;
+        const signupBody: SignUpTypes.SignUpBody = req.body;
         if (
-            !signupBody.name ||
             !signupBody.email ||
             !signupBody.pwd ||
+            !signupBody.name ||
             !signupBody.grade ||
             !signupBody.school ||
             !signupBody.stdNum

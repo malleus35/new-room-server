@@ -1,13 +1,10 @@
 export namespace SignUpTypes {
-    export interface SignUpPostBody {
-        name: string;
+    export interface SignUpBody {
         email: string;
         pwd: string;
+        name: string;
         grade: number;
         school: string;
         stdNum: string;
-    }
-    export interface SignUpBody extends SignUpPostBody {
-        id: number;
     }
 }

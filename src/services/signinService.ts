@@ -18,7 +18,9 @@ class SigninService {
         const user:
             | User
             | null
-            | undefined = await SigninDao.getInstance().find(signinBody.email);
+            | undefined = await SigninDao.getInstance().findByPK(
+            signinBody.email
+        );
         switch (user) {
             case undefined:
                 return "InternalServerError";

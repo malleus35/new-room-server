@@ -7,26 +7,23 @@ export namespace UserModelTypes {
     export interface IColumnOption {
         type: DataTypes.DataType;
         allowNull: boolean;
+        primaryKey?: boolean;
     }
     export interface IUserScheme extends ModelAttributes {
-        name: IColumnOption;
         email: IColumnOption;
+        name: IColumnOption;
         pwd: IColumnOption;
         grade: IColumnOption;
         school: IColumnOption;
         stdNum: IColumnOption;
     }
     export const attr: UserModelTypes.IUserScheme = {
-        id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            autoIncrement: true,
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
             primaryKey: true
         },
         name: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        email: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -35,7 +32,7 @@ export namespace UserModelTypes {
             allowNull: false
         },
         grade: {
-            type: DataTypes.INTEGER.UNSIGNED,
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         school: {
