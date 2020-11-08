@@ -12,7 +12,7 @@ import Dao from "./Dao";
 const logger = LogService.getInstance();
 
 class SignupDao extends Dao {
-    constructor() {
+    private constructor() {
         super();
     }
 
@@ -43,9 +43,7 @@ class SignupDao extends Dao {
         return find;
     }
 
-    async save(
-        userData: SignUpTypes.SignUpPostBody
-    ): Promise<User | undefined> {
+    async save(userData: SignUpTypes.SignUpBody): Promise<User | undefined> {
         await this.connect();
         if (process.env.NODE_ENV === "test") await User.sync({ force: true });
         else await User.sync();
