@@ -14,8 +14,8 @@ class SignupService {
             !signupBody.email ||
             !signupBody.pwd ||
             !signupBody.name ||
-            !signupBody.grade ||
-            !signupBody.school ||
+            // !signupBody.grade ||
+            // !signupBody.school ||
             !signupBody.stdNum
         )
             return "BadRequest";
@@ -39,8 +39,8 @@ class SignupService {
             !signupBody.email ||
             !signupBody.pwd ||
             !signupBody.name ||
-            !signupBody.grade ||
-            !signupBody.school ||
+            // !signupBody.grade ||
+            // !signupBody.school ||
             !signupBody.stdNum
         )
             return "BadRequest";

@@ -3,8 +3,8 @@ export namespace SignUpTypes {
         email: string;
         pwd: string;
         name: string;
-        grade: number;
-        school: string;
+        // grade: number;
+        // school: string;
         stdNum: string;
     }
 }

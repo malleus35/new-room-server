@@ -13,8 +13,8 @@ export namespace UserModelTypes {
         email: IColumnOption;
         name: IColumnOption;
         pwd: IColumnOption;
-        grade: IColumnOption;
-        school: IColumnOption;
+        // grade: IColumnOption;
+        // school: IColumnOption;
         stdNum: IColumnOption;
     }
     export const attr: UserModelTypes.IUserScheme = {
@@ -31,14 +31,14 @@ export namespace UserModelTypes {
             type: DataTypes.STRING,
             allowNull: false
         },
-        grade: {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        school: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
+        // grade: {
+        //     type: DataTypes.INTEGER,
+        //     allowNull: false
+        // },
+        // school: {
+        //     type: DataTypes.STRING,
+        //     allowNull: false
+        // },
         stdNum: {
             type: DataTypes.STRING,
             allowNull: false
