@@ -1,9 +1,6 @@
 interface data {
     [attr: string]: any;
 }
-interface AuthData {
-    name: string;
-}
 interface decoded {
     email: string;
 }
