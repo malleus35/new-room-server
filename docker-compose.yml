@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-    server:
+    auth_server:
         build: .
         ports:
             - "8081:8080"
@@ -10,7 +10,7 @@ services:
             - auth
             - default
 
-    postgres:
+    auth_postgres:
         image: "postgres"
         ports:
             - "5433:5432"
@@ -22,7 +22,7 @@ services:
             - auth
             - default
 
-    redis:
+    auth_redis:
         image: "redis:alpine"
         ports:
             - "6380:6379"
