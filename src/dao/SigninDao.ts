@@ -3,7 +3,7 @@ import User from "@src/models/UserModel";
 import LogService from "@src/utils/LogService";
 import Dao from "@src/dao/Dao";
 import { AuthReqData } from "@src/vo/auth/services/reqData";
-import { ValidationError } from "sequelize/types";
+import { ValidationError } from "sequelize";
 const logger = LogService.getInstance();
 class SigninDao extends Dao {
     private constructor() {
