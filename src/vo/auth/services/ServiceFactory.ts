@@ -21,7 +21,7 @@ const serviceReturn = {
             }
         } catch (e) {
             console.log(e);
-            return "InternalServerError";
+            return "UnexpectedError";
         }
     },
     signin: async <T>(reqData: ReqData, daoFunc: Function): Promise<string> => {
