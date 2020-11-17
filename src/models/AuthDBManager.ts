@@ -1,9 +1,10 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, Transaction } from "sequelize";
 import LogService from "@src/utils/LogService";
 import DBManager from "@src/models/DBManager";
 
 class AuthDBManager extends DBManager {
-    constructor() {
+    private static instance: AuthDBManager;
+    private constructor() {
         super();
         this.connection = new Sequelize(
             process.env.DATABASE || "postgres",
@@ -12,6 +13,13 @@ class AuthDBManager extends DBManager {
             {
                 host: process.env.DB_HOST,
                 dialect: "postgres",
+                pool: {
+                    max: 20,
+                    min: 5,
+                    idle: 100000,
+                    acquire: 50000,
+                    evict: 50000
+                },
                 logging: LogService.getInstance().info.bind(
                     LogService.getLogger()
                 )
@@ -19,7 +27,13 @@ class AuthDBManager extends DBManager {
         );
         async () => await this.checkConnection();
     }
-
+    protected static setSingleton(): void {
+        if (this.instance == null) this.instance = new this();
+    }
+    static getInstance(): AuthDBManager {
+        if (this.instance == null) this.setSingleton();
+        return this.instance;
+    }
     async checkConnection(): Promise<void> {
         await this.connection
             .authenticate()
@@ -36,6 +50,12 @@ class AuthDBManager extends DBManager {
     }
     getConnection(): Sequelize {
         return this.connection;
+    }
+    async getTransaction(): Promise<Transaction> {
+        return await this.connection.transaction();
+    }
+    async sync(): Promise<void> {
+        await this.connection.sync();
     }
     async endConnection(): Promise<void> {
         await this.connection

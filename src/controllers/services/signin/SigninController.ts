@@ -7,9 +7,10 @@ import SigninService from "@src/services/signinService";
 import resTypes from "@src/utils/resTypes";
 import JwtService from "@src/services/middlewares/JwtService";
 import TokenDao from "@src/dao/TokenDao";
+import User from "@src/models/UserModel";
 
 class SigninController extends Controller {
-    private result: string;
+    private result: User | string;
     private accessToken: string;
     private refreshToken: string;
     constructor() {
@@ -24,12 +25,17 @@ class SigninController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.result = await SigninService.signin(req, res, next);
-        this.accessToken = await JwtService.createAccessToken(req.body.email);
+        this.result = await SigninService.findOne(req);
+        this.accessToken = await JwtService.createAccessToken(
+            req.body.data.email
+        );
         this.refreshToken = await JwtService.createRefreshToken();
 
-        await TokenDao.getInstance().save(req.body.email, this.refreshToken);
-        await TokenDao.getInstance().find(req.body.email);
+        await TokenDao.getInstance().save(
+            req.body.data.email,
+            this.refreshToken
+        );
+        await TokenDao.getInstance().find(req.body.data.email);
     }
 
     async doResolve(
@@ -44,8 +50,8 @@ class SigninController extends Controller {
             case "InternalServerError":
                 resTypes.internalErrorRes(res);
                 break;
-            case "NoExistUser":
-                resTypes.noExistUserRes(res);
+            case "CannotFindItem":
+                resTypes.cannotFindItemRes(res, "user");
                 break;
             case "WrongPassword":
                 resTypes.wrongPasswordRes(res);

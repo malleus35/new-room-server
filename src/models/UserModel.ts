@@ -5,13 +5,14 @@ import { SignUpTypes } from "@src/vo/auth/controllers/Signup";
 interface UserCreationAttributes
     extends Optional<SignUpTypes.SignUpBody, "email"> {}
 class User
-    extends Model<SignUpTypes.SignUpBody, UserCreationAttributes>
+    // extends Model<SignUpTypes.SignUpBody, UserCreationAttributes>
+    extends Model
     implements SignUpTypes.SignUpBody {
     public email!: string;
     public name!: string;
     public pwd!: string;
     // public grade!: number;
-    // public school!: string;
+    public school!: string;
     public stdNum!: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -22,9 +23,6 @@ class User
         };
         return User.init(UserModelTypes.attr, opt);
     }
-    // static createUser(value: SignUpTypes.SignUpPostBody) {
-    //     return UserModel.create(value);
-    // }
 }
 
 export default User;

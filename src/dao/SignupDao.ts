@@ -1,63 +1,102 @@
-import { Model } from "sequelize";
+import { Model, UniqueConstraintError, ValidationError } from "sequelize";
 import argon2 from "argon2";
-
 import AuthDBManager from "@src/models/AuthDBManager";
 import User from "@src/models/UserModel";
-
 import LogService from "@src/utils/LogService";
-
-import { SignUpTypes } from "@src/vo/auth/controllers/Signup";
-import Dao from "./Dao";
+import Dao from "@src/dao/Dao";
+import { AllStrictReqData, AuthReqData } from "@src/vo/auth/services/reqData";
 
 const logger = LogService.getInstance();
 
 class SignupDao extends Dao {
     private constructor() {
         super();
+        this.db = AuthDBManager.getInstance();
     }
 
     protected async connect() {
-        this.db = new AuthDBManager();
-        User.initiate(this.db.getConnection());
-        await User.sync();
+        this.db = await AuthDBManager.getInstance();
     }
 
     protected async endConnect() {
         await this.db?.endConnection();
     }
-    async find(email: string): Promise<Model | null | undefined> {
-        await this.connect();
-        let find: Model | null = null;
+    async findOne({
+        data,
+        decoded,
+        params
+    }: AuthReqData): Promise<Model | string | null | undefined> {
+        let result: Model | null = null;
         try {
-            find = await User.findOne({
+            result = await User.findOne({
                 where: {
-                    email: email
+                    email: data.email
                 }
             });
         } catch (err) {
             logger.error(err);
-            await this.endConnect();
+            if (err instanceof ValidationError) return "BadRequest";
             return undefined;
         }
-        await this.endConnect();
-        return find;
+        return result;
     }
 
-    async save(userData: SignUpTypes.SignUpBody): Promise<User | undefined> {
-        await this.connect();
-        if (process.env.NODE_ENV === "test") await User.sync({ force: true });
-        else await User.sync();
-
+    async save({
+        data,
+        decoded,
+        params
+    }: AuthReqData): Promise<User | string | null | undefined> {
         let newUser: User | null = null;
-        userData.pwd = await argon2.hash(userData.pwd);
+        data.pwd = await argon2.hash(data.pwd);
         try {
-            newUser = await User.create(userData);
+            newUser = await User.create(data);
         } catch (err) {
             logger.error(err);
+            if (err instanceof UniqueConstraintError) return `AlreadyExistItem`;
+            else if (err instanceof ValidationError) return `BadRequest`;
             return undefined;
         }
-        await this.endConnect();
         return newUser;
+    }
+
+    async update({
+        data,
+        decoded,
+        params
+    }: AllStrictReqData): Promise<any | null | undefined> {
+        let updateMember: any | null = null;
+        try {
+            updateMember = await User.update(
+                { ...data },
+                { where: { ...params } }
+            );
+        } catch (err) {
+            logger.error(err);
+            if (err instanceof ValidationError) return `BadRequest`;
+            return undefined;
+        }
+        return updateMember;
+    }
+
+    async delete({
+        data,
+        decoded,
+        params
+    }: AllStrictReqData): Promise<number | string | null | undefined> {
+        let deleteMember: number | null = null;
+        //Add Kafka connection to Auth server because of deleting member
+        try {
+            deleteMember = await User.destroy({
+                where: {
+                    ...params
+                }
+            });
+        } catch (err) {
+            logger.error(err);
+            if (err instanceof ValidationError) return `BadRequest`;
+            return undefined;
+        }
+        return deleteMember; //1 is success, 0 or undefined are fail
     }
 }
 

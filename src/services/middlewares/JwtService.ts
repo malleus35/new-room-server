@@ -6,7 +6,7 @@ class JwtService {
             email
         };
         const options = {
-            expiresIn: "150D"
+            expiresIn: "1h"
         };
         const token = await jwt.sign(
             payload,
@@ -18,7 +18,7 @@ class JwtService {
     static async createRefreshToken(): Promise<string> {
         const payload = {};
         const options = {
-            expiresIn: "1 year"
+            expiresIn: "2 weeks"
         };
         const token = await jwt.sign(
             payload,

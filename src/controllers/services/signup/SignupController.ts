@@ -1,10 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-
 import Controller from "@src/controllers/Controller";
-
 import resTypes from "@src/utils/resTypes";
-
-import LogService from "@src/utils/LogService";
 import SignupService from "@src/services/SignupService";
 class SignupController extends Controller {
     private result: string;
@@ -17,18 +13,29 @@ class SignupController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.result = await SignupService.signup(req, res, next);
+        this.result = await SignupService.create(req);
     }
     async doResolve(
         req: Request,
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        if (this.result === "BadRequest") resTypes.badRequestErrorRes(res);
-        else if (this.result === "InternalServerError")
-            resTypes.internalErrorRes(res);
-        else if (this.result === "PasswordFail") resTypes.wrongPasswordRes(res);
-        else resTypes.successRes(res, "Signup");
+        switch (this.result) {
+            case "BadRequest":
+                resTypes.badRequestErrorRes(res);
+                break;
+            case "InternalServerError":
+                resTypes.internalErrorRes(res);
+                break;
+            case "UnexpectedError":
+                resTypes.unexpectedErrorRes(res);
+                break;
+            case "AlreadyExistItem":
+                resTypes.alreadyExistItemRes(res, "user");
+                break;
+            default:
+                resTypes.successRes(res, "Signup");
+        }
     }
 }
 

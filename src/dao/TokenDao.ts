@@ -23,7 +23,7 @@ class TokenDao {
         return this.instance;
     }
     private connect() {
-        this.db = new TokenDBManager();
+        this.db = TokenDBManager.getInstance();
         this.getAsync = promisify(this.db.getConnection().get).bind(
             this.db.getConnection()
         );

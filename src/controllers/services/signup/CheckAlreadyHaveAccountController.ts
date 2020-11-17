@@ -12,16 +12,24 @@ class CheckValidAccountController extends Controller {
     }
 
     async doService(req, res, next) {
-        this.isAlreadyHaveAccount = await SignupService.isAlreadyHaveAccount(
-            req
-        );
+        // this.isAlreadyHaveAccount = await SignupService.isAlreadyHaveAccount(
+        //     req
+        // );
     }
     async doResolve(req, res, next) {
-        if (this.isAlreadyHaveAccount === "InternalServerError")
-            resTypes.internalErrorRes(res);
-        else if (this.isAlreadyHaveAccount === "AlreadyExistUser")
-            resTypes.alreadyHaveItemRes(res);
-        else next();
+        switch (this.isAlreadyHaveAccount) {
+            case "BadRequest":
+                resTypes.badRequestErrorRes(res);
+                break;
+            case "InternalServerError":
+                resTypes.internalErrorRes(res);
+                break;
+            case "AlreadyExistUser":
+                resTypes.alreadyExistItemRes(res, "user");
+                break;
+            default:
+                next();
+        }
     }
 }
 
