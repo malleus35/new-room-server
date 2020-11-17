@@ -47,6 +47,7 @@ class SignupDao extends Dao {
         params
     }: AuthReqData): Promise<User | string | null | undefined> {
         let newUser: User | null = null;
+        console.log(data);
         data.pwd = await argon2.hash(data.pwd);
         try {
             newUser = await User.create(data);
