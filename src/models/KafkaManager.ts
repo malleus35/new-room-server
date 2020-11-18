@@ -9,7 +9,7 @@ class KafkaManager extends DBManager {
         super();
         this.connection = new Kafka({
             clientId: "my-app",
-            brokers: ["127.0.0.1:9095", "127.0.0.1:9096", "127.0.0.1:9097"]
+            brokers: ["kafka1:9092", "kafka2:9092", "kafka3:9092"]
         });
     }
     protected static setSingleton(): void {
