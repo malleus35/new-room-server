@@ -3,7 +3,7 @@ import DBManager from "@src/models/DBManager";
 
 class KafkaManager extends DBManager {
     private static instance: KafkaManager;
-    protected connection: Kafka | undefined;
+    protected connection: Kafka;
 
     private constructor() {
         super();
@@ -19,7 +19,7 @@ class KafkaManager extends DBManager {
         if (this.instance == null) this.setSingleton();
         return this.instance;
     }
-    getConnection(): Kafka | undefined {
+    getConnection(): Kafka {
         return this.connection;
     }
     endConnection(): void {}
