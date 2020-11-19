@@ -67,11 +67,11 @@ class SignupDao extends Dao {
             });
         };
 
-        const sendMessage = async (data: any) => {
+        const sendMessage = async (data: AuthReqData["data"]) => {
             console.log(data);
             await producer.send({
                 topic: "userMember",
-                messages: [{ key: data.message.key, value: data.message.value }]
+                messages: [{ value: JSON.stringify(data) }]
             });
         };
 
@@ -79,6 +79,7 @@ class SignupDao extends Dao {
             await consumer.run({
                 eachMessage: async ({ topic, partition, message }) => {
                     kafkaData = message;
+                    console.log(kafkaData);
                 }
             });
         };
@@ -91,16 +92,7 @@ class SignupDao extends Dao {
             await producerConnect();
             await consumerConnect();
             await sendMessage(data);
-
-            const url = "ws://group_server/api/group/member";
-            const connection = new WebSocket(url);
-
-            connection.onmessage = (data) => {
-                console.log(data);
-            };
-
             await receiveMessage();
-            console.log(kafkaData);
         } catch (err) {
             logger.error(err);
             if (err instanceof UniqueConstraintError) return `AlreadyExistItem`;
