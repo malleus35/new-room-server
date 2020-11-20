@@ -44,8 +44,7 @@ class KafkaDao extends Dao {
             .consumer({ groupId: "memberUser" });
         await memberUserConsumer.connect();
         await memberUserConsumer.subscribe({
-            topic: "memberUser",
-            fromBeginning: true
+            topic: "memberUser"
         });
         this.consumers["memberUser"] = memberUserConsumer;
     }
@@ -74,11 +73,10 @@ class KafkaDao extends Dao {
         await this.getConsumer(name).run({
             eachMessage: async ({ topic, partition, message }: any) => {
                 const received = JSON.parse(message.value);
-                await this.sendMessage(
-                    "userMember",
-                    "userMember",
-                    "User Kafka Test Success!"
-                );
+                await this.sendMessage("userMember", "userMember", {
+                    msg: "User Kafka Test Success!"
+                });
+                console.log("What is this");
             }
         });
     }
