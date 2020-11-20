@@ -6,7 +6,7 @@ import LogService from "@src/utils/LogService";
 import Dao from "@src/dao/Dao";
 import { AllStrictReqData, AuthReqData } from "@src/vo/auth/services/reqData";
 import KafkaManager from "@src/models/KafkaManager";
-import WebSocket from "ws";
+import KafkaDao from "./KafkaDao";
 
 const logger = LogService.getInstance();
 
@@ -48,51 +48,53 @@ class SignupDao extends Dao {
         decoded,
         params
     }: AuthReqData): Promise<User | string | null | undefined> {
-        let kafkaData = {};
-        const kafka = KafkaManager.getInstance();
-        const producer = kafka.getConnection().producer();
-        const consumer = kafka
-            .getConnection()
-            .consumer({ groupId: "userMember" });
+        let kafkaData: string | undefined = "";
+        // const kafka = KafkaManager.getInstance();
+        // const producer = kafka.getConnection().producer();
+        // const consumer = kafka
+        //     .getConnection()
+        //     .consumer({ groupId: "userMember" });
 
-        const producerConnect = async () => {
-            await producer.connect();
-        };
+        // const producerConnect = async () => {
+        //     await producer.connect();
+        // };
 
-        const consumerConnect = async () => {
-            await consumer.connect();
-            await consumer.subscribe({
-                topic: "memberUser",
-                fromBeginning: true
-            });
-        };
+        // const consumerConnect = async () => {
+        //     await consumer.connect();
+        //     await consumer.subscribe({
+        //         topic: "memberUser",
+        //         fromBeginning: true
+        //     });
+        // };
 
-        const sendMessage = async (data: AuthReqData["data"]) => {
-            console.log(data);
-            await producer.send({
-                topic: "userMember",
-                messages: [{ value: JSON.stringify(data) }]
-            });
-        };
+        // const sendMessage = async (data: AuthReqData["data"]) => {
+        //     console.log(data);
+        //     await producer.send({
+        //         topic: "userMember",
+        //         messages: [{ value: JSON.stringify(data) }]
+        //     });
+        // };
 
-        const receiveMessage = async () => {
-            await consumer.run({
-                eachMessage: async ({ topic, partition, message }) => {
-                    kafkaData = message;
-                    console.log(kafkaData);
-                }
-            });
-        };
+        // const receiveMessage = async () => {
+        //     await consumer.run({
+        //         eachMessage: async ({ topic, partition, message }) => {
+        //             kafkaData = message.value?.toString();
+        //             console.log(kafkaData);
+        //             console.log(message);
+        //         }
+        //     });
+        // };
 
         let newUser: User | null = null;
         console.log(data);
         data.pwd = await argon2.hash(data.pwd);
         try {
             newUser = await User.create(data);
-            await producerConnect();
-            await consumerConnect();
-            await sendMessage(data);
-            await receiveMessage();
+            await KafkaDao.getInstance().sendMessage(
+                "userMember",
+                "userMember",
+                data
+            );
         } catch (err) {
             logger.error(err);
             if (err instanceof UniqueConstraintError) return `AlreadyExistItem`;

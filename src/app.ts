@@ -6,6 +6,7 @@ import env from "@src/utils/Dotenv";
 import LogService from "@src/utils/LogService";
 import apiRouter from "@src/api/index";
 import InitController from "@src/controllers/services/InitController";
+import KafkaController from "./controllers/KafkaController";
 
 env.chooseEnv();
 const app = express();
@@ -22,6 +23,7 @@ app.use(
     })
 );
 const init = new InitController().excute()();
+const kafkaInit = new KafkaController().excute()();
 app.use("/api", apiRouter);
 if (process.env.NODE_ENV !== "test")
     app.listen(process.env.SERVER_PORT || 3000);
