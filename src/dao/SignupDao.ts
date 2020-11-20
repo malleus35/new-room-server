@@ -50,42 +50,6 @@ class SignupDao extends Dao {
         params
     }: AuthReqData): Promise<User | string | null | undefined> {
         let kafkaData: string | undefined = "";
-        // const kafka = KafkaManager.getInstance();
-        // const producer = kafka.getConnection().producer();
-        // const consumer = kafka
-        //     .getConnection()
-        //     .consumer({ groupId: "userMember" });
-
-        // const producerConnect = async () => {
-        //     await producer.connect();
-        // };
-
-        // const consumerConnect = async () => {
-        //     await consumer.connect();
-        //     await consumer.subscribe({
-        //         topic: "memberUser",
-        //         fromBeginning: true
-        //     });
-        // };
-
-        // const sendMessage = async (data: AuthReqData["data"]) => {
-        //     console.log(data);
-        //     await producer.send({
-        //         topic: "userMember",
-        //         messages: [{ value: JSON.stringify(data) }]
-        //     });
-        // };
-
-        // const receiveMessage = async () => {
-        //     await consumer.run({
-        //         eachMessage: async ({ topic, partition, message }) => {
-        //             kafkaData = message.value?.toString();
-        //             console.log(kafkaData);
-        //             console.log(message);
-        //         }
-        //     });
-        // };
-
         let newUser: User | null = null;
         console.log(data);
         data.pwd = await argon2.hash(data.pwd);
