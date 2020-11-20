@@ -36,7 +36,7 @@ class KafkaDao extends Dao {
         this.producersName = { userMember: "userMember" };
         this.consumersName = { memberUser: "memberUser" };
         this.messageFuncs = {
-            userMember: async ({ topic, partition, message }: any) => {
+            memberUser: async ({ topic, partition, message }: any) => {
                 const received = JSON.parse(message.value);
                 console.log(received);
             }
@@ -88,6 +88,7 @@ class KafkaDao extends Dao {
         data: KafkaData
     ): Promise<void> {
         console.log(data);
+        console.log(this.getProducer(name));
         await this.getProducer(name).send({
             topic,
             messages: [{ value: JSON.stringify(data) }]
