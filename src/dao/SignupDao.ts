@@ -93,7 +93,7 @@ class SignupDao extends Dao {
             newUser = await User.create(data);
             const sendData: KafkaData = {
                 status: !newUser ? "Fail" : "Success",
-                data: data
+                data: { email: data.email }
             };
             await KafkaDao.getInstance().sendMessage(
                 "userMember",

@@ -73,9 +73,6 @@ class KafkaDao extends Dao {
         await this.getConsumer(name).run({
             eachMessage: async ({ topic, partition, message }: any) => {
                 const received = JSON.parse(message.value);
-                // await this.sendMessage("userMember", "userMember", {
-                //     msg: "User Kafka Test Success!"
-                // });
                 console.log(received);
             }
         });
@@ -84,9 +81,12 @@ class KafkaDao extends Dao {
     public async init(): Promise<void> {
         await this.producerInit();
         await this.consumerInit();
-        this.getConsumer("memberUser").on("consumer.fetch", async (e) => {
-            console.log(e);
-        });
+        this.getConsumer("memberUser").on(
+            "consumer.end_batch_process",
+            async (e) => {
+                console.log("Member process finish!");
+            }
+        );
         await this.receiveMessage("memberUser");
     }
 }
