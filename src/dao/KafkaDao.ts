@@ -1,6 +1,7 @@
 import KafkaManager from "@src/models/KafkaManager";
 import Dao from "@src/dao/Dao";
 import { Consumer, Producer } from "kafkajs";
+import KafkaData from "@src/vo/auth/services/kafkaData";
 // import MemberDao from "./member/MemberDao";
 
 interface producers {
@@ -59,7 +60,7 @@ class KafkaDao extends Dao {
     public async sendMessage(
         name: string,
         topic: string,
-        data: any
+        data: KafkaData
     ): Promise<void> {
         console.log(data);
         await this.getProducer(name).send({
@@ -69,14 +70,13 @@ class KafkaDao extends Dao {
     }
 
     public async receiveMessage(name: string) {
-        let kafkaData = {};
         await this.getConsumer(name).run({
             eachMessage: async ({ topic, partition, message }: any) => {
                 const received = JSON.parse(message.value);
-                await this.sendMessage("userMember", "userMember", {
-                    msg: "User Kafka Test Success!"
-                });
-                console.log("What is this");
+                // await this.sendMessage("userMember", "userMember", {
+                //     msg: "User Kafka Test Success!"
+                // });
+                console.log(received);
             }
         });
     }
@@ -84,6 +84,9 @@ class KafkaDao extends Dao {
     public async init(): Promise<void> {
         await this.producerInit();
         await this.consumerInit();
+        this.getConsumer("memberUser").on("consumer.fetch", async (e) => {
+            console.log(e);
+        });
         await this.receiveMessage("memberUser");
     }
 }

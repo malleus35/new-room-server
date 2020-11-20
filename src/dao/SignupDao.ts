@@ -6,7 +6,8 @@ import LogService from "@src/utils/LogService";
 import Dao from "@src/dao/Dao";
 import { AllStrictReqData, AuthReqData } from "@src/vo/auth/services/reqData";
 import KafkaManager from "@src/models/KafkaManager";
-import KafkaDao from "./KafkaDao";
+import KafkaDao from "@src/dao/KafkaDao";
+import KafkaData from "@src/vo/auth/services/kafkaData";
 
 const logger = LogService.getInstance();
 
@@ -90,10 +91,14 @@ class SignupDao extends Dao {
         data.pwd = await argon2.hash(data.pwd);
         try {
             newUser = await User.create(data);
+            const sendData: KafkaData = {
+                status: !newUser ? "Fail" : "Success",
+                data: data
+            };
             await KafkaDao.getInstance().sendMessage(
                 "userMember",
                 "userMember",
-                data
+                sendData
             );
         } catch (err) {
             logger.error(err);
