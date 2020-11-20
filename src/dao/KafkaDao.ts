@@ -1,8 +1,7 @@
 import KafkaManager from "@src/models/KafkaManager";
 import Dao from "@src/dao/Dao";
-import { Consumer, Producer } from "kafkajs";
+import { Consumer, EachMessagePayload, Producer } from "kafkajs";
 import KafkaData from "@src/vo/auth/services/kafkaData";
-// import MemberDao from "./member/MemberDao";
 
 interface producers {
     [attr: string]: Producer;
@@ -11,16 +10,37 @@ interface producers {
 interface consumers {
     [attr: string]: Consumer;
 }
+interface messageFuncs {
+    [attr: string]: (payload: EachMessagePayload) => Promise<void>;
+}
+interface producersName {
+    [attr: string]: string;
+}
+interface consumersName {
+    [attr: string]: string;
+}
 
 class KafkaDao extends Dao {
     protected db: KafkaManager;
     private producers: producers;
     private consumers: consumers;
+    private messageFuncs: messageFuncs;
+    private producersName: producersName;
+    private consumersName: consumersName;
+
     private constructor() {
         super();
         this.db = KafkaManager.getInstance();
         this.producers = {};
         this.consumers = {};
+        this.producersName = { userMember: "userMember" };
+        this.consumersName = { memberUser: "memberUser" };
+        this.messageFuncs = {
+            userMember: async ({ topic, partition, message }: any) => {
+                const received = JSON.parse(message.value);
+                console.log(received);
+            }
+        };
         const firstInit = async () => await this.init();
         firstInit();
     }
@@ -33,26 +53,31 @@ class KafkaDao extends Dao {
         await this.db?.endConnection();
     }
 
-    private async producerInit(): Promise<void> {
-        const userMemberProducer = this.db.getConnection().producer();
-        await userMemberProducer.connect();
-        this.producers["userMember"] = userMemberProducer;
+    private async producerInit(name: string): Promise<void> {
+        const producer = this.db.getConnection().producer();
+        await producer.connect();
+        this.producers[name] = producer;
     }
 
-    private async consumerInit(): Promise<void> {
-        const memberUserConsumer = this.db
-            .getConnection()
-            .consumer({ groupId: "memberUser" });
-        await memberUserConsumer.connect();
-        await memberUserConsumer.subscribe({
-            topic: "memberUser"
+    private async consumerInit(name: string, topic: string): Promise<void> {
+        const consumer = this.db.getConnection().consumer({ groupId: name });
+        await consumer.connect();
+        await consumer.subscribe({
+            topic
         });
-        this.consumers["memberUser"] = memberUserConsumer;
+        this.consumers[name] = consumer;
+    }
+
+    public listenerInit(name: string, event: any, func: Function): void {
+        this.getConsumer(name).on(event, async (e) => {
+            func();
+        });
     }
 
     private getProducer(name: string): Producer {
         return this.producers[name];
     }
+
     private getConsumer(name: string): Consumer {
         return this.consumers[name];
     }
@@ -71,21 +96,16 @@ class KafkaDao extends Dao {
 
     public async receiveMessage(name: string) {
         await this.getConsumer(name).run({
-            eachMessage: async ({ topic, partition, message }: any) => {
-                const received = JSON.parse(message.value);
-                console.log(received);
-            }
+            eachMessage: this.messageFuncs[name]
         });
     }
 
     public async init(): Promise<void> {
-        await this.producerInit();
-        await this.consumerInit();
-        this.getConsumer("memberUser").on(
-            "consumer.end_batch_process",
-            async (e) => {
-                console.log("Member process finish!");
-            }
+        for (let name in this.producersName) await this.producerInit(name);
+        for (let name in this.consumersName)
+            await this.consumerInit(name, name);
+        this.listenerInit("memberUser", "consumer.end_batch_process", () =>
+            console.log("Member process finish!")
         );
         await this.receiveMessage("memberUser");
     }
