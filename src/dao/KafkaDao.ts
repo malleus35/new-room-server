@@ -34,15 +34,15 @@ class KafkaDao extends Dao {
         this.producers = {};
         this.consumers = {};
         this.producersName = {
-            userMember: "userMember",
+            userMemberCreate: "userMemberCreate",
             userMemberDelete: "userMemberDelete"
         };
         this.consumersName = {
-            memberUser: "memberUser",
+            memberUserCreate: "memberUserCreate",
             memberUserDelete: "memberUserDelete"
         };
         this.messageFuncs = {
-            memberUser: async ({ topic, partition, message }: any) => {
+            memberUserCreate: async ({ topic, partition, message }: any) => {
                 const received = JSON.parse(message.value);
                 console.log(received);
             },
@@ -115,8 +115,15 @@ class KafkaDao extends Dao {
         for (let name in this.producersName) await this.producerInit(name);
         for (let name in this.consumersName)
             await this.consumerInit(name, name);
-        this.listenerInit("memberUser", "consumer.end_batch_process", () =>
-            console.log("Member process finish!")
+        this.listenerInit(
+            "memberUserCreate",
+            "consumer.end_batch_process",
+            () => console.log("Member create finish!")
+        );
+        this.listenerInit(
+            "memberUserDelete",
+            "consumer.end_batch_process",
+            () => console.log("Member delete finish!")
         );
         for (let name in this.consumersName) await this.receiveMessage(name);
     }
