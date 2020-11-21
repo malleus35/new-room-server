@@ -5,13 +5,12 @@ import User from "@src/models/UserModel";
 import LogService from "@src/utils/LogService";
 import Dao from "@src/dao/Dao";
 import { AllStrictReqData, AuthReqData } from "@src/vo/auth/services/reqData";
-import KafkaManager from "@src/models/KafkaManager";
 import KafkaDao from "@src/dao/KafkaDao";
 import KafkaData from "@src/vo/auth/services/kafkaData";
 
 const logger = LogService.getInstance();
 
-class SignupDao extends Dao {
+class UserDao extends Dao {
     private constructor() {
         super();
         this.db = AuthDBManager.getInstance();
@@ -49,7 +48,6 @@ class SignupDao extends Dao {
         decoded,
         params
     }: AuthReqData): Promise<User | string | null | undefined> {
-        let kafkaData: string | undefined = "";
         let newUser: User | null = null;
         console.log(data);
         data.pwd = await argon2.hash(data.pwd);
@@ -98,7 +96,6 @@ class SignupDao extends Dao {
         params
     }: AllStrictReqData): Promise<number | string | null | undefined> {
         let deleteMember: number | null = null;
-        //Add Kafka connection to Auth server because of deleting member
         try {
             deleteMember = await User.destroy({
                 where: {
@@ -114,4 +111,4 @@ class SignupDao extends Dao {
     }
 }
 
-export default SignupDao;
+export default UserDao;
