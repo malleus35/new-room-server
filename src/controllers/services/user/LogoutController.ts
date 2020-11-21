@@ -5,17 +5,20 @@ import Controller from "@src/controllers/Controller";
 import UserService from "@src/services/UserService";
 
 import resTypes from "@src/utils/resTypes";
-import JwtService from "@src/services/middlewares/JwtService";
 import TokenDao from "@src/dao/TokenDao";
 import User from "@src/models/UserModel";
 
-class SigninController extends Controller {
-    private result: User | string;
+interface result {
+    findInfo: User | string;
+    removeResult: number;
+}
+class LogoutController extends Controller {
+    private result: result;
     private accessToken: string;
     private refreshToken: string;
     constructor() {
         super();
-        this.result = "";
+        this.result = { findInfo: "", removeResult: -987654321 };
         this.accessToken = "";
         this.refreshToken = "";
     }
@@ -26,19 +29,13 @@ class SigninController extends Controller {
         next: NextFunction
     ): Promise<void> {
         try {
-            this.result = await UserService.findSignIn(req);
-            this.accessToken = await JwtService.createAccessToken(
-                req.body.data.email
-            );
-            this.refreshToken = await JwtService.createRefreshToken();
+            this.result.findInfo = await UserService.findMyInfo(req);
 
-            await TokenDao.getInstance().save(
-                req.body.data.email,
-                this.refreshToken
+            this.result.removeResult = await TokenDao.getInstance().remove(
+                req.body.decoded.email
             );
-            await TokenDao.getInstance().find(req.body.data.email);
         } catch (e: unknown) {
-            this.result = "InternalServerError";
+            this.result.findInfo = "InternalServerError";
             console.log(e);
         }
     }
@@ -48,7 +45,7 @@ class SigninController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        switch (this.result) {
+        switch (this.result.findInfo) {
             case "BadRequest":
                 resTypes.badRequestErrorRes(res);
                 break;
@@ -58,16 +55,15 @@ class SigninController extends Controller {
             case "CannotFindItem":
                 resTypes.cannotFindItemRes(res, "user");
                 break;
-            case "WrongPassword":
-                resTypes.wrongPasswordRes(res);
-                break;
             default:
-                resTypes.successRes(res, "Login", {
-                    accessToken: this.accessToken,
-                    refreshToken: this.refreshToken
-                });
+                if (this.result.removeResult === 0) {
+                    resTypes.dbErrorRes(res);
+                } else
+                    resTypes.successRes(res, "Logout", {
+                        accessToken: this.accessToken,
+                        refreshToken: this.refreshToken
+                    });
         }
     }
 }
-
-export default SigninController;
+export default LogoutController;

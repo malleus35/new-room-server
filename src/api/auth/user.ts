@@ -1,6 +1,7 @@
 import { Router } from "express";
 import SignupController from "@src/controllers/services/user/SignupController";
 import SignInController from "@src/controllers/services/user/SigninController";
+import LogoutController from "@src/controllers/services/user/LogoutController";
 import TokenSignInController from "@src/controllers/services/user/TokenSigninController";
 import JwtVerifyAccessController from "@src/controllers/middlewares/jwt/JwtVerifyAccessController";
 import JwtVerifyRefreshController from "@src/controllers/middlewares/jwt/JwtVerifyRefreshController";
@@ -11,6 +12,11 @@ const router = Router();
 router.post("/", new SignupController().excute());
 
 router.post("/signin", new SignInController().excute());
+router.post(
+    "/logout",
+    new JwtVerifyAccessController().excute(),
+    new LogoutController().excute()
+);
 router.post(
     "/verify",
     new JwtVerifyAccessController().excute(),

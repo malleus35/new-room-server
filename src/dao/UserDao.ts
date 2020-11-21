@@ -43,6 +43,26 @@ class UserDao extends Dao {
         return result;
     }
 
+    async findMyInfo({
+        data,
+        decoded,
+        params
+    }: AllStrictReqData): Promise<Model | string | null | undefined> {
+        let result: Model | null = null;
+        try {
+            result = await User.findOne({
+                where: {
+                    email: decoded.email
+                }
+            });
+        } catch (err) {
+            logger.error(err);
+            if (err instanceof ValidationError) return "BadRequest";
+            return undefined;
+        }
+        return result;
+    }
+
     async save({
         data,
         decoded,

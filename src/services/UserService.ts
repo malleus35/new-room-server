@@ -8,6 +8,9 @@ class UserService {
     static findSignIn = serviceFactory.signin<User>(
         UserDao.getInstance().findOne
     );
+    static findMyInfo = serviceFactory.get<User>(
+        UserDao.getInstance().findMyInfo
+    );
     static create = serviceFactory.postOrUpdate<User>(
         UserDao.getInstance().save
     );

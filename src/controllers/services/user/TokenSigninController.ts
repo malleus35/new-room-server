@@ -21,10 +21,14 @@ class TokenSigninController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.decodedPayload = req.body.decoded.email;
-        this.accessToken = await JwtService.createAccessToken(
-            this.decodedPayload
-        );
+        try {
+            this.decodedPayload = req.body.decoded.email;
+            this.accessToken = await JwtService.createAccessToken(
+                this.decodedPayload
+            );
+        } catch (e: unknown) {
+            console.log(e);
+        }
     }
 
     async doResolve(
