@@ -56,7 +56,10 @@ class LogoutController extends Controller {
                 resTypes.cannotFindItemRes(res, "user");
                 break;
             default:
-                if (this.result.removeResult === 0) {
+                if (
+                    this.result.removeResult === 0 ||
+                    this.result.removeResult === -987654321
+                ) {
                     resTypes.dbErrorRes(res);
                 } else
                     resTypes.successRes(res, "Logout", {
