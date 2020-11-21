@@ -1,10 +1,8 @@
-import signinRouter from "@src/api/auth/signin";
-import signupRouter from "@src/api/auth/signup";
+import userRouter from "@src/api/auth/user";
 import { Router } from "express";
 
 const router = Router();
 
-router.use("/signin", signinRouter);
-router.use("/signup", signupRouter);
+router.use("/user", userRouter);
 
 export default router;

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 
 import Controller from "@src/controllers/Controller";
 
-import SigninService from "@src/services/signinService";
+import UserService from "@src/services/UserService";
 
 import resTypes from "@src/utils/resTypes";
 import JwtService from "@src/services/middlewares/JwtService";
@@ -25,7 +25,7 @@ class SigninController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.result = await SigninService.findOne(req);
+        this.result = await UserService.findSignIn(req);
         this.accessToken = await JwtService.createAccessToken(
             req.body.data.email
         );

@@ -2,7 +2,7 @@ import Controller from "@src/controllers/Controller";
 
 import resTypes from "@src/utils/resTypes";
 
-import SignupService from "@src/services/SignupService";
+import UserService from "@src/services/UserService";
 
 class CheckValidAccountController extends Controller {
     private isAlreadyHaveAccount: string;

@@ -58,8 +58,8 @@ class UserDao extends Dao {
                 data: { email: data.email }
             };
             await KafkaDao.getInstance().sendMessage(
-                "userMember",
-                "userMember",
+                "userMemberCreate",
+                "userMemberCreate",
                 sendData
             );
         } catch (err) {
@@ -99,9 +99,18 @@ class UserDao extends Dao {
         try {
             deleteMember = await User.destroy({
                 where: {
-                    ...params
+                    email: decoded.email
                 }
             });
+            const sendData: KafkaData = {
+                status: !deleteMember ? "Fail" : "Success",
+                data: { email: decoded.email }
+            };
+            await KafkaDao.getInstance().sendMessage(
+                "userMemberDelete",
+                "userMemberDelete",
+                sendData
+            );
         } catch (err) {
             logger.error(err);
             if (err instanceof ValidationError) return `BadRequest`;

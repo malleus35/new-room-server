@@ -3,8 +3,11 @@ import UserDao from "@src/dao/UserDao";
 import serviceFactory from "@src/vo/auth/services/ServiceFactory";
 import User from "@src/models/UserModel";
 const logger = LogService.getInstance();
-class SignupService {
+class UserService {
     static findOne = serviceFactory.get<User>(UserDao.getInstance().findOne);
+    static findSignIn = serviceFactory.signin<User>(
+        UserDao.getInstance().findOne
+    );
     static create = serviceFactory.postOrUpdate<User>(
         UserDao.getInstance().save
     );
@@ -14,4 +17,4 @@ class SignupService {
     static delete = serviceFactory.delete<User>(UserDao.getInstance().delete);
 }
 
-export default SignupService;
+export default UserService;

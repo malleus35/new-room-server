@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Controller from "@src/controllers/Controller";
 import resTypes from "@src/utils/resTypes";
-import SignupService from "@src/services/SignupService";
+import UserService from "@src/services/UserService";
 class SignupController extends Controller {
     private result: string;
     constructor() {
@@ -13,7 +13,7 @@ class SignupController extends Controller {
         res: Response,
         next: NextFunction
     ): Promise<void> {
-        this.result = await SignupService.create(req);
+        this.result = await UserService.create(req);
     }
     async doResolve(
         req: Request,
