@@ -8,11 +8,7 @@ import DeleteController from "@src/controllers/services/user/DeleteController";
 
 const router = Router();
 
-router.post(
-    "/",
-    // new CheckValidAccountController().excute(),
-    new SignupController().excute()
-);
+router.post("/", new SignupController().excute());
 
 router.post("/signin", new SignInController().excute());
 router.post(
