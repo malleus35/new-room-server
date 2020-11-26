@@ -12,7 +12,7 @@ class User
     public name!: string;
     public pwd!: string;
     // public grade!: number;
-    public school!: string;
+    // public school!: string;
     public stdNum!: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;

@@ -21,7 +21,7 @@ export namespace UserModelTypes {
         name: IColumnOption;
         pwd: IColumnOption;
         // grade: IColumnOption;
-        school: IColumnOption;
+        // school: IColumnOption;
         stdNum: IColumnOption;
     }
     export const attr: UserModelTypes.IUserScheme = {
@@ -52,13 +52,13 @@ export namespace UserModelTypes {
         //     type: DataTypes.INTEGER,
         //     allowNull: false
         // },
-        school: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            validate: {
-                notEmpty: true
-            }
-        },
+        // school: {
+        //     type: DataTypes.STRING,
+        //     allowNull: false,
+        //     validate: {
+        //         notEmpty: true
+        //     }
+        // },
         stdNum: {
             type: DataTypes.STRING,
             allowNull: false,

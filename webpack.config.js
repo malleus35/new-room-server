@@ -23,7 +23,7 @@ module.exports = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                exclude: [/node_modules/, /test/],
+                exclude: [/node_modules/, /test/, /kube/],
                 use: {
                     loader: "babel-loader",
                     options: {

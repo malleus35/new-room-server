@@ -1,6 +1,6 @@
-version: "3.8"
+version: "3"
 services:
-    auth_server:
+    auth-server:
         build: .
         ports:
             - "8081:8080"
@@ -10,7 +10,7 @@ services:
             - auth
             - default
 
-    auth_postgres:
+    auth-postgres:
         image: "postgres"
         ports:
             - "5433:5432"
@@ -22,7 +22,7 @@ services:
             - auth
             - default
 
-    auth_redis:
+    auth-redis:
         image: "redis:alpine"
         ports:
             - "6380:6379"
@@ -35,7 +35,7 @@ services:
 networks:
     default:
         external:
-            name: messageQ
+            name: message-q
         driver: bridge
     auth:
         external: true

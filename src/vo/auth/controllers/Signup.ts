@@ -4,7 +4,7 @@ export namespace SignUpTypes {
         pwd: string;
         name: string;
         // grade: number;
-        school: string;
+        // school: string;
         stdNum: string;
     }
 }
