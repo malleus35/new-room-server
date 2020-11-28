@@ -9,7 +9,11 @@ class KafkaManager extends DBManager {
         super();
         this.connection = new Kafka({
             clientId: "my-app",
-            brokers: ["kafka1:9092", "kafka2:9092", "kafka3:9092"]
+            brokers: [
+                `${process.env.KAFKA_HOST_NAME_1}:${process.env.KAFKA_HOST_PORT_1}`,
+                `${process.env.KAFKA_HOST_NAME_2}:${process.env.KAFKA_HOST_PORT_2}`,
+                `${process.env.KAFKA_HOST_NAME_3}:${process.env.KAFKA_HOST_PORT_3}`
+            ]
             // brokers: ["localhost:9095", "localhost:9096", "localhost:9097"]
         });
     }
