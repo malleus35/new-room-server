@@ -4,7 +4,7 @@ metadata:
   # creationTimestamp: null
   labels:
     io.kompose.service: auth-postgres-data
-  name: auth-postgres-data
+  name: auth-data
 spec:
   accessModes:
     - ReadWriteOnce

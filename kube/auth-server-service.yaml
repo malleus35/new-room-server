@@ -15,5 +15,5 @@ spec:
       targetPort: 8080
   selector:
     io.kompose.service: auth-server
-status:
-  loadBalancer: {}
+# status:
+  # loadBalancer: {}

@@ -42,6 +42,11 @@ spec:
                 configMapKeyRef:
                   key: DB_HOST
                   name: envs--env-production
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_PORT
+                  name: envs--env-production
             - name: DB_PASSWORD
               valueFrom:
                 configMapKeyRef:
@@ -71,6 +76,36 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   key: SERVER_PORT
+                  name: envs--env-production
+            - name: KAFKA_HOST_NAME_1
+              valueFrom:
+                configMapKeyRef:
+                  key: KAFKA_HOST_NAME_1
+                  name: envs--env-production
+            - name: KAFKA_HOST_NAME_2
+              valueFrom:
+                configMapKeyRef:
+                  key: KAFKA_HOST_NAME_2
+                  name: envs--env-production
+            - name: KAFKA_HOST_NAME_3
+              valueFrom:
+                configMapKeyRef:
+                  key: KAFKA_HOST_NAME_3
+                  name: envs--env-production
+            - name: KAFKA_HOST_PORT_1
+              valueFrom:
+                configMapKeyRef:
+                  key: KAFKA_HOST_PORT_1
+                  name: envs--env-production
+            - name: KAFKA_HOST_PORT_2
+              valueFrom:
+                configMapKeyRef:
+                  key: KAFKA_HOST_PORT_2
+                  name: envs--env-production
+            - name: KAFKA_HOST_PORT_3
+              valueFrom:
+                configMapKeyRef:
+                  key: KAFKA_HOST_PORT_3
                   name: envs--env-production
           image: luciferkala/auth-server
           name: auth-server

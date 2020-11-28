@@ -86,11 +86,11 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
-              name: auth-postgres-data
+              name: auth-data
       restartPolicy: Always
       volumes:
-        - name: auth-postgres-data
+        - name: auth-data
           persistentVolumeClaim:
-            claimName: auth-postgres-data
+            claimName: auth-data
 status:
   replicas: 1
