@@ -21,4 +21,4 @@ metadata:
   # creationTimestamp: null
   labels:
     io.kompose.service: auth-server-envs--env-production
-  name: envs--env-production
+  name: envs--env-production-auth
