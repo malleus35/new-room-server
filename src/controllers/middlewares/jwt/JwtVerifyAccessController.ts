@@ -33,7 +33,7 @@ class JwtVerifyAccessController extends Controller {
         next: NextFunction
     ): Promise<void> {
         if (typeof this.verify !== "string") {
-            req.body.decoded = this.verify;
+            req.decoded = this.verify;
             next();
         } else resTypes.tokenErrorRes(res);
     }

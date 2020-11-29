@@ -2,13 +2,12 @@ import { NextFunction, Request, Response } from "express";
 
 import Controller from "@src/controllers/Controller";
 
-// import SigninService from "@src/services/SigninService";
-
 import resTypes from "@src/utils/resTypes";
 import JwtService from "@src/services/middlewares/JwtService";
+import StrictRequest from "@src/vo/auth/services/request";
 
 class TokenSigninController extends Controller {
-    private decodedPayload: string;
+    private decodedPayload: string | undefined;
     private accessToken: string | object | null;
     constructor() {
         super();
@@ -17,12 +16,12 @@ class TokenSigninController extends Controller {
     }
 
     async doService(
-        req: Request,
+        req: StrictRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
         try {
-            this.decodedPayload = req.body.decoded.email;
+            this.decodedPayload = req.decoded.email;
             this.accessToken = await JwtService.createAccessToken(
                 this.decodedPayload
             );

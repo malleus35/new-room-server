@@ -7,6 +7,7 @@ import UserService from "@src/services/UserService";
 import resTypes from "@src/utils/resTypes";
 import TokenDao from "@src/dao/TokenDao";
 import User from "@src/models/UserModel";
+import StrictRequest from "@src/vo/auth/services/request";
 
 interface result {
     findInfo: User | string;
@@ -24,15 +25,14 @@ class LogoutController extends Controller {
     }
 
     async doService(
-        req: Request,
+        req: StrictRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
         try {
             this.result.findInfo = await UserService.findMyInfo(req);
-
             this.result.removeResult = await TokenDao.getInstance().remove(
-                req.body.decoded.email
+                req.decoded.email
             );
         } catch (e: unknown) {
             this.result.findInfo = "InternalServerError";
@@ -41,7 +41,7 @@ class LogoutController extends Controller {
     }
 
     async doResolve(
-        req: Request,
+        req: StrictRequest,
         res: Response,
         next: NextFunction
     ): Promise<void> {
