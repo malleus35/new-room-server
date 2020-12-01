@@ -73,15 +73,15 @@ class UserDao extends Dao {
         data.pwd = await argon2.hash(data.pwd);
         try {
             newUser = await User.create(data);
-            const sendData: KafkaData = {
-                status: !newUser ? "Fail" : "Success",
-                data: { email: data.email }
-            };
-            await KafkaDao.getInstance().sendMessage(
-                "userMemberCreate",
-                "userMemberCreate",
-                sendData
-            );
+            // const sendData: KafkaData = {
+            //     status: !newUser ? "Fail" : "Success",
+            //     data: { email: data.email }
+            // };
+            // await KafkaDao.getInstance().sendMessage(
+            //     "userMemberCreate",
+            //     "userMemberCreate",
+            //     sendData
+            // );
         } catch (err) {
             logger.error(err);
             if (err instanceof UniqueConstraintError) return `AlreadyExistItem`;
@@ -122,15 +122,15 @@ class UserDao extends Dao {
                     email: decoded.email
                 }
             });
-            const sendData: KafkaData = {
-                status: !deleteMember ? "Fail" : "Success",
-                data: { email: decoded.email }
-            };
-            await KafkaDao.getInstance().sendMessage(
-                "userMemberDelete",
-                "userMemberDelete",
-                sendData
-            );
+            // const sendData: KafkaData = {
+            //     status: !deleteMember ? "Fail" : "Success",
+            //     data: { email: decoded.email }
+            // };
+            // await KafkaDao.getInstance().sendMessage(
+            //     "userMemberDelete",
+            //     "userMemberDelete",
+            //     sendData
+            // );
         } catch (err) {
             logger.error(err);
             if (err instanceof ValidationError) return `BadRequest`;
