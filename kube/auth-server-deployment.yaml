@@ -107,7 +107,7 @@ spec:
                 configMapKeyRef:
                   key: KAFKA_HOST_PORT_3
                   name: envs--env-production-auth
-          image: luciferkala/auth-server:feature
+          image: luciferkala/auth-server
           name: auth-server
           ports:
             - containerPort: 8080
