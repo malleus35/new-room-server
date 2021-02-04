@@ -1,6 +1,6 @@
 // import app from "@src/app";
 import socketIoClient from "socket.io-client";
-import socketIo from "socket.io";
+import { Server } from "socket.io";
 //TODO Express서버와 연결해서도 잘 되는지 확인 필요
 //TODO 그룹에서 회원 목록 중에 톡을 보내는 것 로직 생각해보기
 //TOD 두명이서 서버 거쳐서 통신시키기
@@ -8,9 +8,8 @@ import socketIo from "socket.io";
 //TOD Room 사용해보기
 //TOD Room 사용하기 위한 네임스페이스 테스트 만들기
 // TOD 네임스페이스 이해하기
-
 const initSocketServer = () =>
-    socketIo(8001, {
+    new Server(8001, {
         transports: ["websocket"],
         pingInterval: 10000,
         pingTimeout: 5000
