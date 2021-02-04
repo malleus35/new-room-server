@@ -11,6 +11,10 @@ node_modules/*
 /dist
 # production
 
+# kubernetes
+/kube
+kube/*
+
 # misc
 yarn.lock
 envs/
